@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build documentation
-        run: mkdir web && echo "<html><body><h1>Hello world</h1></body></html>" > web/index.html
+        run: mkdir web && echo "<html><body><h1>Hello world from hyper-db</h1></body></html>" > web/index.html
 
       - name: Deploy
         if: github.ref == 'refs/heads/main'

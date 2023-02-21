@@ -1,4 +1,4 @@
-name: Deploy static content to Pages
+name: Deploy webpage
 
 on:
   push:
@@ -41,7 +41,8 @@ jobs:
           restore-keys: ${{ runner.os }}-yarn-
 
       - name: Build webpage
-        run: yarn build --cwd=website
+        working-directory: website
+        run: yarn install && yarn build
 
       - name: Upload webpage
         uses: actions/upload-pages-artifact@v1

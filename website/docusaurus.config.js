@@ -10,11 +10,15 @@ const config = {
   tagline: 'Hyper Hyper!',
   favicon: 'img/favicon.ico',
 
+  /* XXX
   // Set the production url of your site here
   url: 'https://tableau.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/hyper-db',
+  */
+  url: 'https://fantastic-adventure-59k6vny.pages.github.io/',
+  baseUrl: '/',
 
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',

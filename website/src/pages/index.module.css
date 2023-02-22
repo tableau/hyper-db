@@ -16,6 +16,11 @@
   }
 }
 
+.heroLogo {
+  width: 8rem;
+  margin: .5rem;
+}
+
 .buttons {
   display: flex;
   align-items: center;

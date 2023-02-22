@@ -61,10 +61,11 @@ with HyperProcess(telemetry=Telemetry.SEND_USAGE_DATA_TO_TABLEAU) as hyper:
 
 ```
 
-<a id="usage-data">
 <div class="alert alert-info">
-    <p><b>About Usage Data</b></p><p>To help us improve Tableau, you can share usage data with us. Tableau collects data that helps us learn how our products are being used so we can improve existing features and develop new ones. All usage data is collected and handled according to the <a href="https://tableau.com/privacy" target="_blank" ref="noopener"> Tableau Privacy Policy</a>.
-    </p></div>
+    <p><b>About Usage Data</b></p>
+    <p>To help us improve Tableau, you can share usage data with us. Tableau collects data that helps us learn how our products are being used so we can improve existing features and develop new ones. All usage data is collected and handled according to the <a href="https://tableau.com/privacy" target="_blank"> Tableau Privacy Policy</a>.
+    </p>
+</div>
 
 ### 3. Open a connection to the .hyper file
 
@@ -82,7 +83,8 @@ with Connection(hyper.endpoint, 'TrivialExample.hyper', CreateMode.CREATE_AND_RE
 ```
 
 <div class="alert alert-info">
-    <b>Important:</b> When you open a connection to a <code>.hyper</code> file and while the connection remains open, no other process can use the file. That is, while your application is connected to the <code>.hyper</code> file, it has exclusive access: no other instance of Hyper can connect to the file. That means, you can't open the file using the Hyper API and have the file open in Tableau at the same time.</div>
+    <b>Important:</b> When you open a connection to a <code>.hyper</code> file and while the connection remains open, no other process can use the file. That is, while your application is connected to the <code>.hyper</code> file, it has exclusive access: no other instance of Hyper can connect to the file. That means, you can't open the file using the Hyper API and have the file open in Tableau at the same time.
+</div>
  
 
 

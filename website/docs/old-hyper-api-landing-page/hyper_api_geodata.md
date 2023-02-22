@@ -9,15 +9,6 @@ The procedure explained here is for Hyper API v0.0.10309 and later. To add geogr
 
 This topic describes how you can use the Hyper API to add geography type data to the Hyper file.
 
----
-
-**In this section**
-
-* TOC
-{:toc}
-
----
-
 ## Overview of inserting spatial data to a hyper file
 
 The basic process for adding spatial data involves defining your inputs to Hyper APIs inserter and specifying how to convert the text strings to geography types using Hyper SQL expressions. Hyper APIs inserter pushes the expression down to Hyper to convert text string to spatial data on the fly during insertion

@@ -6,15 +6,6 @@ title: Insert, Update, and Delete Data from a Hyper File
 Using the Hyper API, you can read, insert, update, and delete data from tables in an `.hyper` file by sending [SQL commands](../reference/sql/sql-commands.html){:target="_blank"}{:ref="noopener"} and queries, and by using the `Inserter` class to add rows to a table.
 
 
-**In this section**
-
-* TOC
-{:toc}
-
----
-
-
-
 ## Insert data using the Inserter class
 
 The following example in Python inserts two rows of data into a table (`Extract.Extract`). The Inserter class constructor takes two arguments: the connection to the file and the table to insert data into. You can specify the name of the table or the table definition.

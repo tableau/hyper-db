@@ -5,15 +5,6 @@ title: Create and Update Hyper Files
 You can use the Hyper API to automate your interactions with Tableau. You can create Tableau `.hyper` files and then insert, delete, update, and read data from those files.
 You can then use files as data sources in Tableau. This topic will outline the basic steps for creating and then updating a `.hyper` file.
 
----
-
-**In this section**
-
-* TOC
-{:toc}
-
----
-
 ## Prerequisites
 
 The following instructions assume you have installed the Hyper API and that you can build and run the example code. For more information, see [Install the Hyper API]({{site.baseurl}}/docs/hyper_api_installing.html).

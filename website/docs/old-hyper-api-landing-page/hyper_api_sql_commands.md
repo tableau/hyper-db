@@ -7,15 +7,6 @@ Using the Hyper API, you can use SQL statements to interact with tables and data
 
 For information about all the SQL commands and queries you can use with Hyper files, see [Hyper SQL Reference](../reference/sql/index.html){:target="_blank" rel="noopener"}.
 
----
-
-**In this section**
-
-* TOC
-{:toc}
-
----
-
 ## Connect to the database (.hyper file)
 
 To use SQL commands with the Hyper API, you first need a connection to the database (the `.hyper` file). Using the connection object, you can send SQL commands and queries.

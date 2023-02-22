@@ -10,15 +10,6 @@ The Hyper API contains a set of functions you can use to automate your interacti
 
 - Retrieve data from an extract file.
 
----
-
-**In this section**
-
-* TOC
-{:toc}
-
----
-
 ## Do more using the power of Hyper
 
 In addition to supporting the features of the previous Extract API 2.0 for creating and updating extract files, the Hyper API provides access to new features:

@@ -4,13 +4,6 @@ title: Read Data from Hyper Files
 
 Using the Hyper API, you can read data from tables in an `.hyper` file by sending SQL queries.
 
-**In this section**
-
-* TOC
-{:toc}
-
----
-
 ## Step 1: Connect to the database (.hyper file)
 
 To read data from a file, you first need a connection to the database (the `.hyper` file). Using the connection object, you can send SQL queries.

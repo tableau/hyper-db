@@ -12,15 +12,6 @@ Tableau supports geographical data in `.hyper` files. In the Hyper API version 0
 
 This topic describes how you can use the Hyper API and Hyper SQL to add geography type data to the Hyper file if you are using version 0.0.1002 of the Hyper API or earlier.
 
----
-
-**In this section**
-
-* TOC
-{:toc}
-
----
-
 ## Overview of the workaround to insert spatial data
 
 The basic process for adding spatial data consists of two parts. The first step is to put the geographical data into the `.hyper` file in text strings. The second step is to convert the text strings to `geography` types inside the file using Hyper SQL commands.

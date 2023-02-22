@@ -4,15 +4,6 @@ title: Upgrade from the Extract API 2.0 to the Hyper API
 
 If you built an application that used the Extract API 2.0, you can continue to use the application to create and update `.hyper` extract files for Tableau 10.5 and later. However, to take advantage of the performance boost and the new features introduced with the Hyper API, you need to make changes to your application to use the new classes and methods. While there is no direct translation from Extract API 2.0 methods to the Hyper API methods, there are similarities between the two APIs. They both use similar steps to define and populate the tables in the extract. Porting an existing application to the Hyper API should be relatively straight forward. The following table compares the two ways the APIs create `.hyper` files.
 
----
-
-**In this section**
-
-* TOC
-{:toc}
-
----
-
 # Summary of differences and workflow
 
 | Extract API 2.0   | Hyper API |

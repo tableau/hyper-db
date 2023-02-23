@@ -1,5 +1,6 @@
 ---
 title: What's New in the Hyper API
+sidebar_position: 2
 ---
 
 * TOC

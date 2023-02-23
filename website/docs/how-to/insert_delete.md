@@ -1,5 +1,6 @@
 ---
 title: Insert, Update, and Delete Data from a Hyper File
+sidebar_position: 4
 ---
 
 

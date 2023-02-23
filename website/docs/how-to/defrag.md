@@ -1,5 +1,6 @@
 ---
 title: Optimize Hyper File Storage
+sidebar_position: 8
 ---
 
 Tableau extract files (`.hyper`) store data in a proprietary, optimized database format. Like any file system or database that supports write, update, and delete operations, with heavy active use, the data can become fragmented over time resulting in inefficient use of space and increased latency in access. To improve the performance of your `.hyper` extract files, you can follow these guidelines.

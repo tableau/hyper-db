@@ -1,0 +1,16 @@
+Tableau Hyper API for Python
+==============================
+
+Tableau Hyper API for Python version |release|.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   tableauhyperapi
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`search`

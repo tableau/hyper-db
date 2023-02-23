@@ -1,0 +1,498 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tableauhyperapi.timestamp &mdash; Tableau Hyper API 0.0.16640 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/hapitheme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Tableau Hyper API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tableauhyperapi.html">tableauhyperapi reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Tableau Hyper API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tableauhyperapi.timestamp</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tableauhyperapi.timestamp</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">date</span>
+<span class="kn">from</span> <span class="nn">.impl.util</span> <span class="kn">import</span> <span class="n">MICROSECONDS_PER_SECOND</span><span class="p">,</span> <span class="n">MICROSECONDS_PER_DAY</span><span class="p">,</span> <span class="n">c_modulus</span><span class="p">,</span> <span class="n">c_divide</span>
+<span class="kn">from</span> <span class="nn">.impl</span> <span class="kn">import</span> <span class="n">hapi</span>
+
+
+<div class="viewcode-block" id="Timestamp"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Timestamp">[docs]</a><span class="nd">@functools</span><span class="o">.</span><span class="n">total_ordering</span>
+<span class="k">class</span> <span class="nc">Timestamp</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A Hyper timestamp - date and time of day.</span>
+
+<span class="sd">    This class is similar to ``datetime.datetime``. The difference is that it supports a greater range of dates: while</span>
+<span class="sd">    Python years range from 1 to 9999, Hyper supports years from ``-4712`` (4713 BC) to ``294276``.</span>
+
+<span class="sd">    :param year: Year.</span>
+<span class="sd">    :param month: Month, from 1 to 12.</span>
+<span class="sd">    :param day: Day, from 1 to the number of days in the month.</span>
+<span class="sd">    :param hour: Optional hour value, from 0 to 23.</span>
+<span class="sd">    :param minute: Optional minute value, from 0 to 59.</span>
+<span class="sd">    :param second: Optional second value, from 0 to 59.</span>
+<span class="sd">    :param microsecond: Optional microsecond value, from 0 to 999_999.</span>
+<span class="sd">    :param tzinfo: Optional tzinfo value, may be None or an instance of a tzinfo subclass.</span>
+
+<span class="sd">    .. testsetup:: Timestamp.__init__</span>
+
+<span class="sd">        from tableauhyperapi import *</span>
+
+<span class="sd">    .. doctest:: Timestamp.__init__</span>
+
+<span class="sd">        &gt;&gt;&gt; print(Timestamp(2019, 6, 13))</span>
+<span class="sd">        2019-06-13 00:00:00</span>
+<span class="sd">        &gt;&gt;&gt; print(Timestamp(2019, 6, 13, 13, 23, 45))</span>
+<span class="sd">        2019-06-13 13:23:45</span>
+<span class="sd">        &gt;&gt;&gt; print(Timestamp(2019, 6, 13, 13, 23, 45, 789876))</span>
+<span class="sd">        2019-06-13 13:23:45.789876</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">MINYEAR</span> <span class="o">=</span> <span class="o">-</span><span class="mi">4712</span>
+    <span class="sd">&quot;&quot;&quot; The earliest representable year. &quot;&quot;&quot;</span>
+
+    <span class="n">MAXYEAR</span> <span class="o">=</span> <span class="mi">294276</span>
+    <span class="sd">&quot;&quot;&quot; The latest representable year. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tzinfo</span> <span class="o">=</span> <span class="n">tzinfo</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">vd</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_encode_date</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+            <span class="n">vt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="n">vd</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_encode_date</span><span class="p">(</span><span class="n">args</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+            <span class="n">vt</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_encode_time</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">0</span><span class="p">,))</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="n">vd</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_encode_date</span><span class="p">(</span><span class="n">args</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+            <span class="n">vt</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_encode_time</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid number of arguments, expected 3, 6, or 7&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">=</span> <span class="n">vd</span> <span class="o">*</span> <span class="n">MICROSECONDS_PER_DAY</span> <span class="o">+</span> <span class="n">vt</span>
+
+<div class="viewcode-block" id="Timestamp.today"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Timestamp.today">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">today</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s1">&#39;Timestamp&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns the current local date. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">from_datetime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Timestamp.now"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Timestamp.now">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Timestamp&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the current local date and time. If `tz` is not `None`, it must be an instance of a `tzinfo`</span>
+<span class="sd">        subclass, and the current date and time are converted to `tz`&#39;s time zone.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">from_datetime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Timestamp.from_date"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Timestamp.from_date">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_date</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="s1">&#39;date.Date&#39;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s1">&#39;Timestamp&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Converts a Python ``datetime.date`` or :any:`Date` value to a :any:`Timestamp`. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Timestamp</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">day</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Timestamp.date"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Timestamp.date">[docs]</a>    <span class="k">def</span> <span class="nf">date</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Timestamp&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Gets the date part of this value. &quot;&quot;&quot;</span>
+        <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_date</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">Timestamp</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Timestamp.to_date"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Timestamp.to_date">[docs]</a>    <span class="k">def</span> <span class="nf">to_date</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;date.Date&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Gets the date part of this value as a :any:`Date`. &quot;&quot;&quot;</span>
+        <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_date</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">date</span><span class="o">.</span><span class="n">Date</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Timestamp.from_datetime"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Timestamp.from_datetime">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Timestamp&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Converts a Python ``datetime.datetime`` value to a :any:`Timestamp`. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Timestamp</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">microsecond</span><span class="p">,</span>
+                         <span class="n">tzinfo</span><span class="o">=</span><span class="n">value</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Timestamp.to_datetime"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Timestamp.to_datetime">[docs]</a>    <span class="k">def</span> <span class="nf">to_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Converts this value to Python ``datetime.datetime``. &quot;&quot;&quot;</span>
+        <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_date</span><span class="p">()</span>
+        <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">microsecond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_time</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">microsecond</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tzinfo</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__to_datetime_restrict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts this value to Python ``datetime.datetime``. When the `year` component is outside of the range</span>
+<span class="sd">        datetime.MINYEAR..datetime.MAXYEAR, it is restricted to this range.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_date</span><span class="p">()</span>
+        <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">microsecond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">year</span> <span class="o">&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">MAXYEAR</span><span class="p">:</span>
+            <span class="n">year</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">MAXYEAR</span>
+        <span class="k">elif</span> <span class="n">year</span> <span class="o">&lt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">MINYEAR</span><span class="p">:</span>
+            <span class="n">year</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">MINYEAR</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">microsecond</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__tzinfo</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__decode_date</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="n">comps</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_decode_date</span><span class="p">(</span><span class="n">c_divide</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span><span class="p">,</span> <span class="n">MICROSECONDS_PER_DAY</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">comps</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">comps</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">comps</span><span class="o">.</span><span class="n">day</span>
+
+    <span class="k">def</span> <span class="nf">__decode_time</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="n">comps</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_decode_time</span><span class="p">(</span><span class="n">c_modulus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span><span class="p">,</span> <span class="n">MICROSECONDS_PER_DAY</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">comps</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span> <span class="n">comps</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span> <span class="n">comps</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">comps</span><span class="o">.</span><span class="n">microsecond</span>
+
+<div class="viewcode-block" id="Timestamp.utcoffset"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Timestamp.utcoffset">[docs]</a>    <span class="k">def</span> <span class="nf">utcoffset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If tzinfo is None, returns None. Otherwise, returns the timedelta returned by self.tzinfo.utcoffset(datetime).</span>
+<span class="sd">        `datetime` is obtained by converting the timestamp to a datetime restricting the year to the range</span>
+<span class="sd">        datetime.MINYEAR..datetime.MAXYEAR. This method raises an exception if self.tzinfo.utcoffset(datetime) doesn’t</span>
+<span class="sd">        return None or a timedelta object representing a whole number of minutes with magnitude less than one day.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__to_datetime_restrict</span><span class="p">()</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_format_utcoffset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Format the UTC offset in the format &#39;+HH:MM[:SS]&#39; &quot;&quot;&quot;</span>
+        <span class="n">utcoffset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">utcoffset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span> <span class="k">if</span> <span class="n">utcoffset</span><span class="o">.</span><span class="n">days</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;+&#39;</span>
+            <span class="n">total</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">utcoffset</span><span class="o">.</span><span class="n">seconds</span> <span class="o">+</span> <span class="n">utcoffset</span><span class="o">.</span><span class="n">days</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+            <span class="n">tz_seconds</span> <span class="o">=</span> <span class="n">total</span> <span class="o">%</span> <span class="mi">60</span>
+            <span class="n">total</span> <span class="o">//=</span> <span class="mi">60</span>
+            <span class="n">tz_minutes</span> <span class="o">=</span> <span class="n">total</span> <span class="o">%</span> <span class="mi">60</span>
+            <span class="n">total</span> <span class="o">//=</span> <span class="mi">60</span>
+            <span class="n">tz_hours</span> <span class="o">=</span> <span class="n">total</span>
+            <span class="k">if</span> <span class="n">tz_seconds</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">sign</span><span class="si">}{</span><span class="n">tz_hours</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">tz_minutes</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">sign</span><span class="si">}{</span><span class="n">tz_hours</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">tz_minutes</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">tz_seconds</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__timedelta_to_microseconds</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">v</span><span class="o">.</span><span class="n">days</span> <span class="o">*</span> <span class="n">MICROSECONDS_PER_DAY</span> <span class="o">+</span> <span class="n">v</span><span class="o">.</span><span class="n">seconds</span> <span class="o">*</span> <span class="n">MICROSECONDS_PER_SECOND</span> <span class="o">+</span> <span class="n">v</span><span class="o">.</span><span class="n">microseconds</span>
+
+<div class="viewcode-block" id="Timestamp.astimezone"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Timestamp.astimezone">[docs]</a>    <span class="k">def</span> <span class="nf">astimezone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a Timestamp object with new tzinfo attribute tz, adjusting the date and time data so the result is the</span>
+<span class="sd">        same UTC time as self, but in tz’s local time.</span>
+
+<span class="sd">        If provided, tz must be an instance of a tzinfo subclass, and its utcoffset() and dst() methods must not return</span>
+<span class="sd">        None. If self is naive, it is presumed to represent time in the system timezone.</span>
+
+<span class="sd">        If called without arguments (or with tz=None) the system local timezone is assumed for the target timezone. The</span>
+<span class="sd">        .tzinfo attribute of the converted timestamp instance will be set to an instance of timezone with the zone name</span>
+<span class="sd">        and offset obtained from the OS.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__to_datetime_restrict</span><span class="p">()</span>
+        <span class="n">current_tz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tzinfo</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tzinfo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">dt</span><span class="o">.</span><span class="n">astimezone</span><span class="p">()</span><span class="o">.</span><span class="n">tzinfo</span>
+        <span class="n">new_tz</span> <span class="o">=</span> <span class="n">tz</span> <span class="k">if</span> <span class="n">tz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">dt</span><span class="o">.</span><span class="n">astimezone</span><span class="p">()</span><span class="o">.</span><span class="n">tzinfo</span>
+        <span class="n">current_offset</span> <span class="o">=</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">__timedelta_to_microseconds</span><span class="p">(</span><span class="n">current_tz</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">(</span><span class="n">dt</span><span class="p">))</span>
+        <span class="n">new_offset</span> <span class="o">=</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">__timedelta_to_microseconds</span><span class="p">(</span><span class="n">new_tz</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">(</span><span class="n">dt</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">-</span> <span class="n">current_offset</span> <span class="o">+</span> <span class="n">new_offset</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">new_tz</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">year</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Gets the year part of this value. &quot;&quot;&quot;</span>
+        <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_date</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">year</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">month</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Gets the month part of this value, as a number between 1 and 12. &quot;&quot;&quot;</span>
+        <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_date</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">month</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">day</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Gets the day part of this value, as a number between 1 and the number of days in the month. &quot;&quot;&quot;</span>
+        <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_date</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">day</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">hour</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Gets the hour part of this value, as a number between 0 and 23. &quot;&quot;&quot;</span>
+        <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">microsecond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_time</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">hour</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">minute</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Gets the minute part of this value, as a number between 0 and 59. &quot;&quot;&quot;</span>
+        <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">microsecond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_time</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">minute</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">second</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Gets the second part of this value, as an integer between 0 and 59. &quot;&quot;&quot;</span>
+        <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">microsecond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_time</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">second</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">microsecond</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Gets the second part of this value, as an integer between 0 and 999999. &quot;&quot;&quot;</span>
+        <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">microsecond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_time</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">microsecond</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tzinfo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Gets the tzinfo of this value, may be None or an instance of a tzinfo subclass. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tzinfo</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_date</span><span class="p">()</span>
+        <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">microsecond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_time</span><span class="p">()</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Timestamp(</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">month</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">day</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">hour</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">minute</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">second</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">microsecond</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__tzinfo</span><span class="si">}</span><span class="s1">)&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_date</span><span class="p">()</span>
+        <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">microsecond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__decode_time</span><span class="p">()</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_utcoffset</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">microsecond</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">month</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">day</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">hour</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">minute</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">second</span><span class="si">:</span><span class="s1">02</span><span class="si">}{</span><span class="n">offset</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">month</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">day</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">hour</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">minute</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">second</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">microsecond</span><span class="si">:</span><span class="s1">06</span><span class="si">}{</span><span class="n">offset</span><span class="si">}</span><span class="s1">&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Timestamp</span><span class="p">):</span>
+            <span class="c1"># both naive or both aware with the same tzinfo</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tzinfo</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="n">__tzinfo</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_hyper_value</span>
+            <span class="n">offset1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>
+            <span class="n">offset2</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>
+            <span class="c1"># both naive</span>
+            <span class="k">if</span> <span class="n">offset1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">offset2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_hyper_value</span>
+            <span class="c1"># one naive, one aware</span>
+            <span class="k">if</span> <span class="n">offset1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">offset2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="c1"># both aware with different tzinfo</span>
+            <span class="n">v1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">-</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">__timedelta_to_microseconds</span><span class="p">(</span><span class="n">offset1</span><span class="p">)</span>
+            <span class="n">v2</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">-</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">__timedelta_to_microseconds</span><span class="p">(</span><span class="n">offset2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">v1</span> <span class="o">==</span> <span class="n">v2</span>
+
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Timestamp</span><span class="p">):</span>
+            <span class="c1"># both naive or both aware with the same tzinfo</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tzinfo</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="n">__tzinfo</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">_hyper_value</span>
+            <span class="n">offset1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>
+            <span class="n">offset2</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>
+            <span class="c1"># both naive</span>
+            <span class="k">if</span> <span class="n">offset1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">offset2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">_hyper_value</span>
+            <span class="c1"># one naive, one aware</span>
+            <span class="k">if</span> <span class="n">offset1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">offset2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;can&#39;t compare offset-naive and offset-aware timestamps&quot;</span><span class="p">)</span>
+            <span class="c1"># both aware with different tzinfo</span>
+            <span class="n">v1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">-</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">__timedelta_to_microseconds</span><span class="p">(</span><span class="n">offset1</span><span class="p">)</span>
+            <span class="n">v2</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">-</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">__timedelta_to_microseconds</span><span class="p">(</span><span class="n">offset2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">v1</span> <span class="o">&lt;</span> <span class="n">v2</span>
+
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tzinfo</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">+</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">__timedelta_to_microseconds</span><span class="p">(</span><span class="n">other</span><span class="p">),</span> <span class="n">tzinfo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__tzinfo</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">-</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">__timedelta_to_microseconds</span><span class="p">(</span><span class="n">other</span><span class="p">),</span> <span class="n">tzinfo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__tzinfo</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Timestamp</span><span class="p">):</span>
+            <span class="c1"># both naive or both aware with the same tzinfo</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tzinfo</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="n">__tzinfo</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">microseconds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">_hyper_value</span><span class="p">)</span>
+            <span class="n">offset1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>
+            <span class="n">offset2</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>
+            <span class="c1"># both naive</span>
+            <span class="k">if</span> <span class="n">offset1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">offset2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">microseconds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">_hyper_value</span><span class="p">)</span>
+            <span class="c1"># one naive, one aware</span>
+            <span class="k">if</span> <span class="n">offset1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">offset2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;can&#39;t subtract offset-naive and offset-aware timestamps&quot;</span><span class="p">)</span>
+            <span class="c1"># both aware with different tzinfo</span>
+            <span class="n">v1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">-</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">__timedelta_to_microseconds</span><span class="p">(</span><span class="n">offset1</span><span class="p">)</span>
+            <span class="n">v2</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">_hyper_value</span> <span class="o">-</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">__timedelta_to_microseconds</span><span class="p">(</span><span class="n">offset2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">microseconds</span><span class="o">=</span><span class="n">v1</span> <span class="o">-</span> <span class="n">v2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">NotImplemented</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019 - 2022, Tableau Software
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

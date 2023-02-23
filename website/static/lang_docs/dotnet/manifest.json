@@ -1,0 +1,440 @@
+{
+  "homepages": [],
+  "source_base_path": "D:/tc/work/953952133bf40cea/build/api/dotnet/Tableau.HyperAPI.NET/doc",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.Catalog.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.Catalog.html",
+          "hash": "OOX6la6BUBYZJhj9N/rrAw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.Connection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.Connection.html",
+          "hash": "U0RtGAaeg0J+iMGdlcC1LQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.CreateMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.CreateMode.html",
+          "hash": "Y1RxJyoxGDjTKG59vFnUSQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.DatabaseName.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.DatabaseName.html",
+          "hash": "lwAc6F4QSW6G6cy+QDR3vw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.Date.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.Date.html",
+          "hash": "FWjpBCn/0TAhHThY2G2U0g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.Endpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.Endpoint.html",
+          "hash": "w2Bp5ZMKd8934taMZakIPw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.HyperException.ContextId.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.HyperException.ContextId.html",
+          "hash": "LgeGxw6tR7dA4vIb/zbrfQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.HyperException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.HyperException.html",
+          "hash": "CuPsdBq/fjA4osvsJ+2ZjQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.HyperProcess.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.HyperProcess.html",
+          "hash": "Kbt2k/e0yeBQfep5hg11qw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.HyperServiceVersion.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.HyperServiceVersion.html",
+          "hash": "fwwrITHhnuFhVh4rZyDACA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.Inserter.ColumnMapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.Inserter.ColumnMapping.html",
+          "hash": "7IvUDSsmok6sH/knkAYGrw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.Inserter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.Inserter.html",
+          "hash": "1Pn8LX1z4xpZGtZ1b6TLNg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.Interval.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.Interval.html",
+          "hash": "LfKpOVKwdm1yeIeU/CRlbA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.Name.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.Name.html",
+          "hash": "HvuABeQ/1hdLfUrTXIp/uQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.Nullability.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.Nullability.html",
+          "hash": "d8xIYybvDvzi41DGJ6LsKg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.Persistence.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.Persistence.html",
+          "hash": "mWmjXhgTq8RyjBuz6cJ3kQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.Result.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.Result.html",
+          "hash": "IFOg2N4kd7MWoGVE302GtQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.ResultSchema.Column.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.ResultSchema.Column.html",
+          "hash": "ofR1s4UTgfaJiCplWLeLEQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.ResultSchema.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.ResultSchema.html",
+          "hash": "O7Cdzt9yQhV6RBYmrzkzCA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.SchemaName.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.SchemaName.html",
+          "hash": "S6TzE0bStXi/bIeVG//DIg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.Sql.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.Sql.html",
+          "hash": "3Z7tEAZZ7l0hsT+kisg9CA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.SqlType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.SqlType.html",
+          "hash": "50agiSCgxm/jWJvvMIM2gQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.TableDefinition.Column.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.TableDefinition.Column.html",
+          "hash": "FSGgE9JQn72o6cbNSamjUQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.TableDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.TableDefinition.html",
+          "hash": "2OBTvJDOC/sRVWH7qoRsNg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.TableName.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.TableName.html",
+          "hash": "pNFTwKj1l/kem6eQdTeUiw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.Telemetry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.Telemetry.html",
+          "hash": "HC9fvZOvJq1Ur7EhQO3lTg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.Timestamp.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.Timestamp.html",
+          "hash": "SQrwn67aV4aeYshSyo9ZSQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.TypeTag.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.TypeTag.html",
+          "hash": "hjwBgCqQPXCJUBDZSEG1mg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tableau.HyperAPI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tableau.HyperAPI.html",
+          "hash": "KYutidy4c8mds5vnUulHDQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "TMJcmnGg84ebYn1RfJBeGw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/overview.html",
+          "hash": "0PiRAY8IMLZEHmnCmNBgIQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "VUn8TxQgYN8Il3uluS9/XA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
+      },
+      "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 30,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 3,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

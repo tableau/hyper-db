@@ -1,0 +1,26 @@
+var classhyperapi_1_1Catalog =
+[
+    [ "Catalog", "classhyperapi_1_1Catalog.html#ae4a5aa03045b1969c8b5189560608dea", null ],
+    [ "Catalog", "classhyperapi_1_1Catalog.html#aeb1e55e3652bdc0bde4bce02ce4c4664", null ],
+    [ "attachDatabase", "classhyperapi_1_1Catalog.html#a858ff87313f1350c9196ca74fcd1d899", null ],
+    [ "attachDatabase", "classhyperapi_1_1Catalog.html#a27526e7bcb90621be0a520466fbfb29e", null ],
+    [ "createDatabase", "classhyperapi_1_1Catalog.html#a6f72beff13020612ad795a1b469af9a4", null ],
+    [ "createDatabaseIfNotExists", "classhyperapi_1_1Catalog.html#a1c3d0df9e8e5fa1e99c25bafedca2dfe", null ],
+    [ "createSchema", "classhyperapi_1_1Catalog.html#a622197cc59bc098cb675bedd264dc407", null ],
+    [ "createSchemaIfNotExists", "classhyperapi_1_1Catalog.html#afcf28436b15b8045c399fec740b1cf24", null ],
+    [ "createTable", "classhyperapi_1_1Catalog.html#a700c50ee6700a628f88a82d91eb4eb7e", null ],
+    [ "createTableIfNotExists", "classhyperapi_1_1Catalog.html#ad32f9d3db7de33d642171d0c44dd1497", null ],
+    [ "detachAllDatabases", "classhyperapi_1_1Catalog.html#a6ba600d238238b0b97e8ef1c2578dba2", null ],
+    [ "detachDatabase", "classhyperapi_1_1Catalog.html#a78f0e66a466913813c8142608c10f983", null ],
+    [ "dropDatabase", "classhyperapi_1_1Catalog.html#af8ac3890b622d513be8fa02d86a9b7de", null ],
+    [ "dropDatabaseIfExists", "classhyperapi_1_1Catalog.html#af23ec448e9df5778626ae5ce5e6d84b4", null ],
+    [ "getConnection", "classhyperapi_1_1Catalog.html#a6f0853bfe4b95b1f2427a1b94b10d9f9", null ],
+    [ "getSchemaNames", "classhyperapi_1_1Catalog.html#a085f18c6cb063de3ede16f8b4b2e7fb7", null ],
+    [ "getSchemaNames", "classhyperapi_1_1Catalog.html#a6af85ed0a3f9f020568f76b0d24ddef4", null ],
+    [ "getTableDefinition", "classhyperapi_1_1Catalog.html#addad4f81e93dd661a784f27819e86f33", null ],
+    [ "getTableNames", "classhyperapi_1_1Catalog.html#a7d368c1d063227cbc94e7415c8cd337e", null ],
+    [ "hasTable", "classhyperapi_1_1Catalog.html#a5e9762b5cb97ccbba684beecd8c5ad42", null ],
+    [ "operator=", "classhyperapi_1_1Catalog.html#a0e7eb2b8a34714eb669b9add9e7053a9", null ],
+    [ "operator=", "classhyperapi_1_1Catalog.html#a06345ab7a7e0edd85e0e45e93dd2f843", null ],
+    [ "Connection", "classhyperapi_1_1Catalog.html#a54a11fdc71e1679a42fa0c0e3856673d", null ]
+];

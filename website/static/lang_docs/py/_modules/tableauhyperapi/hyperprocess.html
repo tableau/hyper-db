@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tableauhyperapi.hyperprocess &mdash; Tableau Hyper API 0.0.16640 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/hapitheme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Tableau Hyper API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tableauhyperapi.html">tableauhyperapi reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Tableau Hyper API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tableauhyperapi.hyperprocess</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tableauhyperapi.hyperprocess</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">PurePath</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">.endpoint</span> <span class="kn">import</span> <span class="n">Endpoint</span>
+<span class="kn">from</span> <span class="nn">.warning</span> <span class="kn">import</span> <span class="n">UnclosedObjectWarning</span>
+<span class="kn">from</span> <span class="nn">.impl</span> <span class="kn">import</span> <span class="n">hapi</span>
+<span class="kn">from</span> <span class="nn">.impl.dll</span> <span class="kn">import</span> <span class="n">ffi</span><span class="p">,</span> <span class="n">lib</span>
+<span class="kn">from</span> <span class="nn">.impl.dllutil</span> <span class="kn">import</span> <span class="n">Error</span><span class="p">,</span> <span class="n">Parameters</span><span class="p">,</span> <span class="n">InteropUtil</span>
+
+
+<div class="viewcode-block" id="Telemetry"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Telemetry">[docs]</a><span class="k">class</span> <span class="nc">Telemetry</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Constants which define whether usage data is sent to Tableau to improve the Hyper API. &quot;&quot;&quot;</span>
+
+    <span class="n">DO_NOT_SEND_USAGE_DATA_TO_TABLEAU</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_DISABLE_TELEMETRY</span>
+    <span class="sd">&quot;&quot;&quot; Do not share usage data with Tableau. &quot;&quot;&quot;</span>
+
+    <span class="n">SEND_USAGE_DATA_TO_TABLEAU</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_ENABLE_TELEMETRY</span>
+    <span class="sd">&quot;&quot;&quot; Help us improve the Hyper API by sharing usage data with Tableau. &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="HyperProcess"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.HyperProcess">[docs]</a><span class="k">class</span> <span class="nc">HyperProcess</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Starts a local Hyper server instance managed by the library.</span>
+
+<span class="sd">    :param telemetry: :any:`Telemetry` constant which defines whether telemetry should be enabled.</span>
+<span class="sd">    :param user_agent: arbitrary string which identifies the application. May be left unspecified.</span>
+<span class="sd">    :param hyper_path: path to the directory which contains hyperd executable. If not specified, the library will</span>
+<span class="sd">        try to locate it in pre-determined places.</span>
+<span class="sd">    :param parameters: Optional dictionary of parameters for starting the Hyper process.</span>
+<span class="sd">        The available parameters are documented</span>
+<span class="sd">        `in the Tableau Hyper documentation, chapter &quot;Process Settings&quot;</span>
+<span class="sd">        &lt;https://help.tableau.com/current/api/hyper_api/en-us/reference/sql/processsettings.html&gt;`__.</span>
+
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    .. testsetup:: HyperProcess.__init__</span>
+
+<span class="sd">        import os</span>
+<span class="sd">        if os.path.exists(&#39;mydb.hyper&#39;):</span>
+<span class="sd">            os.remove(&#39;mydb.hyper&#39;)</span>
+<span class="sd">        from tableauhyperapi import *</span>
+
+<span class="sd">    .. testcode:: HyperProcess.__init__</span>
+
+<span class="sd">        with HyperProcess(Telemetry.SEND_USAGE_DATA_TO_TABLEAU, &#39;myapp&#39;) as hyper:</span>
+<span class="sd">            with Connection(hyper.endpoint, &#39;mydb.hyper&#39;, CreateMode.CREATE) as connection:</span>
+<span class="sd">                # ...</span>
+<span class="sd">                pass</span>
+
+<span class="sd">    .. testcleanup:: HyperProcess.__init__</span>
+
+<span class="sd">        os.remove(&#39;mydb.hyper&#39;)</span>
+
+<span class="sd">    The server must be stopped either implicitly by a ``with`` statement, or explicitly by the :any:`close()` or</span>
+<span class="sd">    :any:`shutdown()` method. Even if it&#39;s not stopped, the server will be terminated when the process exits.</span>
+<span class="sd">    You cannot use tableauhyperapi to start the server and let it stay running after the script exits.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">telemetry</span><span class="p">:</span> <span class="n">Telemetry</span><span class="p">,</span> <span class="n">user_agent</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                 <span class="n">hyper_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PurePath</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">parameters</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Reference lib for correct gc order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lib_ref</span> <span class="o">=</span> <span class="n">lib</span>
+
+        <span class="n">native_params</span> <span class="o">=</span> <span class="n">Parameters</span><span class="o">.</span><span class="n">create_instance_parameters</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">parameters</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">native_params</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__user_agent</span> <span class="o">=</span> <span class="n">user_agent</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hyper_path</span><span class="p">,</span> <span class="n">PurePath</span><span class="p">):</span>
+            <span class="n">hyper_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">hyper_path</span><span class="p">)</span>
+
+        <span class="n">pp</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;hyper_instance_t**&#39;</span><span class="p">)</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_instance_create</span><span class="p">(</span><span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">hyper_path</span><span class="p">),</span>
+                                               <span class="n">telemetry</span> <span class="o">==</span> <span class="n">Telemetry</span><span class="o">.</span><span class="n">SEND_USAGE_DATA_TO_TABLEAU</span><span class="p">,</span>
+                                               <span class="n">native_params</span><span class="o">.</span><span class="n">cdata</span><span class="p">,</span> <span class="n">pp</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="o">=</span> <span class="n">pp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_cdata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns true if the server has not been shut down yet. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="HyperProcess.close"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.HyperProcess.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Stops the server, ignoring possible errors. This is called automatically when ``with`` statement is used.</span>
+<span class="sd">        Use :any:`shutdown()` instead of :any:`close()` to get the shutdown errors as a :any:`HyperException`. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_instance_close</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">)</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="HyperProcess.shutdown"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.HyperProcess.shutdown">[docs]</a>    <span class="k">def</span> <span class="nf">shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout_ms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Shuts down the Hyper server.</span>
+
+<span class="sd">        If `timeout_ms` &gt; 0ms, wait for Hyper to shut down gracefully. If the process is still running after a</span>
+<span class="sd">        timeout of `timeout_ms` milliseconds, forcefully terminate the process and raise an exception.</span>
+
+<span class="sd">        If `timeout_ms` &lt; 0ms, wait indefinitely for Hyper to shut down.</span>
+
+<span class="sd">        If `timeout_ms` == 0ms, immediately terminate Hyper forcefully. Does not throw if the process already exited</span>
+<span class="sd">        with a non-zero exit code.</span>
+
+<span class="sd">        A :any:`HyperException` is raised if there was an error stopping the process, if the process was forcefully</span>
+<span class="sd">        killed after the timeout, or if the process already exited with a non-zero exit code.</span>
+
+<span class="sd">        :param timeout_ms: timeout in milliseconds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_instance_shutdown</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">,</span> <span class="n">timeout_ms</span><span class="p">))</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Endpoint</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Endpoint of this process to connect to.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Server is closed&#39;</span><span class="p">)</span>
+        <span class="n">descriptor</span> <span class="o">=</span> <span class="n">InteropUtil</span><span class="o">.</span><span class="n">char_p_to_string</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_instance_get_endpoint_descriptor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">))</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="n">Endpoint</span><span class="p">(</span><span class="n">descriptor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__user_agent</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">endpoint</span>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Server has not been stopped. Use Server object in a with statement or call its close() or &#39;</span>
+                          <span class="s1">&#39;shutdown() method when done.&#39;</span><span class="p">,</span> <span class="n">UnclosedObjectWarning</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_open</span><span class="p">:</span>
+            <span class="n">pid</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_instance_get_pid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">)</span>
+            <span class="n">details</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;state: open; pid: </span><span class="si">{</span><span class="n">pid</span><span class="si">}</span><span class="s1">; endpoint: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="si">!r}</span><span class="s1">&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">details</span> <span class="o">=</span> <span class="s1">&#39;state: closed&#39;</span>
+
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;HyperProcess object at </span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">:</span><span class="s1">#x</span><span class="si">}</span><span class="s1">; </span><span class="si">{</span><span class="n">details</span><span class="si">}</span><span class="s1">&gt;&#39;</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019 - 2022, Tableau Software
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

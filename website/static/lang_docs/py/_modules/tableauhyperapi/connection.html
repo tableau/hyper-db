@@ -1,0 +1,500 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tableauhyperapi.connection &mdash; Tableau Hyper API 0.0.16640 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/hapitheme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Tableau Hyper API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tableauhyperapi.html">tableauhyperapi reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Tableau Hyper API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tableauhyperapi.connection</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tableauhyperapi.connection</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">PurePath</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span>
+
+<span class="kn">from</span> <span class="nn">.endpoint</span> <span class="kn">import</span> <span class="n">Endpoint</span>
+<span class="kn">from</span> <span class="nn">.hyperexception</span> <span class="kn">import</span> <span class="n">HyperException</span><span class="p">,</span> <span class="n">ContextId</span>
+<span class="kn">from</span> <span class="nn">.hyperserviceversion</span> <span class="kn">import</span> <span class="n">HyperServiceVersion</span>
+<span class="kn">from</span> <span class="nn">.result</span> <span class="kn">import</span> <span class="n">Result</span>
+<span class="kn">from</span> <span class="nn">.sqltype</span> <span class="kn">import</span> <span class="n">NullableValue</span>
+<span class="kn">from</span> <span class="nn">.warning</span> <span class="kn">import</span> <span class="n">UnclosedObjectWarning</span>
+<span class="kn">from</span> <span class="nn">.impl</span> <span class="kn">import</span> <span class="n">hapi</span>
+<span class="kn">from</span> <span class="nn">.impl.dll</span> <span class="kn">import</span> <span class="n">ffi</span><span class="p">,</span> <span class="n">lib</span>
+<span class="kn">from</span> <span class="nn">.impl.dllutil</span> <span class="kn">import</span> <span class="n">Error</span><span class="p">,</span> <span class="n">Parameters</span><span class="p">,</span> <span class="n">InteropUtil</span>
+<span class="kn">from</span> <span class="nn">.impl.util</span> <span class="kn">import</span> <span class="n">check_precondition</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">catalog</span>
+
+
+<div class="viewcode-block" id="CreateMode"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.CreateMode">[docs]</a><span class="k">class</span> <span class="nc">CreateMode</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Constants which define what happens when connecting to a database depending on whether it already exists. &quot;&quot;&quot;</span>
+
+    <span class="n">NONE</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_DO_NOT_CREATE</span>
+    <span class="sd">&quot;&quot;&quot; Do not create the database. Method will fail if database does not exist. &quot;&quot;&quot;</span>
+
+    <span class="n">CREATE</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_CREATE</span>
+    <span class="sd">&quot;&quot;&quot; Create the database. Method will fail if the database already exists. &quot;&quot;&quot;</span>
+
+    <span class="n">CREATE_IF_NOT_EXISTS</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_CREATE_IF_NOT_EXISTS</span>
+    <span class="sd">&quot;&quot;&quot; Create the database if it does not exist. &quot;&quot;&quot;</span>
+
+    <span class="n">CREATE_AND_REPLACE</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_CREATE_AND_REPLACE</span>
+    <span class="sd">&quot;&quot;&quot; Create the database. If it already exists, drop the old one first. &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Connects to a Hyper server.</span>
+
+<span class="sd">    :param endpoint: :any:`Endpoint` which specifies the Hyper instance to connect to.</span>
+<span class="sd">    :param database: Optional path to the database file.</span>
+<span class="sd">    :param create_mode: If database path is specified, defines what happens if the database already exists. By default</span>
+<span class="sd">        it is :any:`CreateMode.NONE`.</span>
+<span class="sd">    :param parameters: Optional dictionary of connection parameters to pass to Hyper.</span>
+<span class="sd">        The available parameters are documented</span>
+<span class="sd">        `in the Tableau Hyper documentation, chapter &quot;Connection Settings&quot;</span>
+<span class="sd">        &lt;https://help.tableau.com/current/api/hyper_api/en-us/reference/sql/connectionsettings.html&gt;`__.</span>
+
+<span class="sd">    If the database is not specified, then it connects to the main database. This is useful to create and delete</span>
+<span class="sd">    databases. Note that the main database gets deleted once the :any:`HyperProcess` gets closed.</span>
+
+<span class="sd">    No methods of this class are thread-safe, except :any:`cancel()`, which can be called from a different thread.</span>
+
+<span class="sd">    .. testsetup:: connection.__init__</span>
+
+<span class="sd">        import os</span>
+<span class="sd">        from tableauhyperapi import *</span>
+<span class="sd">        hyper = HyperProcess(Telemetry.SEND_USAGE_DATA_TO_TABLEAU, &#39;myapp&#39;)</span>
+
+<span class="sd">    .. testcode:: connection.__init__</span>
+
+<span class="sd">        # Connect and create the database. If it already exists, replace it.</span>
+<span class="sd">        with Connection(hyper.endpoint, &#39;mydb.hyper&#39;, CreateMode.CREATE_AND_REPLACE) as connection:</span>
+<span class="sd">            schema = TableDefinition(&#39;table&#39;, [</span>
+<span class="sd">                TableDefinition.Column(&#39;text&#39;, SqlType.text()),</span>
+<span class="sd">                TableDefinition.Column(&#39;int&#39;, SqlType.int()),</span>
+<span class="sd">            ])</span>
+<span class="sd">            connection.catalog.create_table(schema)</span>
+
+<span class="sd">    .. testcleanup:: connection.__init__</span>
+
+<span class="sd">        hyper.close()</span>
+<span class="sd">        if os.path.exists(&#39;mydb.hyper&#39;):</span>
+<span class="sd">            os.remove(&#39;mydb.hyper&#39;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="n">Endpoint</span><span class="p">,</span>
+                 <span class="n">database</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PurePath</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">create_mode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CreateMode</span><span class="p">]</span> <span class="o">=</span> <span class="n">CreateMode</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
+                 <span class="n">parameters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Reference lib for correct gc order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lib_ref</span> <span class="o">=</span> <span class="n">lib</span>
+
+        <span class="n">check_precondition</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">Endpoint</span><span class="p">),</span> <span class="s2">&quot;&#39;endpoint&#39; must be an Endpoint instance&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">PurePath</span><span class="p">):</span>
+            <span class="n">database</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">parameters</span> <span class="ow">and</span> <span class="s1">&#39;dbname&#39;</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">database</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Database name cannot be provided as a &#39;database&#39; parameter in addition to setting &quot;</span>
+                                 <span class="s2">&quot;&#39;dbname&#39; in the parameters dictionary&quot;</span><span class="p">)</span>
+            <span class="n">database</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;dbname&#39;</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;dbname&#39;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__create_connection</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="n">create_mode</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__endpoint</span> <span class="o">=</span> <span class="n">endpoint</span>
+
+        <span class="c1"># Lock to serialize cancel() and close() calls.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cancel_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__create_connection</span><span class="p">(</span><span class="n">endpoint</span><span class="p">:</span> <span class="n">Endpoint</span><span class="p">,</span>
+                            <span class="n">database</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                            <span class="n">create_mode</span><span class="p">:</span> <span class="n">CreateMode</span><span class="p">,</span>
+                            <span class="n">parameters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]):</span>
+        <span class="n">native_params</span> <span class="o">=</span> <span class="n">Parameters</span><span class="o">.</span><span class="n">create_connection_parameters</span><span class="p">()</span>
+        <span class="n">native_params</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s1">&#39;endpoint&#39;</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">connection_descriptor</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">user_agent</span><span class="p">:</span>
+            <span class="n">native_params</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s1">&#39;user_agent&#39;</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">user_agent</span><span class="p">)</span>
+
+        <span class="n">native_params</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s1">&#39;api_language&#39;</span><span class="p">,</span> <span class="s1">&#39;Python&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">database</span><span class="p">:</span>
+            <span class="n">native_params</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s1">&#39;dbname&#39;</span><span class="p">,</span> <span class="n">database</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">parameters</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">native_params</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="n">pp</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;hyper_connection_t**&#39;</span><span class="p">)</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_connect</span><span class="p">(</span><span class="n">native_params</span><span class="o">.</span><span class="n">cdata</span><span class="p">,</span> <span class="n">pp</span><span class="p">,</span> <span class="n">create_mode</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">pp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_disconnect</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_cdata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Connection is closed&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Endpoint</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__endpoint</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns ``True`` if the connection has not been closed yet. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_ready</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Checks whether the connection is ready, i.e., it is not processing a query. An open :any:`Inserter` or</span>
+<span class="sd">        :any:`Result` keeps the connection busy. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_connection_is_ready</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Connection.close"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Connection.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Closes the connection. Note that this has no effect if there is an active result or data inserter.</span>
+<span class="sd">         These need to be closed before the connection to the server will be actually dropped.&quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cancel_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ffi</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Connection.cancel"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Connection.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Cancels the current SQL command or query of this connection (if any). This method may be safely called from</span>
+<span class="sd">        any thread. After this method was called, the current SQL command or query may fail with a cancellation error</span>
+<span class="sd">        at any point during its execution. However, there are no guarantees if and when it will fail.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cancel_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_cancel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">))</span>
+                <span class="k">except</span> <span class="n">HyperException</span><span class="p">:</span>
+                    <span class="c1"># TODO TFSID 921655: log it</span>
+                    <span class="k">pass</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">catalog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;catalog.Catalog&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Gets the :any:`Catalog` for this connection. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">catalog</span><span class="o">.</span><span class="n">Catalog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Connection.execute_query"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Connection.execute_query">[docs]</a>    <span class="k">def</span> <span class="nf">execute_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">text_as_bytes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Executes a SQL query and returns the result as a :any:`Result` object.</span>
+
+<span class="sd">        :param query: SQL query to execute.</span>
+<span class="sd">        :param text_as_bytes: optional, if ``True`` then string values read from the database will be returned as</span>
+<span class="sd">            UTF-8-encoded ``bytearray`` objects. By default string values are returned as ``str`` objects.</span>
+<span class="sd">        :return: A :any:`Result` instance. Use this method in a ``with`` statement to automatically close the result</span>
+<span class="sd">            when done reading from it, or call its :any:`close()&lt;Result.close&gt;` method. No queries can be executed or</span>
+<span class="sd">            tables created/opened while the result is open.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pp_result</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;hyper_rowset_t**&#39;</span><span class="p">)</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_execute_query</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cdata</span><span class="p">,</span>
+                                             <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">query</span><span class="p">),</span>
+                                             <span class="n">pp_result</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Result</span><span class="p">(</span><span class="n">text_as_bytes</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">pp_result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Connection.execute_list_query"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Connection.execute_list_query">[docs]</a>    <span class="k">def</span> <span class="nf">execute_list_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">text_as_bytes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">NullableValue</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Executes a SQL query and returns the result as list of rows of data, each represented by a list of objects.</span>
+
+<span class="sd">        :param query: SQL query to execute.</span>
+<span class="sd">        :param text_as_bytes: optional, if ``True`` then string values read from the database will be returned as</span>
+<span class="sd">            UTF-8-encoded ``bytearray`` objects. By default string values are returned as ``str`` objects.</span>
+<span class="sd">        :return: A list of rows, each represented by a list of objects. See :any:`TypeTag` documentation for how</span>
+<span class="sd">            database values are represented by Python objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">text_as_bytes</span><span class="p">)</span> <span class="k">as</span> <span class="n">result</span><span class="p">:</span>
+            <span class="c1"># Note, it is tempting to return an iterable with yield, but that would make it easy to leak the</span>
+            <span class="c1"># result object until it&#39;s garbage-collected (if the iteration stops in the middle).</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Connection.execute_command"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Connection.execute_command">[docs]</a>    <span class="k">def</span> <span class="nf">execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Executes a SQL statement and returns the affected row count if the statement has one.</span>
+
+<span class="sd">        :param command: SQL statement to execute.</span>
+<span class="sd">        :return: Count of affected rows if available, ``None`` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">row_count_cdata</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;int*&#39;</span><span class="p">)</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_execute_command</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cdata</span><span class="p">,</span>
+                                               <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">command</span><span class="p">),</span>
+                                               <span class="n">row_count_cdata</span><span class="p">))</span>
+        <span class="n">row_count</span> <span class="o">=</span> <span class="n">row_count_cdata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">row_count</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">row_count</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">row_count</span></div>
+
+<div class="viewcode-block" id="Connection.execute_scalar_query"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Connection.execute_scalar_query">[docs]</a>    <span class="k">def</span> <span class="nf">execute_scalar_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">text_as_bytes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NullableValue</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Executes a scalar query, i.e. a query that returns exactly one row with one column, and returns the value</span>
+<span class="sd">        from the result.</span>
+
+<span class="sd">        :param query: SQL query to execute.</span>
+<span class="sd">        :param text_as_bytes: optional, if ``True`` then a string value read from the database will be returned as</span>
+<span class="sd">            UTF-8-encoded ``bytearray`` objects. By default string values are returned as ``str`` objects.</span>
+<span class="sd">        :return: the value from the result. A NULL database value is returned as ``None``. See :any:`TypeTag`</span>
+<span class="sd">            documentation for how database values are represented by Python objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">text_as_bytes</span><span class="p">)</span> <span class="k">as</span> <span class="n">result</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">HyperException</span><span class="p">(</span><span class="n">ContextId</span><span class="p">(</span><span class="mh">0xA1B8BBEC6D</span><span class="p">),</span> <span class="s1">&#39;Query result must have exactly one column&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">next_row</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="n">HyperException</span><span class="p">(</span><span class="n">ContextId</span><span class="p">(</span><span class="mh">0xB8BBEC6DA1</span><span class="p">),</span> <span class="s1">&#39;Query returned zero rows&#39;</span><span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">next_row</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="n">HyperException</span><span class="p">(</span><span class="n">ContextId</span><span class="p">(</span><span class="mh">0xBEC6DA1B8B</span><span class="p">),</span> <span class="s1">&#39;Query returned more than one row&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">value</span></div>
+
+<div class="viewcode-block" id="Connection.hyper_service_version"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Connection.hyper_service_version">[docs]</a>    <span class="k">def</span> <span class="nf">hyper_service_version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HyperServiceVersion</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the Hyper Service version of this connection</span>
+
+<span class="sd">        :return: The Hyper Service version of this connection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;hyper_service_version_t*&#39;</span><span class="p">)</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_connection_get_hyper_service_version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cdata</span><span class="p">,</span> <span class="n">version</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">HyperServiceVersion</span><span class="p">(</span><span class="n">version</span><span class="o">.</span><span class="n">major</span><span class="p">,</span> <span class="n">version</span><span class="o">.</span><span class="n">minor</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Connection.is_capability_active"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Connection.is_capability_active">[docs]</a>    <span class="k">def</span> <span class="nf">is_capability_active</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">capability_flag</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns true if the capability flag is active on this connection.</span>
+
+<span class="sd">        :param capability_flag: The capability flag to check. It is prefixed with `capability_`.</span>
+<span class="sd">        :return: true if the capability flag is active on this connection.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_connection_is_capability_active</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cdata</span><span class="p">,</span> <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">capability_flag</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Connection.query_supported_hyper_service_version_range"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Connection.query_supported_hyper_service_version_range">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">query_supported_hyper_service_version_range</span><span class="p">(</span><span class="n">endpoint</span><span class="p">:</span> <span class="n">Endpoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">HyperServiceVersion</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot; Connects to the Hyper endpoint and determines which Hyper Service version numbers are common</span>
+<span class="sd">            between the Hyper API and the Hyper server.</span>
+
+<span class="sd">        :param: endpoint Endpoint to connect to.</span>
+<span class="sd">        :return: List of Hyper Service versions that are supported by both this Hyper API and the endpoint.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">native_params</span> <span class="o">=</span> <span class="n">Parameters</span><span class="o">.</span><span class="n">create_connection_parameters</span><span class="p">()</span>
+        <span class="n">native_params</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s1">&#39;endpoint&#39;</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">connection_descriptor</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">user_agent</span><span class="p">:</span>
+            <span class="n">native_params</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s1">&#39;user_agent&#39;</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">user_agent</span><span class="p">)</span>
+
+        <span class="n">native_params</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s1">&#39;api_language&#39;</span><span class="p">,</span> <span class="s1">&#39;Python&#39;</span><span class="p">)</span>
+
+        <span class="n">version_array_ptr</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;hyper_service_version_t**&#39;</span><span class="p">)</span>
+        <span class="n">elements_cdata</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;size_t*&#39;</span><span class="p">)</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_query_supported_hyper_service_version_range</span><span class="p">(</span><span class="n">native_params</span><span class="o">.</span><span class="n">cdata</span><span class="p">,</span>
+                                                                           <span class="n">version_array_ptr</span><span class="p">,</span>
+                                                                           <span class="n">elements_cdata</span><span class="p">))</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="n">elements_cdata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">version_array_ptr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">elements</span><span class="p">):</span>
+                <span class="nb">list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">HyperServiceVersion</span><span class="p">(</span><span class="n">version_array_ptr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">major</span><span class="p">,</span> <span class="n">version_array_ptr</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">minor</span><span class="p">))</span>
+            <span class="k">return</span> <span class="nb">list</span></div>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Connection has not been closed. Use Connection object in a with statement or call its &#39;</span>
+                          <span class="s1">&#39;close() method when done.&#39;</span><span class="p">,</span> <span class="n">UnclosedObjectWarning</span><span class="p">)</span>
+        <span class="c1"># it is closed by cffi, self.__cdata is a gc&#39;ed pointer</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="s1">&#39;open&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ready</span> <span class="k">else</span> <span class="p">(</span><span class="s1">&#39;busy&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_open</span> <span class="k">else</span> <span class="s1">&#39;closed&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;Connection object at </span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">:</span><span class="s2">#x</span><span class="si">}</span><span class="s2">; status: </span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2">; endpoint: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_endpoint</span><span class="si">!r}</span><span class="s2">&gt;&quot;</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019 - 2022, Tableau Software
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

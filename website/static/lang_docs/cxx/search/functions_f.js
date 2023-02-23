@@ -1,0 +1,6 @@
+var searchData=
+[
+  ['value_486',['value',['../classhyperapi_1_1optional.html#a8a0786490fd0e1362a18af72646f0144',1,'hyperapi::optional::value() &amp;'],['../classhyperapi_1_1optional.html#a1067fe6b5d870f8646e448fc649a86ab',1,'hyperapi::optional::value() const &amp;'],['../classhyperapi_1_1optional.html#a2e0e4593107f0a0009aae484b89aa95e',1,'hyperapi::optional::value() &amp;&amp;'],['../classhyperapi_1_1optional.html#a751d3267fcd9a9026a0e136664e734fb',1,'hyperapi::optional::value() const &amp;&amp;'],['../classhyperapi_1_1Value.html#a345c9220ed6b19b4e7eafcbc4e8add6e',1,'hyperapi::Value::Value(hyper_value_t value, SqlType type, string_view columnName) noexcept'],['../classhyperapi_1_1Value.html#a6b3b1abcc1a505ab1aa1c19784eb3dec',1,'hyperapi::Value::Value() noexcept']]],
+  ['value_5for_487',['value_or',['../classhyperapi_1_1optional.html#aa431c562b0974077b68875adf2732758',1,'hyperapi::optional::value_or(U &amp;&amp;default_value) const &amp;'],['../classhyperapi_1_1optional.html#a3ab6948e392525f07a704fa840900b55',1,'hyperapi::optional::value_or(U &amp;&amp;default_value) &amp;&amp;']]],
+  ['varchar_488',['varchar',['../classhyperapi_1_1SqlType.html#a9ce68e92c72b0abf6d5b0f3a657adf16',1,'hyperapi::SqlType']]]
+];

@@ -1,0 +1,5 @@
+@import url("theme.css");
+.wy-nav-content {
+    /* theme default is 800px, which is too narrow */
+    max-width: 1000px !important;
+}

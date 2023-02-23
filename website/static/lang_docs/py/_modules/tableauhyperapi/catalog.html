@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tableauhyperapi.catalog &mdash; Tableau Hyper API 0.0.16640 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/hapitheme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Tableau Hyper API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tableauhyperapi.html">tableauhyperapi reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Tableau Hyper API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tableauhyperapi.catalog</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tableauhyperapi.catalog</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">PurePath</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
+<span class="kn">from</span> <span class="nn">.tablename</span> <span class="kn">import</span> <span class="n">Name</span><span class="p">,</span> <span class="n">SchemaName</span><span class="p">,</span> <span class="n">TableName</span><span class="p">,</span> <span class="n">DatabaseName</span>
+<span class="kn">from</span> <span class="nn">.tabledefinition</span> <span class="kn">import</span> <span class="n">TableDefinition</span>
+<span class="kn">from</span> <span class="nn">.impl</span> <span class="kn">import</span> <span class="n">hapi</span>
+<span class="kn">from</span> <span class="nn">.impl.dll</span> <span class="kn">import</span> <span class="n">ffi</span>
+<span class="kn">from</span> <span class="nn">.impl.dllutil</span> <span class="kn">import</span> <span class="n">Error</span><span class="p">,</span> <span class="n">InteropUtil</span><span class="p">,</span> <span class="n">NativeTableDefinition</span>
+<span class="kn">from</span> <span class="nn">.impl.schemaconverter</span> <span class="kn">import</span> <span class="n">SchemaConverter</span>
+
+
+<div class="viewcode-block" id="Catalog"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Catalog">[docs]</a><span class="k">class</span> <span class="nc">Catalog</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The class which is responsible for querying and manipulating metadata.</span>
+
+<span class="sd">    Do not create instances of this class, use :any:`Connection.catalog` instead.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">:</span> <span class="n">Connection</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__connection</span> <span class="o">=</span> <span class="n">connection</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Connection</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Gets the underlying connection. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__connection</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">__cdata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__connection</span><span class="o">.</span><span class="n">_cdata</span>
+
+<div class="viewcode-block" id="Catalog.has_table"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Catalog.has_table">[docs]</a>    <span class="k">def</span> <span class="nf">has_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">TableName</span><span class="p">,</span> <span class="n">Name</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Does a table with this name exist? &quot;&quot;&quot;</span>
+        <span class="n">p_exists</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;bool*&#39;</span><span class="p">)</span>
+        <span class="n">database_name</span><span class="p">,</span> <span class="n">schema_name</span><span class="p">,</span> <span class="n">table_name</span> <span class="o">=</span> <span class="n">TableName</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">_unescaped_triple</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_has_table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">,</span>
+                                         <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">database_name</span><span class="p">),</span>
+                                         <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">schema_name</span><span class="p">),</span>
+                                         <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">table_name</span><span class="p">),</span>
+                                         <span class="n">p_exists</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">p_exists</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Catalog.get_table_definition"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Catalog.get_table_definition">[docs]</a>    <span class="k">def</span> <span class="nf">get_table_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">TableName</span><span class="p">,</span> <span class="n">Name</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">TableDefinition</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Gets a table definition. Raises an exception if the table does not exist. &quot;&quot;&quot;</span>
+        <span class="n">database_name</span><span class="p">,</span> <span class="n">schema_name</span><span class="p">,</span> <span class="n">table_name</span> <span class="o">=</span> <span class="n">TableName</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">_unescaped_triple</span>
+        <span class="n">pp_table_def</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;hyper_table_definition_t**&#39;</span><span class="p">)</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_get_table_definition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">,</span>
+                                                    <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">database_name</span><span class="p">),</span>
+                                                    <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">schema_name</span><span class="p">),</span>
+                                                    <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">table_name</span><span class="p">),</span>
+                                                    <span class="n">pp_table_def</span><span class="p">))</span>
+        <span class="n">native</span> <span class="o">=</span> <span class="n">NativeTableDefinition</span><span class="p">(</span><span class="n">pp_table_def</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">SchemaConverter</span><span class="o">.</span><span class="n">table_definition_from_native</span><span class="p">(</span><span class="n">native</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__create_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_definition</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="p">,</span> <span class="n">fail_if_exists</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="n">native_table_def</span> <span class="o">=</span> <span class="n">SchemaConverter</span><span class="o">.</span><span class="n">table_definition_to_native</span><span class="p">(</span><span class="n">table_definition</span><span class="p">)</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_create_table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">,</span> <span class="n">native_table_def</span><span class="o">.</span><span class="n">cdata</span><span class="p">,</span> <span class="n">fail_if_exists</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Catalog.create_table"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Catalog.create_table">[docs]</a>    <span class="k">def</span> <span class="nf">create_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_definition</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a table. Raise an exception if the table already exists.</span>
+
+<span class="sd">        :param table_definition: the table definition.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__create_table</span><span class="p">(</span><span class="n">table_definition</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Catalog.create_table_if_not_exists"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Catalog.create_table_if_not_exists">[docs]</a>    <span class="k">def</span> <span class="nf">create_table_if_not_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_definition</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a table if it does not already exist, otherwise does nothing.</span>
+
+<span class="sd">        :param table_definition: the table definition.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__create_table</span><span class="p">(</span><span class="n">table_definition</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Catalog.get_schema_names"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Catalog.get_schema_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_schema_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DatabaseName</span><span class="p">,</span> <span class="n">Name</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">SchemaName</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the names of all schemas of the database specified by the database name, or of the first database in</span>
+<span class="sd">        the search path if the name is not specified.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">database_name</span> <span class="o">=</span> <span class="n">DatabaseName</span><span class="p">(</span><span class="n">database</span><span class="p">)</span><span class="o">.</span><span class="n">_unescaped</span> <span class="k">if</span> <span class="n">database</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">pp_names</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;hyper_string_list_t**&#39;</span><span class="p">)</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_get_schema_names</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">,</span>
+                                                <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">database_name</span><span class="p">),</span>
+                                                <span class="n">pp_names</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">SchemaName</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">InteropUtil</span><span class="o">.</span><span class="n">convert_and_free_string_list</span><span class="p">(</span><span class="n">pp_names</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="Catalog.get_table_names"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Catalog.get_table_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_table_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">SchemaName</span><span class="p">,</span> <span class="n">Name</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">TableName</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot; Gets the names of all tables in the specified schema. &quot;&quot;&quot;</span>
+        <span class="n">database_name</span><span class="p">,</span> <span class="n">schema_name</span> <span class="o">=</span> <span class="n">SchemaName</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span><span class="o">.</span><span class="n">_unescaped_double</span>
+        <span class="n">pp_names</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;hyper_string_list_t**&#39;</span><span class="p">)</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_get_table_names</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">,</span>
+                                               <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">database_name</span><span class="p">),</span>
+                                               <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">schema_name</span><span class="p">),</span>
+                                               <span class="n">pp_names</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">TableName</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">InteropUtil</span><span class="o">.</span><span class="n">convert_and_free_string_list</span><span class="p">(</span><span class="n">pp_names</span><span class="p">)]</span></div>
+
+    <span class="k">def</span> <span class="nf">__create_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Name</span><span class="p">,</span> <span class="n">SchemaName</span><span class="p">],</span> <span class="n">fail_if_exists</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">SchemaName</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+        <span class="n">db_name</span><span class="p">,</span> <span class="n">schema_name</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">_unescaped_double</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_create_schema</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">,</span>
+                                             <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">db_name</span><span class="p">),</span>
+                                             <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">schema_name</span><span class="p">),</span>
+                                             <span class="n">fail_if_exists</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Catalog.create_schema"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Catalog.create_schema">[docs]</a>    <span class="k">def</span> <span class="nf">create_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Name</span><span class="p">,</span> <span class="n">SchemaName</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new schema with the given name. The schema must not already exist.</span>
+
+<span class="sd">        :param schema: the name of the schema.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__create_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Catalog.create_schema_if_not_exists"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Catalog.create_schema_if_not_exists">[docs]</a>    <span class="k">def</span> <span class="nf">create_schema_if_not_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Name</span><span class="p">,</span> <span class="n">SchemaName</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new schema with the given name if it does not already exist, otherwise does nothing.</span>
+
+<span class="sd">        :param schema: the name of the schema.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__create_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Catalog.create_database"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Catalog.create_database">[docs]</a>    <span class="k">def</span> <span class="nf">create_database</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PurePath</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new database at the given path. The file must not already exist. It does not attach the database</span>
+<span class="sd">        to the current connection.</span>
+
+<span class="sd">        :param database_path: path to the database file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_create_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">,</span>
+                                               <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">database_path</span><span class="p">)),</span>
+                                               <span class="kc">True</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Catalog.create_database_if_not_exists"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Catalog.create_database_if_not_exists">[docs]</a>    <span class="k">def</span> <span class="nf">create_database_if_not_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PurePath</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new database at the given path if it does not already exist, otherwise does nothing. It does not</span>
+<span class="sd">        attach the database to the current connection.</span>
+
+<span class="sd">        Note: This method raises an exception if a file that is not a hyper database exists at the given path.</span>
+
+<span class="sd">        :param database_path: path to the database file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_create_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">,</span>
+                                               <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">database_path</span><span class="p">)),</span>
+                                               <span class="kc">False</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Catalog.attach_database"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Catalog.attach_database">[docs]</a>    <span class="k">def</span> <span class="nf">attach_database</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PurePath</span><span class="p">],</span>
+                        <span class="n">alias</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Name</span><span class="p">,</span> <span class="n">DatabaseName</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Attaches a database to the underlying connection. &quot;&quot;&quot;</span>
+        <span class="n">db_path</span> <span class="o">=</span> <span class="n">database_path</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">database_path</span><span class="p">,</span> <span class="n">PurePath</span><span class="p">)</span> <span class="k">else</span> <span class="n">PurePath</span><span class="p">(</span><span class="n">database_path</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">alias</span><span class="p">:</span>
+            <span class="n">alias</span> <span class="o">=</span> <span class="n">db_path</span><span class="o">.</span><span class="n">stem</span>
+        <span class="n">alias</span> <span class="o">=</span> <span class="n">DatabaseName</span><span class="p">(</span><span class="n">alias</span><span class="p">)</span>
+
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_attach_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">,</span>
+                                               <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">db_path</span><span class="p">)),</span>
+                                               <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">alias</span><span class="o">.</span><span class="n">_unescaped</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="Catalog.detach_database"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Catalog.detach_database">[docs]</a>    <span class="k">def</span> <span class="nf">detach_database</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alias</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Name</span><span class="p">,</span> <span class="n">DatabaseName</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot; Detaches a database from the underlying connection. &quot;&quot;&quot;</span>
+        <span class="n">alias</span> <span class="o">=</span> <span class="n">DatabaseName</span><span class="p">(</span><span class="n">alias</span><span class="p">)</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_detach_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">,</span> <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="n">alias</span><span class="o">.</span><span class="n">_unescaped</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="Catalog.detach_all_databases"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Catalog.detach_all_databases">[docs]</a>    <span class="k">def</span> <span class="nf">detach_all_databases</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Detaches all databases from the underlying connection. &quot;&quot;&quot;</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_detach_all_databases</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Catalog.drop_database"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Catalog.drop_database">[docs]</a>    <span class="k">def</span> <span class="nf">drop_database</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PurePath</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot; Drops a database file. Raise an exception if the database does not exist. &quot;&quot;&quot;</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_drop_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">,</span> <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">database_path</span><span class="p">)),</span> <span class="kc">True</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Catalog.drop_database_if_exists"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Catalog.drop_database_if_exists">[docs]</a>    <span class="k">def</span> <span class="nf">drop_database_if_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PurePath</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot; Drops a database file if it exists, otherwise does nothing. &quot;&quot;&quot;</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_drop_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">,</span> <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">database_path</span><span class="p">)),</span> <span class="kc">False</span><span class="p">))</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019 - 2022, Tableau Software
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

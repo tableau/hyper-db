@@ -1,0 +1,10 @@
+tableauhyperapi reference
+=========================
+
+.. automodule:: tableauhyperapi
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. autodata:: __version__
+.. autodata:: VERSION

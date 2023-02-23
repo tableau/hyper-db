@@ -1,0 +1,377 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tableauhyperapi.name &mdash; Tableau Hyper API 0.0.16640 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/hapitheme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Tableau Hyper API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tableauhyperapi.html">tableauhyperapi reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Tableau Hyper API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tableauhyperapi.name</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tableauhyperapi.name</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">PurePath</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">.impl</span> <span class="kn">import</span> <span class="n">hapi</span>
+<span class="kn">from</span> <span class="nn">.impl.dllutil</span> <span class="kn">import</span> <span class="n">invoke_native_string_transform_function</span>
+
+
+<div class="viewcode-block" id="Name"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Name">[docs]</a><span class="nd">@functools</span><span class="o">.</span><span class="n">total_ordering</span>
+<span class="k">class</span> <span class="nc">Name</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An object which represents a SQL object name.</span>
+<span class="sd">    It handles quoting and escaping strings to avoid SQL injection attacks.</span>
+
+<span class="sd">    :param name: the raw, unquoted, unescaped name.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">    .. testsetup:: Name</span>
+
+<span class="sd">        from tableauhyperapi import *</span>
+
+<span class="sd">    .. doctest:: Name</span>
+
+<span class="sd">        &gt;&gt;&gt; print(Name(&#39;a table&#39;))</span>
+<span class="sd">        &quot;a table&quot;</span>
+<span class="sd">        &gt;&gt;&gt; print(f&#39;DROP TABLE {Name(&quot;a table&quot;)}&#39;)</span>
+<span class="sd">        DROP TABLE &quot;a table&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PurePath</span><span class="p">,</span> <span class="s1">&#39;Name&#39;</span><span class="p">]):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Name may not be empty&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Allow escaping escaped names - it is needed so we can safely do something like</span>
+        <span class="c1"># def foo(name: Union[str, Name]):</span>
+        <span class="c1">#     escaped_for_sure = Name(name)</span>
+        <span class="c1">#     ...</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">Name</span><span class="p">):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">unescaped</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># weird import here because it&#39;s a circular dependency otherwise</span>
+            <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">databasename</span><span class="p">,</span> <span class="n">tablename</span><span class="p">,</span> <span class="n">schemaname</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">databasename</span><span class="o">.</span><span class="n">DatabaseName</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">schemaname</span><span class="o">.</span><span class="n">SchemaName</span><span class="p">)</span> <span class="ow">or</span> \
+                    <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">tablename</span><span class="o">.</span><span class="n">TableName</span><span class="p">):</span>
+                <span class="c1"># But do not allow TableName, SchemaName or DatabaseName here, or we will get stuff like &quot;&quot;&quot;a&quot;&quot;.&quot;&quot;b&quot;&quot;&quot;.</span>
+                <span class="c1"># We could allow single-component names, but it&#39;s better to be more strict.</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cannot escape a </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1"> instance&#39;</span><span class="p">)</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__unescaped_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__escaped_name</span> <span class="o">=</span> <span class="n">invoke_native_string_transform_function</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_quote_sql_identifier</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">unescaped</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The unescaped name that was used to create this name. Don&#39;t use the result of this method in SQL,</span>
+<span class="sd">        as it is prone to SQL injection. The method should be used where the original name is required (e.g., logging).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__unescaped_name</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__escaped_name</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Name(</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__unescaped_name</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__escaped_name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">other</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Name</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Name</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__unescaped_name</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">__unescaped_name</span></div>
+
+
+<span class="k">def</span> <span class="nf">_parse_name_arguments2</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper for _parse_name_arguments(). Args passed here are all single-component name objects, like</span>
+<span class="sd">    SchemaName(&#39;schema&#39;) or Name(&#39;x&#39;).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">.tablename</span> <span class="kn">import</span> <span class="n">DatabaseName</span><span class="p">,</span> <span class="n">SchemaName</span><span class="p">,</span> <span class="n">TableName</span>
+
+    <span class="n">db_name</span><span class="p">,</span> <span class="n">schema_name</span><span class="p">,</span> <span class="n">table_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="n">anonymous_comps</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">DatabaseName</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">db_name</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Database name is specified twice&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">anonymous_comps</span> <span class="ow">or</span> <span class="n">schema_name</span> <span class="ow">or</span> <span class="n">table_name</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Database name is specified after other components&#39;</span><span class="p">)</span>
+            <span class="n">db_name</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">_unescaped</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SchemaName</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="n">arg</span><span class="o">.</span><span class="n">database_name</span>
+            <span class="k">if</span> <span class="n">schema_name</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Schema name is specified twice&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">table_name</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Schema name is specified after table name&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">anonymous_comps</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Schema name is specified twice&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">anonymous_comps</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">db_name</span> <span class="o">=</span> <span class="n">anonymous_comps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">anonymous_comps</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">schema_name</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">unescaped</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">TableName</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="n">arg</span><span class="o">.</span><span class="n">schema_name</span>
+            <span class="k">if</span> <span class="n">table_name</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">anonymous_comps</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Table name is specified twice&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">anonymous_comps</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">anonymous_comps</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">db_name</span><span class="p">,</span> <span class="n">schema_name</span> <span class="o">=</span> <span class="n">anonymous_comps</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">schema_name</span> <span class="o">=</span> <span class="n">anonymous_comps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">anonymous_comps</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">elif</span> <span class="n">db_name</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">schema_name</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Schema name is missing&#39;</span><span class="p">)</span>
+            <span class="n">table_name</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">unescaped</span>
+        <span class="k">elif</span> <span class="n">arg</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">Name</span><span class="p">):</span>
+                <span class="n">arg</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">unescaped</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">table_name</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Table name is specified twice&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">schema_name</span><span class="p">:</span>
+                <span class="n">table_name</span> <span class="o">=</span> <span class="n">arg</span>
+            <span class="k">elif</span> <span class="n">db_name</span><span class="p">:</span>
+                <span class="n">schema_name</span> <span class="o">=</span> <span class="n">arg</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">anonymous_comps</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Too many components in the name&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">anonymous_comps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+        <span class="c1"># trailing None is allowed and ignored</span>
+        <span class="k">elif</span> <span class="n">anonymous_comps</span> <span class="ow">or</span> <span class="n">db_name</span> <span class="ow">or</span> <span class="n">schema_name</span> <span class="ow">or</span> <span class="n">table_name</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Name component may not be None or empty&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">db_name</span> <span class="ow">or</span> <span class="n">schema_name</span> <span class="ow">or</span> <span class="n">table_name</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">db_name</span><span class="p">,</span> <span class="n">schema_name</span><span class="p">,</span> <span class="n">table_name</span><span class="p">],</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">anonymous_comps</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Name may not be empty&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">anonymous_comps</span><span class="p">,</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">_unpack_arg</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">unpacked_args</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]):</span>
+    <span class="kn">from</span> <span class="nn">.tablename</span> <span class="kn">import</span> <span class="n">SchemaName</span><span class="p">,</span> <span class="n">TableName</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">SchemaName</span><span class="p">)</span> <span class="ow">and</span> <span class="n">arg</span><span class="o">.</span><span class="n">database_name</span><span class="p">:</span>
+        <span class="n">unpacked_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">database_name</span><span class="p">)</span>
+        <span class="n">unpacked_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SchemaName</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">TableName</span><span class="p">)</span> <span class="ow">and</span> <span class="n">arg</span><span class="o">.</span><span class="n">schema_name</span><span class="p">:</span>
+        <span class="n">_unpack_arg</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">schema_name</span><span class="p">,</span> <span class="n">unpacked_args</span><span class="p">)</span>
+        <span class="n">unpacked_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TableName</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">unpacked_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_name_arguments</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse a sequence of arguments into db, schema, table name triple, if the parameters are such that we</span>
+<span class="sd">    can determine what&#39;s what; second return value is True in this case. If it&#39;s just a sequence of strings or Names,</span>
+<span class="sd">    then it returns that, and the second return value is False.</span>
+
+<span class="sd">    It raises exceptions if it encounters something weird, like TableName followed by anything, or DatabaseName</span>
+<span class="sd">    followed by a TableName without a schema name.</span>
+
+<span class="sd">    This is a helper method for DatabaseName, SchemaName, TableName constructors. Example:</span>
+<span class="sd">        (&#39;a&#39;) -&gt; (&#39;a&#39;), False -- can&#39;t determine whether it&#39;s a database, schema, or table name</span>
+<span class="sd">        (&#39;a&#39;, &#39;b&#39;) -&gt; (&#39;a&#39;, &#39;b&#39;), False -- same here</span>
+<span class="sd">        (DatabaseName(&#39;a&#39;)) -&gt; (&#39;a&#39;, None, None), True --  we do know it&#39;s a database name</span>
+<span class="sd">        (DatabaseName(&#39;a&#39;), SchemaName(&#39;b&#39;)) -&gt; (&#39;a&#39;, &#39;b&#39;, None), True -- we do know it&#39;s database and schema names</span>
+<span class="sd">        (SchemaName(&#39;b&#39;)) -&gt; (None, &#39;b&#39;, None), True -- we do know it&#39;s a schema name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">transformed_args</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">_unpack_arg</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">transformed_args</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_parse_name_arguments2</span><span class="p">(</span><span class="o">*</span><span class="n">transformed_args</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019 - 2022, Tableau Software
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

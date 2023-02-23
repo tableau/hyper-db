@@ -1,0 +1,677 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tableauhyperapi.result &mdash; Tableau Hyper API 0.0.16640 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/hapitheme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Tableau Hyper API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tableauhyperapi.html">tableauhyperapi reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Tableau Hyper API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tableauhyperapi.result</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tableauhyperapi.result</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">decimal</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">connection</span>  <span class="c1"># noqa F401</span>
+<span class="kn">from</span> <span class="nn">.date</span> <span class="kn">import</span> <span class="n">Date</span>
+<span class="kn">from</span> <span class="nn">.interval</span> <span class="kn">import</span> <span class="n">Interval</span>
+<span class="kn">from</span> <span class="nn">.resultschema</span> <span class="kn">import</span> <span class="n">ResultSchema</span>
+<span class="kn">from</span> <span class="nn">.sqltype</span> <span class="kn">import</span> <span class="n">NullableValue</span>
+<span class="kn">from</span> <span class="nn">.sqltype</span> <span class="kn">import</span> <span class="n">TypeTag</span>
+<span class="kn">from</span> <span class="nn">.timestamp</span> <span class="kn">import</span> <span class="n">Timestamp</span>
+<span class="kn">from</span> <span class="nn">.warning</span> <span class="kn">import</span> <span class="n">UnclosedObjectWarning</span>
+<span class="kn">from</span> <span class="nn">.impl</span> <span class="kn">import</span> <span class="n">hapi</span>
+<span class="kn">from</span> <span class="nn">.impl.converter</span> <span class="kn">import</span> <span class="n">Converter</span>
+<span class="kn">from</span> <span class="nn">.impl.dll</span> <span class="kn">import</span> <span class="n">ffi</span><span class="p">,</span> <span class="n">lib</span>
+<span class="kn">from</span> <span class="nn">.impl.dllutil</span> <span class="kn">import</span> <span class="n">ConstNativeTableDefinition</span><span class="p">,</span> <span class="n">Error</span>
+<span class="kn">from</span> <span class="nn">.impl.schemaconverter</span> <span class="kn">import</span> <span class="n">SchemaConverter</span>
+
+
+<div class="viewcode-block" id="Result"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Result">[docs]</a><span class="k">class</span> <span class="nc">Result</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An object which is used to read query results.</span>
+
+<span class="sd">    A ``Result`` implements the iterator protocol, so it can be used as follows:</span>
+
+<span class="sd">    .. testsetup:: Result.__init__</span>
+
+<span class="sd">        from tableauhyperapi import *</span>
+<span class="sd">        def setup():</span>
+<span class="sd">            hyper = HyperProcess(Telemetry.SEND_USAGE_DATA_TO_TABLEAU, &#39;myapp&#39;)</span>
+<span class="sd">            connection = Connection(hyper.endpoint, &#39;mydb.hyper&#39;, CreateMode.CREATE_AND_REPLACE)</span>
+<span class="sd">            table_def = TableDefinition(&#39;foo&#39;, [</span>
+<span class="sd">                TableDefinition.Column(&#39;text&#39;, SqlType.text()),</span>
+<span class="sd">                TableDefinition.Column(&#39;int&#39;, SqlType.int()),</span>
+<span class="sd">            ])</span>
+<span class="sd">            connection.catalog.create_table(table_def)</span>
+<span class="sd">            with Inserter(connection, &#39;foo&#39;) as inserter:</span>
+<span class="sd">                inserter.add_row([&#39;a&#39;, 1])</span>
+<span class="sd">                inserter.add_row([&#39;b&#39;, 2])</span>
+<span class="sd">                inserter.execute()</span>
+<span class="sd">            return hyper, connection</span>
+<span class="sd">        hyper, connection = setup()</span>
+
+<span class="sd">    .. testcode:: Result.__init__</span>
+
+<span class="sd">        with connection.execute_query(&#39;SELECT * FROM foo&#39;) as result:</span>
+<span class="sd">            for row in result:</span>
+<span class="sd">                print(row)</span>
+
+<span class="sd">    .. testoutput:: Result.__init__</span>
+
+<span class="sd">        [&#39;a&#39;, 1]</span>
+<span class="sd">        [&#39;b&#39;, 2]</span>
+
+<span class="sd">    This is equivalent to the following:</span>
+
+<span class="sd">    .. testcode:: Result.__init__</span>
+
+<span class="sd">        with connection.execute_query(&#39;SELECT * FROM foo&#39;) as result:</span>
+<span class="sd">            while result.next_row():</span>
+<span class="sd">                row = result.get_values()</span>
+<span class="sd">                print(row)</span>
+
+<span class="sd">    .. testoutput:: Result.__init__</span>
+
+<span class="sd">        [&#39;a&#39;, 1]</span>
+<span class="sd">        [&#39;b&#39;, 2]</span>
+
+<span class="sd">    Alternatively, one can use get_value() to retrieve individual row values:</span>
+
+<span class="sd">    .. testcode:: Result.__init__</span>
+
+<span class="sd">        with connection.execute_query(&#39;SELECT * FROM foo&#39;) as result:</span>
+<span class="sd">            while result.next_row():</span>
+<span class="sd">                value = result.get_value(0)</span>
+<span class="sd">                print(value)</span>
+
+<span class="sd">    .. testoutput:: Result.__init__</span>
+
+<span class="sd">        a</span>
+<span class="sd">        b</span>
+
+<span class="sd">    .. testcleanup:: Result.__init__</span>
+
+<span class="sd">        connection.close()</span>
+<span class="sd">        hyper.close()</span>
+<span class="sd">        import os</span>
+<span class="sd">        os.remove(&#39;mydb.hyper&#39;)</span>
+
+<span class="sd">    NULL database values are represented by ``None``. See :any:`TypeTag` documentation for how Hyper data</span>
+<span class="sd">    types map to Python types.</span>
+
+<span class="sd">    The ``Result`` constructor may not be used directly, use :any:`Connection.execute_query`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># There is a ton of repetition here, for performance. Do not refactor without profiling.</span>
+
+    <span class="c1"># noinspection PyShadowingNames</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text_as_bytes</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">connection</span><span class="p">:</span> <span class="s1">&#39;connection.Connection&#39;</span><span class="p">,</span> <span class="n">result_cdata</span><span class="p">):</span>
+        <span class="c1"># Private method, do not use directly. See the documentation above.</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">result_cdata</span><span class="p">,</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_close_rowset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__connection</span> <span class="o">=</span> <span class="n">connection</span>
+        <span class="c1"># Reference lib for correct gc order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lib_ref</span> <span class="o">=</span> <span class="n">lib</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__inline_things</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__read_value_functions</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">tdp</span> <span class="o">=</span> <span class="n">ConstNativeTableDefinition</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_rowset_get_table_definition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__schema</span> <span class="o">=</span> <span class="n">SchemaConverter</span><span class="o">.</span><span class="n">result_schema_from_native</span><span class="p">(</span><span class="n">tdp</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__column_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__schema</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__range_column_count</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__column_count</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__numeric_multipliers</span> <span class="o">=</span> <span class="p">[</span><span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">**</span> <span class="n">col</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">scale</span>
+                                      <span class="k">if</span> <span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="n">TypeTag</span><span class="o">.</span><span class="n">NUMERIC</span> <span class="ow">and</span> <span class="n">col</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">scale</span> <span class="o">&lt;=</span> <span class="mi">18</span><span class="p">)</span>
+                                      <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__schema</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+
+        <span class="c1"># total number of values in the chunk = number of rows * number of columns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_cells</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_rows</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># cell offset of the current row, index in __current_chunk_values, __current_chunk_sizes,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_row_cell</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_row</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># array of pointers to values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># array of value sizes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_sizes</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__next_row1</span>
+
+        <span class="n">read_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_bytes</span> <span class="k">if</span> <span class="n">text_as_bytes</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_text</span>
+
+        <span class="c1"># (self, column_index) -&gt; value</span>
+        <span class="n">read_value_functions</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">UNSUPPORTED</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_bytes</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">BOOL</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_bool</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">BIG_INT</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_big_int</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">SMALL_INT</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_small_int</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">INT</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_int</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">NUMERIC</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_numeric</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_double</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">OID</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_uint32</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">BYTES</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_bytes</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">TEXT</span><span class="p">:</span> <span class="n">read_text</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">:</span> <span class="n">read_text</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">CHAR</span><span class="p">:</span> <span class="n">read_text</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">JSON</span><span class="p">:</span> <span class="n">read_text</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">DATE</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_date</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">INTERVAL</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_interval</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">TIME</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_time</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_timestamp</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">TIMESTAMP_TZ</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_timestamp_tz</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">GEOGRAPHY</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_bytes</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">def</span> <span class="nf">get_read_value_function</span><span class="p">(</span><span class="n">col</span><span class="p">:</span> <span class="n">ResultSchema</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="n">TypeTag</span><span class="o">.</span><span class="n">NUMERIC</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">precision</span> <span class="o">&gt;</span> <span class="mi">18</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_big_numeric</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">read_value_functions</span><span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__read_value_functions</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_read_value_function</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__schema</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__row_template</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__column_count</span>
+
+        <span class="c1"># Decimal context used for 128-bit numeric transformations</span>
+        <span class="n">traps</span> <span class="o">=</span> <span class="p">[</span><span class="n">decimal</span><span class="o">.</span><span class="n">Overflow</span><span class="p">,</span> <span class="n">decimal</span><span class="o">.</span><span class="n">DivisionByZero</span><span class="p">,</span> <span class="n">decimal</span><span class="o">.</span><span class="n">InvalidOperation</span><span class="p">,</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Inexact</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_big_numeric_decimal_context</span> <span class="o">=</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Context</span><span class="p">(</span><span class="n">prec</span><span class="o">=</span><span class="mi">38</span><span class="p">,</span> <span class="n">traps</span><span class="o">=</span><span class="n">traps</span><span class="p">)</span>
+
+    <span class="c1"># We call a ton of methods when reading values, so inlining them speeds up things significantly</span>
+    <span class="c1"># (like tens of percents significantly)</span>
+    <span class="k">def</span> <span class="nf">__inline_things</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ffi</span> <span class="o">=</span> <span class="n">ffi</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__uint32_ptr_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi</span><span class="o">.</span><span class="n">typeof</span><span class="p">(</span><span class="s1">&#39;uint32_t*&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__uint64_ptr_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi</span><span class="o">.</span><span class="n">typeof</span><span class="p">(</span><span class="s1">&#39;uint64_t*&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__double_ptr_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi</span><span class="o">.</span><span class="n">typeof</span><span class="p">(</span><span class="s1">&#39;double*&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__py_interval_ptr_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi</span><span class="o">.</span><span class="n">typeof</span><span class="p">(</span><span class="s1">&#39;py_interval*&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ffi_null</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi</span><span class="o">.</span><span class="n">NULL</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ffi_cast</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi</span><span class="o">.</span><span class="n">cast</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ffi_buffer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi</span><span class="o">.</span><span class="n">buffer</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__hyper_read_int8</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_read_int8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__hyper_read_int16</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_read_int16</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__hyper_read_int32</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_read_int32</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__hyper_read_int64</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_read_int64</span>
+
+    <span class="c1"># need to get the chunk first</span>
+    <span class="k">def</span> <span class="nf">__next_row1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__destroy_chunk</span><span class="p">()</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">chunk_cdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;hyper_rowset_chunk_t**&#39;</span><span class="p">)</span>
+            <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_rowset_get_next_chunk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">,</span> <span class="n">chunk_cdata</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">chunk_cdata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi_null</span><span class="p">:</span>
+                <span class="c1"># no more chunks</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="n">chunk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">chunk_cdata</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_destroy_rowset_chunk</span><span class="p">)</span>
+
+            <span class="n">p_num_cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;size_t*&#39;</span><span class="p">)</span>
+            <span class="n">p_num_rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;size_t*&#39;</span><span class="p">)</span>
+            <span class="n">p_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;uint8_t***&#39;</span><span class="p">)</span>
+            <span class="n">p_sizes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;size_t**&#39;</span><span class="p">)</span>
+            <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_rowset_chunk_field_values</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">p_num_cols</span><span class="p">,</span> <span class="n">p_num_rows</span><span class="p">,</span> <span class="n">p_values</span><span class="p">,</span> <span class="n">p_sizes</span><span class="p">)</span>
+
+            <span class="n">row_count</span> <span class="o">=</span> <span class="n">p_num_rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">assert</span> <span class="n">p_num_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">__column_count</span>
+            <span class="k">if</span> <span class="n">row_count</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk</span> <span class="o">=</span> <span class="n">chunk</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_rows</span> <span class="o">=</span> <span class="n">row_count</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_cells</span> <span class="o">=</span> <span class="n">p_num_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">row_count</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span> <span class="o">=</span> <span class="n">p_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_sizes</span> <span class="o">=</span> <span class="n">p_sizes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">break</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__next_row2</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="c1"># got a chunk, read rows from it</span>
+    <span class="k">def</span> <span class="nf">__next_row2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_row_cell</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__column_count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_row</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_row</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_rows</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__next_row1</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">__destroy_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__ffi</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_cells</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_row_cell</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_row</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_sizes</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__raise_result_is_closed</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Result has been closed&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns ``True`` if the result has not been closed yet. Note that reading all rows of data automatically</span>
+<span class="sd">        closes the result object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Result.close"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Result.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Closes the result. Normally this is called automatically by ``with`` statement. Also, result is automatically</span>
+<span class="sd">        closed when all rows have been read from it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__destroy_chunk</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ffi</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__connection</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># leave self.__schema be, this is important when the query returned zero columns</span>
+        <span class="c1"># make get_value() raise an exception</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_value_functions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__read_value_functions</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__raise_result_is_closed</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_value_functions</span><span class="p">]</span>
+        <span class="c1"># next_row() returns False after closing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_row</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">False</span></div>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_row</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_values</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResultSchema</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Gets the result schema. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__schema</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">affected_row_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the affected row count, if the statement had any.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TFSID 931205: what about SELECT?</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_rowset_get_affected_row_count</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">count</span> <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;connection.Connection&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Gets the underlying connection. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__connection</span>
+
+<div class="viewcode-block" id="Result.next_row"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Result.next_row">[docs]</a>    <span class="k">def</span> <span class="nf">next_row</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetches the next row.</span>
+
+<span class="sd">        :return: ``True`` if there is data to read, ``False`` otherwise.</span>
+
+<span class="sd">        Note: if this method returns ``False``, then the result is closed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># actual implementation is set by init, close, and the real iteration methods</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Result.get_value"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Result.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the value at the given column index in the current row. This MUST only be called if :any:`next_row()`</span>
+<span class="sd">        returned ``True``.</span>
+
+<span class="sd">        :param column_index: the column index.</span>
+<span class="sd">        :return: the value as the corresponding python object if it is non-NULL, or ``None`` otherwise. See</span>
+<span class="sd">            :any:`TypeTag` for how Hyper data types map to Python types.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_value_functions</span><span class="p">[</span><span class="n">column_index</span><span class="p">](</span><span class="n">column_index</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Result.get_values"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Result.get_values">[docs]</a>    <span class="k">def</span> <span class="nf">get_values</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NullableValue</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the values in the current row. This MUST only be called if :any:`next_row()` returned ``True``.</span>
+
+<span class="sd">        :return: the row values as a list of objects. NULL is represented by ``None``, see :any:`TypeTag`</span>
+<span class="sd">            for how Hyper data types map to Python types.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__row_template</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__range_column_count</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">row</span></div>
+
+    <span class="k">def</span> <span class="nf">__read_bool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_row_cell</span> <span class="o">+</span> <span class="n">column_index</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hyper_read_int8</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">__read_small_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_row_cell</span> <span class="o">+</span> <span class="n">column_index</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hyper_read_int16</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__read_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_row_cell</span> <span class="o">+</span> <span class="n">column_index</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hyper_read_int32</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__read_uint32</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_row_cell</span> <span class="o">+</span> <span class="n">column_index</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi_cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__uint32_ptr_t</span><span class="p">,</span> <span class="n">value</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__read_big_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_row_cell</span> <span class="o">+</span> <span class="n">column_index</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hyper_read_int64</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__read_uint64</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_row_cell</span> <span class="o">+</span> <span class="n">column_index</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi_cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__uint64_ptr_t</span><span class="p">,</span> <span class="n">value</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__read_double</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_row_cell</span> <span class="o">+</span> <span class="n">column_index</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi_cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__double_ptr_t</span><span class="p">,</span> <span class="n">value</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__read_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]:</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_row_cell</span> <span class="o">+</span> <span class="n">column_index</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_sizes</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ffi_buffer</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__read_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_row_cell</span> <span class="o">+</span> <span class="n">column_index</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_sizes</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ffi_buffer</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">size</span><span class="p">),</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__read_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Date</span><span class="p">]:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_uint32</span><span class="p">(</span><span class="n">column_index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">Date</span><span class="o">.</span><span class="n">_from_hyper</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__read_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">]:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_uint64</span><span class="p">(</span><span class="n">column_index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">Converter</span><span class="o">.</span><span class="n">time_from_hyper</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__read_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Timestamp</span><span class="p">]:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_uint64</span><span class="p">(</span><span class="n">column_index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">Timestamp</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__read_timestamp_tz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Timestamp</span><span class="p">]:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_uint64</span><span class="p">(</span><span class="n">column_index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">Timestamp</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__read_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Interval</span><span class="p">]:</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_row_cell</span> <span class="o">+</span> <span class="n">column_index</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_chunk_values</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ffi_cast</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__py_interval_ptr_t</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Interval</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">months</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">days</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">microseconds</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__read_numeric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">]:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_big_int</span><span class="p">(</span><span class="n">column_index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">__numeric_multipliers</span><span class="p">[</span><span class="n">column_index</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__read_big_numeric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">]:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_bytes</span><span class="p">(</span><span class="n">column_index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__schema</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">column_index</span><span class="p">]</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">scale</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">(</span><span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">d</span><span class="o">.</span><span class="n">scaleb</span><span class="p">(</span><span class="o">-</span><span class="n">scale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_big_numeric_decimal_context</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__read_char1_as_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_int</span><span class="p">(</span><span class="n">column_index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="nb">chr</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__read_char1_as_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__read_int</span><span class="p">(</span><span class="n">column_index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="nb">chr</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Result has not been closed. Use Result object in a with statement or call its close() &#39;</span>
+                          <span class="s1">&#39;method when done.&#39;</span><span class="p">,</span> <span class="n">UnclosedObjectWarning</span><span class="p">)</span>
+            <span class="c1"># do nothing, self.__cdata is a gc&#39;ed pointer</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_open</span><span class="p">:</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;state: open&#39;</span><span class="p">]</span>
+            <span class="n">affected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">affected_row_count</span>
+            <span class="k">if</span> <span class="n">affected</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;affected_row_count: </span><span class="si">{</span><span class="n">affected</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;state: closed&#39;</span><span class="p">]</span>
+
+        <span class="n">cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span>
+        <span class="k">if</span> <span class="n">cols</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">6</span><span class="p">:</span>
+                <span class="n">colnames</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">[:</span><span class="mi">3</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;...&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">colnames</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+
+            <span class="n">colnames</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">colnames</span><span class="p">)</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;columns: [</span><span class="si">{</span><span class="n">colnames</span><span class="si">}</span><span class="s1">]&#39;</span><span class="p">)</span>
+
+        <span class="n">details</span> <span class="o">=</span> <span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1"> instance at </span><span class="si">{</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">:</span><span class="s1">#x</span><span class="si">}</span><span class="s1">; </span><span class="si">{</span><span class="n">details</span><span class="si">}</span><span class="s1">&gt;&#39;</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019 - 2022, Tableau Software
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

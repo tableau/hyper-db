@@ -1,0 +1,525 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tableauhyperapi.sqltype &mdash; Tableau Hyper API 0.0.16640 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/hapitheme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Tableau Hyper API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tableauhyperapi.html">tableauhyperapi reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Tableau Hyper API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tableauhyperapi.sqltype</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tableauhyperapi.sqltype</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">decimal</span>
+<span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">.date</span> <span class="kn">import</span> <span class="n">Date</span>
+<span class="kn">from</span> <span class="nn">.impl</span> <span class="kn">import</span> <span class="n">hapi</span>
+<span class="kn">from</span> <span class="nn">.impl.util</span> <span class="kn">import</span> <span class="n">check_precondition</span>
+<span class="kn">from</span> <span class="nn">.interval</span> <span class="kn">import</span> <span class="n">Interval</span>
+<span class="kn">from</span> <span class="nn">.timestamp</span> <span class="kn">import</span> <span class="n">Timestamp</span>
+
+
+<span class="n">ScalarValue</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">Date</span><span class="p">,</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Interval</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Timestamp</span><span class="p">]</span>
+<span class="n">NullableValue</span> <span class="o">=</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ScalarValue</span><span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Return type used for single SQL values.</span>
+
+<span class="sd">This lists all the possible types in :any:`TypeTag`.</span>
+<span class="sd">Note that the SQL NULL value maps to None, and thus it is covered by the `Optional`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="TypeTag"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.TypeTag">[docs]</a><span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
+<span class="k">class</span> <span class="nc">TypeTag</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constants which represent Hyper data types. These are used as values of the :any:`SqlType.tag` attribute.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">UNSUPPORTED</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_UNSUPPORTED</span>
+    <span class="sd">&quot;&quot;&quot; Unsupported type. Queries and tables may have columns of this type if the database was created by</span>
+<span class="sd">    a newer version of the library. Values are represented by Python&#39;s ``bytes``. &quot;&quot;&quot;</span>
+
+    <span class="n">BOOL</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_BOOL</span>
+    <span class="sd">&quot;&quot;&quot; Boolean values. Represented by Python&#39;s ``bool``. &quot;&quot;&quot;</span>
+
+    <span class="n">BIG_INT</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_BIG_INT</span>
+    <span class="sd">&quot;&quot;&quot; Eight-byte integer values. Represented by Python&#39;s ``int``. &quot;&quot;&quot;</span>
+
+    <span class="n">SMALL_INT</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_SMALL_INT</span>
+    <span class="sd">&quot;&quot;&quot; Two-byte integer values. Represented by Python&#39;s ``int``. &quot;&quot;&quot;</span>
+
+    <span class="n">INT</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_INT</span>
+    <span class="sd">&quot;&quot;&quot; Four-byte integer values. Represented by Python&#39;s ``int``. &quot;&quot;&quot;</span>
+
+    <span class="n">NUMERIC</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_NUMERIC</span>
+    <span class="sd">&quot;&quot;&quot; Exact decimal numbers with user-specified precision. Represented by ``decimal.Decimal``. &quot;&quot;&quot;</span>
+
+    <span class="n">DOUBLE</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_DOUBLE</span>
+    <span class="sd">&quot;&quot;&quot; Double precision floating point values. Represented by Python&#39;s ``float``. &quot;&quot;&quot;</span>
+
+    <span class="n">OID</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID</span>
+    <span class="sd">&quot;&quot;&quot; OID values. Represented by Python&#39;s ``int``. &quot;&quot;&quot;</span>
+
+    <span class="n">BYTES</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_BYTE_A</span>
+    <span class="sd">&quot;&quot;&quot; Byte array. These are returned as ``bytes`` objects from queries. When writing data, ``bytearray`` and</span>
+<span class="sd">    ``bytes`` objects are accepted. &quot;&quot;&quot;</span>
+
+    <span class="n">TEXT</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_TEXT</span>
+    <span class="sd">&quot;&quot;&quot; Unicode text.</span>
+<span class="sd">    These are returned as ``str`` or UTF8-encoded ``bytes`` objects, depending on the ``str_as_bytes`` parameter of</span>
+<span class="sd">    :any:`execute_query`/:any:`execute_list_query`/:any:`execute_scalar_query` methods. When writing data,</span>
+<span class="sd">    ``str``, ``bytearray``, and ``bytes`` objects are accepted. Bytes are assumed to be UTF8-encoded.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">VARCHAR</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_VARCHAR</span>
+    <span class="sd">&quot;&quot;&quot; Unicode text with maximum length.</span>
+<span class="sd">    These are returned as ``str`` or UTF8-encoded ``bytes`` objects, depending on the ``str_as_bytes`` parameter of</span>
+<span class="sd">    :any:`execute_query`/:any:`execute_list_query`/:any:`execute_scalar_query` methods. When writing data,</span>
+<span class="sd">    ``str``, ``bytearray``, and ``bytes`` objects are accepted. Bytes are assumed to be UTF8-encoded.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CHAR</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_CHAR</span>
+    <span class="sd">&quot;&quot;&quot; Space-padded unicode text.</span>
+<span class="sd">    These are returned as ``str`` or UTF8-encoded ``bytes`` objects, depending on the ``str_as_bytes`` parameter of</span>
+<span class="sd">    :any:`execute_query`/:any:`execute_list_query`/:any:`execute_scalar_query` methods. When writing data,</span>
+<span class="sd">    ``str``, ``bytearray``, and ``bytes`` objects are accepted. Bytes are assumed to be UTF8-encoded.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">JSON</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_JSON</span>
+    <span class="sd">&quot;&quot;&quot; Unicode text. These are returned as ``str`` or UTF8-encoded ``bytes`` objects, depending on the ``str_as_bytes``</span>
+<span class="sd">    parameter of :any:`execute_query`/:any:`execute_list_query`/:any:`execute_scalar_query` methods. When writing data,</span>
+<span class="sd">    ``str``, ``bytearray``, and ``bytes`` objects are accepted. Bytes are assumed to be UTF8-encoded.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DATE</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_DATE</span>
+    <span class="sd">&quot;&quot;&quot; Date values. These are returned as :any:`Date` objects from queries. When writing data, ``datetime.date``,</span>
+<span class="sd">    ``datetime.datetime`` are also accepted; time part in ``datetime.datetime`` is ignored. &quot;&quot;&quot;</span>
+
+    <span class="n">INTERVAL</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_INTERVAL</span>
+    <span class="sd">&quot;&quot;&quot; Time interval - union of logically independent months, days, and microseconds components. Represented by</span>
+<span class="sd">    :any:`Interval` objects. &quot;&quot;&quot;</span>
+
+    <span class="n">TIME</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_TIME</span>
+    <span class="sd">&quot;&quot;&quot; Time of the day, from 00:00:00 to 23:59:59:999999. These are returned as ``datetime.time`` objects from queries.</span>
+<span class="sd">    When writing data, ``datetime.time`` and ``datetime.datetime`` objects are accepted; date part in</span>
+<span class="sd">    ``datetime.datetime`` is ignored. &quot;&quot;&quot;</span>
+
+    <span class="n">TIMESTAMP</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_TIMESTAMP</span>
+    <span class="sd">&quot;&quot;&quot; Timestamp - date and time of day. These are returned as :any:`Timestamp` objects from queries. When writing</span>
+<span class="sd">    data, ``datetime.datetime`` objects are also accepted. &quot;&quot;&quot;</span>
+
+    <span class="n">TIMESTAMP_TZ</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_TIMESTAMP_TZ</span>
+    <span class="sd">&quot;&quot;&quot; UTC Timestamp - date and time of day. These are returned as :any:`Timestamp` objects from queries. When writing</span>
+<span class="sd">    data, ``datetime.datetime`` objects are also accepted. &quot;&quot;&quot;</span>
+
+    <span class="n">GEOGRAPHY</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_GEOGRAPHY</span>
+    <span class="sd">&quot;&quot;&quot; Geography. These are returned as ``bytes`` objects from queries. When writing data, ``bytes`` and ``bytearray``</span>
+<span class="sd">    objects are accepted. &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_from_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">TypeTag</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">e</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid type tag value </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">))</span></div>
+
+
+<span class="c1"># SqlType.int() shadows builtin int when &#39;int&#39; is used as a type annotation</span>
+<span class="n">_int_type</span> <span class="o">=</span> <span class="nb">int</span>
+
+
+<span class="c1"># noinspection DuplicatedCode</span>
+<div class="viewcode-block" id="SqlType"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType">[docs]</a><span class="nd">@functools</span><span class="o">.</span><span class="n">total_ordering</span>
+<span class="k">class</span> <span class="nc">SqlType</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An object which represents a column type - type tag and optional type-specific modifiers.</span>
+
+<span class="sd">    Do not use the constructor directly, instead use one of the factory methods.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_UNUSED_MODIFIER</span> <span class="o">=</span> <span class="mh">0xFFFFFFFF</span>
+
+    <span class="n">__OID_MAP</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">BOOL</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_BOOL</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">BIG_INT</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_BIG_INT</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">SMALL_INT</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_SMALL_INT</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">INT</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_INT</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">NUMERIC</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_NUMERIC</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_DOUBLE</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">OID</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_OID</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">BYTES</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_BYTE_A</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">TEXT</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_TEXT</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_VARCHAR</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">CHAR</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_CHAR</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">JSON</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_JSON</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">DATE</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_DATE</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">INTERVAL</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_INTERVAL</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">TIME</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_TIME</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_TIMESTAMP</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">TIMESTAMP_TZ</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_TIMESTAMP_TZ</span><span class="p">,</span>
+        <span class="n">TypeTag</span><span class="o">.</span><span class="n">GEOGRAPHY</span><span class="p">:</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_GEOGRAPHY</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="n">TypeTag</span><span class="p">,</span> <span class="n">modifier</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">_UNUSED_MODIFIER</span><span class="p">,</span> <span class="n">oid</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tag</span> <span class="o">=</span> <span class="n">tag</span>
+        <span class="k">if</span> <span class="n">oid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tag</span> <span class="o">==</span> <span class="n">TypeTag</span><span class="o">.</span><span class="n">CHAR</span> <span class="ow">and</span> <span class="n">modifier</span> <span class="o">==</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_encode_string_modifier</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">oid</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_OID_CHAR1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">oid</span> <span class="o">=</span> <span class="n">SqlType</span><span class="o">.</span><span class="n">__OID_MAP</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__oid</span> <span class="o">=</span> <span class="n">oid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__modifier</span> <span class="o">=</span> <span class="n">modifier</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tag</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeTag</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; The underlying type tag, one of the :any:`TypeTag` constants. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">internal_oid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; The underlying type OID. This property is internal and may change or go away in the future versions. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__oid</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">internal_type_modifier</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The underlying type modifier.</span>
+<span class="sd">        This property is internal and may change or go away in the future versions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__modifier</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">precision</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot; The precision, i.e., maximum number of digits, of a :any:`NUMERIC` value. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag</span> <span class="o">==</span> <span class="n">TypeTag</span><span class="o">.</span><span class="n">NUMERIC</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_get_precision_from_modifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__modifier</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot; The scale, i.e., number of fractional digits, of a :any:`NUMERIC` value. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag</span> <span class="o">==</span> <span class="n">TypeTag</span><span class="o">.</span><span class="n">NUMERIC</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_get_scale_from_modifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__modifier</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">max_length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot; The max length of this type if it is :any:`CHAR` or :any:`VARCHAR`, otherwise ``None``. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag</span> <span class="ow">in</span> <span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">CHAR</span><span class="p">,</span> <span class="n">TypeTag</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_get_max_length_from_modifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__modifier</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="SqlType.bool"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.bool">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">bool</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of a :any:`BOOL` type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">BOOL</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SqlType.small_int"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.small_int">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">small_int</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of a :any:`SMALL_INT` type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">SMALL_INT</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SqlType.int"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.int">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">int</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of an :any:`INT` type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">INT</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SqlType.big_int"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.big_int">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">big_int</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of a :any:`BIG_INT` type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">BIG_INT</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SqlType.double"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.double">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">double</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of a :any:`DOUBLE` type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SqlType.oid"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.oid">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">oid</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of an :any:`OID` type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">OID</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SqlType.date"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.date">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">date</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of a :any:`DATE` type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">DATE</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SqlType.time"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.time">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">time</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of a :any:`TIME` type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">TIME</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SqlType.timestamp"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.timestamp">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">timestamp</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of a :any:`TIMESTAMP` type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SqlType.timestamp_tz"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.timestamp_tz">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">timestamp_tz</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of a :any:`TIMESTAMP_TZ` type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">TIMESTAMP_TZ</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SqlType.interval"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.interval">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">interval</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of an :any:`INTERVAL` type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">INTERVAL</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SqlType.text"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.text">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">text</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of a :any:`TEXT` type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">TEXT</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SqlType.json"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.json">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">json</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of a :any:`JSON` type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">JSON</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SqlType.geography"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.geography">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">geography</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of a :any:`GEOGRAPHY` type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">GEOGRAPHY</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SqlType.bytes"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.bytes">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">bytes</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of a :any:`BYTES` type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">BYTES</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SqlType.char"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.char">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">char</span><span class="p">(</span><span class="n">max_length</span><span class="p">:</span> <span class="n">_int_type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of a :any:`CHAR` type. &quot;&quot;&quot;</span>
+        <span class="n">check_precondition</span><span class="p">(</span><span class="n">max_length</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;&#39;max_length&#39; must be positive&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">CHAR</span><span class="p">,</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_encode_string_modifier</span><span class="p">(</span><span class="n">max_length</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="SqlType.varchar"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.varchar">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">varchar</span><span class="p">(</span><span class="n">max_length</span><span class="p">:</span> <span class="n">_int_type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of a :any:`VARCHAR` type. &quot;&quot;&quot;</span>
+        <span class="n">check_precondition</span><span class="p">(</span><span class="n">max_length</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;&#39;max_length&#39; must be positive&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">,</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_encode_string_modifier</span><span class="p">(</span><span class="n">max_length</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="SqlType.numeric"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.SqlType.numeric">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">numeric</span><span class="p">(</span><span class="n">precision</span><span class="p">:</span> <span class="n">_int_type</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="n">_int_type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;SqlType&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Creates an instance of a :any:`NUMERIC` type. &quot;&quot;&quot;</span>
+        <span class="n">check_precondition</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">precision</span> <span class="o">&lt;=</span> <span class="mi">38</span><span class="p">,</span> <span class="s2">&quot;&#39;precision&#39; must be between 1 and 38&quot;</span><span class="p">)</span>
+        <span class="n">check_precondition</span><span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">scale</span> <span class="o">&lt;=</span> <span class="n">precision</span><span class="p">,</span> <span class="s2">&quot;&#39;scale&#39; must be between 0 and &#39;precision&#39;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">SqlType</span><span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">NUMERIC</span><span class="p">,</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_encode_numeric_modifier</span><span class="p">(</span><span class="n">precision</span><span class="p">,</span> <span class="n">scale</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="nf">__as_int_tuple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__modifier</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__oid</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">SqlType</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__as_int_tuple</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">__as_int_tuple</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">SqlType</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__as_int_tuple</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">__as_int_tuple</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__as_int_tuple</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag</span> <span class="ow">in</span> <span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">CHAR</span><span class="p">,</span> <span class="n">TypeTag</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">):</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__tag</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_length</span><span class="si">}</span><span class="s1">)&#39;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag</span> <span class="o">==</span> <span class="n">TypeTag</span><span class="o">.</span><span class="n">NUMERIC</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;NUMERIC(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="si">}</span><span class="s1">)&#39;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cls_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag</span> <span class="ow">in</span> <span class="p">(</span><span class="n">TypeTag</span><span class="o">.</span><span class="n">CHAR</span><span class="p">,</span> <span class="n">TypeTag</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">):</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cls_name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__tag</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_length</span><span class="si">}</span><span class="s1">)&#39;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag</span> <span class="o">==</span> <span class="n">TypeTag</span><span class="o">.</span><span class="n">NUMERIC</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cls_name</span><span class="si">}</span><span class="s1">.numeric(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="si">}</span><span class="s1">)&#39;</span>
+
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cls_name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__tag</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">()&#39;</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019 - 2022, Tableau Software
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

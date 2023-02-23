@@ -1,0 +1,901 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tableauhyperapi.inserter &mdash; Tableau Hyper API 0.0.16640 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/hapitheme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Tableau Hyper API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tableauhyperapi.html">tableauhyperapi reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Tableau Hyper API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tableauhyperapi.inserter</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tableauhyperapi.inserter</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">decimal</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
+<span class="kn">from</span> <span class="nn">.date</span> <span class="kn">import</span> <span class="n">Date</span>
+<span class="kn">from</span> <span class="nn">.interval</span> <span class="kn">import</span> <span class="n">Interval</span>
+<span class="kn">from</span> <span class="nn">.sqltype</span> <span class="kn">import</span> <span class="n">TypeTag</span>
+<span class="kn">from</span> <span class="nn">.tablename</span> <span class="kn">import</span> <span class="n">Name</span><span class="p">,</span> <span class="n">TableName</span>
+<span class="kn">from</span> <span class="nn">.tabledefinition</span> <span class="kn">import</span> <span class="n">TableDefinition</span><span class="p">,</span> <span class="n">Nullability</span>
+<span class="kn">from</span> <span class="nn">.timestamp</span> <span class="kn">import</span> <span class="n">Timestamp</span>
+<span class="kn">from</span> <span class="nn">.warning</span> <span class="kn">import</span> <span class="n">UnclosedObjectWarning</span>
+<span class="kn">from</span> <span class="nn">.impl</span> <span class="kn">import</span> <span class="n">hapi</span>
+<span class="kn">from</span> <span class="nn">.impl.converter</span> <span class="kn">import</span> <span class="n">Converter</span>
+<span class="kn">from</span> <span class="nn">.impl.dll</span> <span class="kn">import</span> <span class="n">ffi</span><span class="p">,</span> <span class="n">lib</span>
+<span class="kn">from</span> <span class="nn">.impl.dllutil</span> <span class="kn">import</span> <span class="n">Error</span><span class="p">,</span> <span class="n">InteropUtil</span>
+<span class="kn">from</span> <span class="nn">.impl.schemaconverter</span> <span class="kn">import</span> <span class="n">SchemaConverter</span>
+<span class="kn">from</span> <span class="nn">.impl.util</span> <span class="kn">import</span> <span class="n">check_precondition</span>
+
+
+<div class="viewcode-block" id="Inserter"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Inserter">[docs]</a><span class="k">class</span> <span class="nc">Inserter</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An object which is used to insert data into a table.</span>
+
+<span class="sd">    :param connection: the connection to use.</span>
+<span class="sd">    :param arg: either the table name or the definition of the table to insert data into.</span>
+<span class="sd">    :param columns: The set of columns in which to insert. The columns have to exist in the table.</span>
+<span class="sd">       When not None, Columns not present in columns will be set to their default value.</span>
+<span class="sd">       columns is a Iterable of either string or Inserter.ColumnMapping</span>
+<span class="sd">       A columnMapping can optionally contain a valid SQL expression.</span>
+<span class="sd">       The SQL expression specified for the column is used to transform or compute values on the fly during insertion.</span>
+<span class="sd">       The SQL expression can depend on columns that exist in the table.</span>
+<span class="sd">       The SQL expression can also depend on values or columns that do not exist in the table,</span>
+<span class="sd">       but must be specified in the inserter_dfinition.</span>
+<span class="sd">    :param inserter_definition: The definition of columns to which values are provided.</span>
+<span class="sd">       inserter_definition is a keyword-only parameter required only when columns is not None</span>
+<span class="sd">       The column definition for all the columns without SQL expression must be specified in inserter_definition.</span>
+<span class="sd">       For a column without SQL expression, the column definition provided in inserter_definition must match</span>
+<span class="sd">       the actual definition of the column in the table.</span>
+
+<span class="sd">    .. note:: SQL expression provided during insertion are used without any modification during insertion</span>
+<span class="sd">         and hence vulnerable to SQL injection attacks.</span>
+<span class="sd">         Applications should prevent end-users from providing expressions directly during insertion</span>
+
+<span class="sd">    Sample usage:</span>
+
+<span class="sd">    .. testsetup:: Inserter.__init__</span>
+
+<span class="sd">        from tableauhyperapi import *</span>
+<span class="sd">        def setup():</span>
+<span class="sd">            hyper = HyperProcess(Telemetry.SEND_USAGE_DATA_TO_TABLEAU, &#39;myapp&#39;)</span>
+<span class="sd">            connection = Connection(hyper.endpoint, &#39;mydb.hyper&#39;, CreateMode.CREATE_AND_REPLACE)</span>
+<span class="sd">            table_def = TableDefinition(&#39;foo&#39;, [</span>
+<span class="sd">                TableDefinition.Column(&#39;text&#39;, SqlType.text()),</span>
+<span class="sd">                TableDefinition.Column(&#39;int&#39;, SqlType.int()),</span>
+<span class="sd">            ])</span>
+<span class="sd">            connection.catalog.create_table(table_def)</span>
+<span class="sd">            return hyper, connection</span>
+<span class="sd">        hyper, connection = setup()</span>
+
+<span class="sd">    .. testcode:: Inserter.__init__</span>
+
+<span class="sd">        with Inserter(connection, &#39;foo&#39;) as inserter:</span>
+<span class="sd">            inserter.add_row([&#39;a&#39;, 1])</span>
+<span class="sd">            inserter.add_row([&#39;b&#39;, 2])</span>
+<span class="sd">            inserter.execute()</span>
+
+<span class="sd">    .. testcleanup:: Inserter.__init__</span>
+
+<span class="sd">        connection.close()</span>
+<span class="sd">        hyper.close()</span>
+<span class="sd">        import os</span>
+<span class="sd">        os.remove(&#39;mydb.hyper&#39;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Inserter.ColumnMapping"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Inserter.ColumnMapping">[docs]</a>    <span class="k">class</span> <span class="nc">ColumnMapping</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        An object which defines how a target column is mapped to inserter definition.</span>
+
+<span class="sd">        :param column_name: the column name.</span>
+<span class="sd">        :param expression: the SQL expression for computing the column</span>
+<span class="sd">            If not set, the data for this column must be provided using add_row()/add_rows() calls during insertion</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Name</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+                     <span class="n">expression</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__column_name</span> <span class="o">=</span> <span class="n">Name</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__expression</span> <span class="o">=</span> <span class="n">expression</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">column_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Name</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot; The name of the column. &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__column_name</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">expression</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+            <span class="sd">&quot;&quot;&quot; The SQL expression used to compute the column. &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__expression</span>
+
+        <span class="k">def</span> <span class="nf">_as_select_list_expression</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__expression</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__column_name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__expression</span><span class="si">}</span><span class="s1"> AS </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__column_name</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span></div>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span>
+                 <span class="n">arg</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Name</span><span class="p">,</span> <span class="n">TableName</span><span class="p">,</span> <span class="n">TableDefinition</span><span class="p">],</span>
+                 <span class="n">columns</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ColumnMapping</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="o">*</span><span class="p">,</span>
+                 <span class="n">inserter_definition</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cdata</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_native_stream_definition</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Reference lib for correct gc order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lib_ref</span> <span class="o">=</span> <span class="n">lib</span>
+
+        <span class="n">check_precondition</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">TableDefinition</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">Name</span><span class="p">)</span>
+                           <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">TableName</span><span class="p">),</span>
+                           <span class="s1">&#39;Argument must be a table name or a table definition&#39;</span><span class="p">)</span>
+
+        <span class="n">check_precondition</span><span class="p">(</span><span class="n">inserter_definition</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">columns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
+                           <span class="s1">&#39;Inserter Defintion is required only when columns are provided&#39;</span><span class="p">)</span>
+
+        <span class="c1"># table_def: Table Definition containing only the colums into which values are inserted</span>
+        <span class="c1"># stream_def: Stream Definition used by the bulk inserter</span>
+        <span class="c1"># self._select_str: comma separated list of column retrieved by the select statement during bulk insert</span>
+        <span class="c1">#             Usage - `INSERT BULK INTO table (columns) SELECT self._select_str FROM EXTERNAL STREAM stream`</span>
+        <span class="c1"># uses_expr: boolean to indicate if expressions are used in insertion</span>
+        <span class="n">table_def</span><span class="p">,</span> <span class="n">stream_def</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_str</span><span class="p">,</span> <span class="n">uses_expr</span> <span class="o">=</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__parse_from_arguments</span><span class="p">(</span><span class="n">connection</span><span class="p">,</span>
+                                                                                             <span class="n">arg</span><span class="p">,</span>
+                                                                                             <span class="n">columns</span><span class="p">,</span>
+                                                                                             <span class="n">inserter_definition</span><span class="p">)</span>
+
+        <span class="n">native_table_definition</span> <span class="o">=</span> <span class="n">SchemaConverter</span><span class="o">.</span><span class="n">table_definition_to_native</span><span class="p">(</span><span class="n">table_def</span><span class="p">)</span>
+
+        <span class="n">pp_inserter</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;hyper_inserter_t**&#39;</span><span class="p">)</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_create_inserter</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">_cdata</span><span class="p">,</span> <span class="n">native_table_definition</span><span class="o">.</span><span class="n">cdata</span><span class="p">,</span> <span class="n">pp_inserter</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cdata</span> <span class="o">=</span> <span class="n">pp_inserter</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_native_table_definition</span> <span class="o">=</span> <span class="n">native_table_definition</span>
+
+        <span class="c1"># Decimal context used for 128-bit numeric transformations</span>
+        <span class="n">traps</span> <span class="o">=</span> <span class="p">[</span><span class="n">decimal</span><span class="o">.</span><span class="n">Overflow</span><span class="p">,</span> <span class="n">decimal</span><span class="o">.</span><span class="n">DivisionByZero</span><span class="p">,</span> <span class="n">decimal</span><span class="o">.</span><span class="n">InvalidOperation</span><span class="p">,</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Inexact</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_big_numeric_decimal_context</span> <span class="o">=</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Context</span><span class="p">(</span><span class="n">prec</span><span class="o">=</span><span class="mi">38</span><span class="p">,</span> <span class="n">traps</span><span class="o">=</span><span class="n">traps</span><span class="p">)</span>
+
+        <span class="c1"># Stream definition is none, if all columns are computed by calculations</span>
+        <span class="k">if</span> <span class="n">stream_def</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">native_select_str</span> <span class="o">=</span> <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_select_str</span><span class="p">)</span>
+            <span class="n">native_stream_definition</span> <span class="o">=</span> <span class="n">SchemaConverter</span><span class="o">.</span><span class="n">table_definition_to_native</span><span class="p">(</span><span class="n">stream_def</span><span class="p">)</span>
+            <span class="c1"># Initialize bulk insert/stream inserter when expressions are used</span>
+            <span class="k">if</span> <span class="n">uses_expr</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_init_bulk_insert</span><span class="p">(</span><span class="n">pp_inserter</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">native_stream_definition</span><span class="o">.</span><span class="n">cdata</span><span class="p">,</span>
+                                                        <span class="n">native_select_str</span><span class="p">))</span>
+
+            <span class="n">pp_buffer</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;hyper_inserter_buffer_t**&#39;</span><span class="p">)</span>
+            <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_create_inserter_buffer</span><span class="p">(</span><span class="n">pp_inserter</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                                          <span class="n">native_stream_definition</span><span class="o">.</span><span class="n">cdata</span><span class="p">,</span>
+                                                          <span class="n">native_select_str</span><span class="p">,</span>
+                                                          <span class="n">pp_buffer</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">gc</span><span class="p">(</span><span class="n">pp_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_inserter_buffer_destroy</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__inline_things</span><span class="p">(</span><span class="n">stream_def</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__parse_from_arguments</span><span class="p">(</span><span class="n">connection</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span>
+                               <span class="n">arg</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Name</span><span class="p">,</span> <span class="n">TableName</span><span class="p">,</span> <span class="n">TableDefinition</span><span class="p">],</span>
+                               <span class="n">columns</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ColumnMapping</span><span class="p">]],</span>
+                               <span class="n">inserter_definition</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">TableDefinition</span><span class="p">):</span>
+            <span class="n">table_definition</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">table_definition</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">get_table_definition</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+        <span class="c1"># We identify the usage of expressions by iterating through `columns` argument</span>
+        <span class="c1"># The column in `columns` must be a target column and of type `str` or `ColumnMapping`</span>
+
+        <span class="c1"># If expressions are used during Insertion:</span>
+        <span class="c1"># The stream definition is different from the target table definition</span>
+        <span class="c1"># The inserter definition is used to build the stream definition</span>
+        <span class="c1"># For a column that doesn&#39;t use expression,</span>
+        <span class="c1"># the column definition in the inserter definition and target table definition must be the same</span>
+
+        <span class="c1"># If all columns use expressions the stream definition/inserter defintion is empty.</span>
+        <span class="c1"># For ex.</span>
+        <span class="c1"># Target_table: [Column(&quot;A&quot;, SqlType.int()), Column(&quot;B&quot;, SqlType.int())]</span>
+        <span class="c1"># columns: [ColumnMapping[&quot;A&quot;, 1], ColumnMapping[&quot;B&quot;, 2]]</span>
+        <span class="c1">#</span>
+        <span class="c1"># The values are inserted when `execute()` method is called</span>
+
+        <span class="n">uses_expression</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># List of non-expression column names.</span>
+        <span class="c1"># The non expression columns are tracked to ensure that it is specified in the inserter definition</span>
+        <span class="n">non_expression_columns</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">select_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># User is only inserting into a subset of columns</span>
+            <span class="n">target_columns_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">column</span> <span class="o">=</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">ColumnMapping</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">ColumnMapping</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Values in &#39;columns&#39; argument must be a &#39;ColumnMapping&#39; or &#39;str&#39;&quot;</span><span class="p">)</span>
+
+                <span class="n">target_column</span> <span class="o">=</span> <span class="n">table_definition</span><span class="o">.</span><span class="n">get_column_by_name</span><span class="p">(</span><span class="n">column</span><span class="o">.</span><span class="n">column_name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">target_column</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Column </span><span class="si">{</span><span class="n">column</span><span class="o">.</span><span class="n">column_name</span><span class="si">}</span><span class="s1"> does not exist&#39;</span>
+                                     <span class="sa">f</span><span class="s1">&#39; in table </span><span class="si">{</span><span class="n">table_definition</span><span class="o">.</span><span class="n">table_name</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">column</span><span class="o">.</span><span class="n">expression</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">non_expression_columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target_column</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">uses_expression</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">select_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column</span><span class="o">.</span><span class="n">_as_select_list_expression</span><span class="p">())</span>
+
+                <span class="n">target_columns_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target_column</span><span class="p">)</span>
+
+            <span class="n">table_definition</span> <span class="o">=</span> <span class="n">TableDefinition</span><span class="p">(</span><span class="n">table_definition</span><span class="o">.</span><span class="n">table_name</span><span class="p">,</span>
+                                               <span class="n">target_columns_list</span><span class="p">,</span>
+                                               <span class="n">table_definition</span><span class="o">.</span><span class="n">persistence</span><span class="p">)</span>
+
+        <span class="c1"># If expressions are used, build a stream definition with the help of inserter_definition</span>
+        <span class="k">if</span> <span class="n">uses_expression</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="c1"># Verify non-expression columns are specified in the inserter definition only once</span>
+            <span class="c1"># and the column defintion matches in the table definition</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">non_expression_columns</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">inserter_definition</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Columns without expressions must be specified in inserter definition&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">non_expression_col</span> <span class="ow">in</span> <span class="n">non_expression_columns</span><span class="p">:</span>
+                <span class="n">matching_columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">inserter_column</span><span class="p">:</span> <span class="n">inserter_column</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">non_expression_col</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                               <span class="n">inserter_definition</span><span class="p">))</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matching_columns</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Column </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">non_expression_col</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s1"> must be specified &#39;</span>
+                                     <span class="sa">f</span><span class="s1">&#39;as a ColumnMapping in columns or in inserter definition&#39;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">matching_columns</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Column </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">non_expression_col</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s1"> specified more &#39;</span>
+                                     <span class="sa">f</span><span class="s1">&#39;than once in inserter definition&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">inserter_column</span> <span class="o">=</span> <span class="n">matching_columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">inserter_column</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">non_expression_col</span><span class="o">.</span><span class="n">type</span>
+                            <span class="ow">or</span> <span class="n">inserter_column</span><span class="o">.</span><span class="n">nullability</span> <span class="o">!=</span> <span class="n">non_expression_col</span><span class="o">.</span><span class="n">nullability</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Column definition for </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">non_expression_col</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s1"> &#39;</span>
+                                         <span class="sa">f</span><span class="s1">&#39;does not match definition provided in inserter definition&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">inserter_definition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">stream_definition</span> <span class="o">=</span> <span class="n">TableDefinition</span><span class="p">(</span><span class="n">table_definition</span><span class="o">.</span><span class="n">table_name</span><span class="p">,</span>
+                                                    <span class="n">inserter_definition</span><span class="p">,</span>
+                                                    <span class="n">table_definition</span><span class="o">.</span><span class="n">persistence</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">stream_definition</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">stream_definition</span> <span class="o">=</span> <span class="n">table_definition</span>
+
+        <span class="c1"># Build the select list for C-API</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">select_list</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">select_list_string</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">select_list</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">select_list_string</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">stream_definition</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">table_definition</span><span class="p">,</span> <span class="n">stream_definition</span><span class="p">,</span> <span class="n">select_list_string</span><span class="p">,</span> <span class="n">uses_expression</span>
+
+    <span class="k">def</span> <span class="nf">__inline_things</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_definition</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TableDefinition</span><span class="p">]):</span>
+        <span class="c1"># noinspection DuplicatedCode</span>
+        <span class="n">insert_functions</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">BOOL</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_bool</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">BIG_INT</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_big_int</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">SMALL_INT</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_small_int</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">INT</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_int</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_double</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">OID</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_uint</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">BYTES</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_bytes</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">TEXT</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_text</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_text</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">CHAR</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_text</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">JSON</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_text</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">DATE</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_date</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">INTERVAL</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_interval</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">TIME</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_time</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_timestamp</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">TIMESTAMP_TZ</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_timestamp_tz</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">GEOGRAPHY</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_bytes</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">validation_functions</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">BOOL</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_bool</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">BIG_INT</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_big_int</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">SMALL_INT</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_small_int</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">INT</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_int</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_double</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">OID</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_oid</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">BYTES</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_bytes</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">TEXT</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_text</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">VARCHAR</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_varchar</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">CHAR</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_char</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">JSON</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_json</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">DATE</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_date</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">INTERVAL</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_interval</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">TIME</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_time</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_timestamp</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">TIMESTAMP_TZ</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_timestamp_tz</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">GEOGRAPHY</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_geography</span><span class="p">,</span>
+            <span class="n">TypeTag</span><span class="o">.</span><span class="n">NUMERIC</span><span class="p">:</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_numeric</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_column_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">table_definition</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="k">if</span> <span class="n">table_definition</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_range_column_count</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_count</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">table_definition</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="k">if</span> <span class="n">table_definition</span> <span class="k">else</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_insert_null_functions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_insert_value_functions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validation_functions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">:</span>
+            <span class="n">is_nullable</span> <span class="o">=</span> <span class="n">col</span><span class="o">.</span><span class="n">nullability</span> <span class="o">==</span> <span class="n">Nullability</span><span class="o">.</span><span class="n">NULLABLE</span>
+
+            <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="n">TypeTag</span><span class="o">.</span><span class="n">NUMERIC</span><span class="p">:</span>
+                <span class="n">insert_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_write_decimal_function</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">insert_value</span> <span class="o">=</span> <span class="n">insert_functions</span><span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_insert_value_functions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">insert_value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_validation_functions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">validation_functions</span><span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">tag</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">is_nullable</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_insert_null_functions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__write_null</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_insert_null_functions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">column_name</span><span class="o">=</span><span class="n">col</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">unescaped</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__raise_value_is_null</span><span class="p">(</span><span class="n">column_name</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_null</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_inserter_buffer_add_null</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_bool</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_inserter_buffer_add_bool</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_int16</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_inserter_buffer_add_int16</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_int32</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_inserter_buffer_add_int32</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_int64</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_inserter_buffer_add_int64</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_double</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_inserter_buffer_add_double</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_binary</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_inserter_buffer_add_binary</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_date</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_inserter_buffer_add_date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_raw</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_inserter_buffer_add_raw</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ffi_from_buffer</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">from_buffer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_py_interval</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;py_interval*&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_py_interval_buf</span> <span class="o">=</span> <span class="n">ffi</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s1">&#39;const uint8_t*&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_py_interval</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__get_write_decimal_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">column</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">precision</span> <span class="o">&lt;=</span> <span class="mi">18</span><span class="p">:</span>
+            <span class="c1"># 64-bit numerics</span>
+            <span class="n">write_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_big_int</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">**</span> <span class="n">column</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">scale</span>
+
+            <span class="k">def</span> <span class="nf">write_decimal</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">write_func</span><span class="p">((</span><span class="n">v</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span><span class="o">.</span><span class="n">to_integral_value</span><span class="p">())</span>
+
+            <span class="k">return</span> <span class="n">write_decimal</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># 128-bit numerics</span>
+            <span class="k">def</span> <span class="nf">write_decimal</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">):</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">scaleb</span><span class="p">(</span><span class="n">column</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">scale</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_big_numeric_decimal_context</span><span class="p">))</span>
+                <span class="n">num128</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="s1">&#39;little&#39;</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_raw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ffi_from_buffer</span><span class="p">(</span><span class="n">num128</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">num128</span><span class="p">)))</span>
+
+            <span class="k">return</span> <span class="n">write_decimal</span>
+
+    <span class="k">def</span> <span class="nf">__raise_value_is_null</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_name</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got NULL for a non-nullable column &quot;</span><span class="si">{</span><span class="n">column_name</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Inserter.add_row"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Inserter.add_row">[docs]</a>    <span class="k">def</span> <span class="nf">add_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">object</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inserts a row of data into the table. ``None`` corresponds to the database NULL, see :any:`TypeTag`</span>
+<span class="sd">        for how Python types are mapped to Hyper data types.</span>
+
+<span class="sd">        :param row: a row of data as a list of objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_insert_null_functions</span><span class="p">[</span><span class="n">i</span><span class="p">]()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_insert_value_functions</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">v</span><span class="p">)</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_column_count</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Too few columns provided to `add_row()`. &#39;</span>
+                                 <span class="sa">f</span><span class="s1">&#39;Provided </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> column(s) but </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_count</span><span class="si">}</span><span class="s1"> are required.&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="c1"># If a `ValueError` occurred, just re-raise it after closing the inserter and skip the `__validate_row()`</span>
+            <span class="c1"># pass of the general `Exception` case. Otherwise, `__validate_row()` might raise a different exception</span>
+            <span class="c1"># and confuse the user. (See Defect 1275968.)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">raise</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="c1"># see if insertion failed because the values are invalid</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__validate_row</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="c1"># nope, something else happened, re-raise the exception</span>
+            <span class="k">raise</span></div>
+
+<div class="viewcode-block" id="Inserter.add_rows"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Inserter.add_rows">[docs]</a>    <span class="k">def</span> <span class="nf">add_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rows</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">object</span><span class="p">]]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inserts rows of data into the table. Each row is represented by a sequence of objects.  ``None`` corresponds to</span>
+<span class="sd">        the database NULL, see :any:`TypeTag` for how Python types are mapped to Hyper data types.</span>
+
+<span class="sd">        This is a convenience method equivalent to::</span>
+
+<span class="sd">            for row in rows:</span>
+<span class="sd">                inserter.add_row(row)</span>
+
+<span class="sd">        :param rows: a sequence of rows of data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">row</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Inserter.execute"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Inserter.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Flush remaining data and commit. If this method fails then the data is discarded and not inserted. The inserter</span>
+<span class="sd">        is closed after this method returns, even in the case of a failure.</span>
+<span class="sd">        If ``execute()`` is not called and the inserter is closed, then the inserted data is discarded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cdata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Inserter is already closed&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__close</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">insert_data</span><span class="p">):</span>
+        <span class="n">execute_exception</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">insert_data</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_column_count</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_str</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">native_select_str</span> <span class="o">=</span> <span class="n">InteropUtil</span><span class="o">.</span><span class="n">string_to_char_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_select_str</span><span class="p">)</span>
+                        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_insert_computed_expressions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cdata</span><span class="p">,</span>
+                                                                           <span class="n">native_select_str</span><span class="p">))</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">execute_exception</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">execute_exception</span> <span class="o">=</span> <span class="n">ex</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_inserter_buffer_flush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">))</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+                        <span class="n">execute_exception</span> <span class="o">=</span> <span class="n">ex</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">hapi</span><span class="o">.</span><span class="n">hyper_close_inserter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cdata</span><span class="p">,</span> <span class="n">execute_exception</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">execute_exception</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">execute_exception</span> <span class="o">=</span> <span class="n">ex</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># do not check the error, it&#39;s not going to fail</span>
+                <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_close_inserter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cdata</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cdata</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_native_table_definition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ffi</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_native_table_definition</span><span class="o">.</span><span class="n">cdata</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_native_table_definition</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_native_stream_definition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ffi</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_native_stream_definition</span><span class="o">.</span><span class="n">cdata</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_native_stream_definition</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ffi</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__raise_inserter_is_closed</span>
+
+        <span class="k">if</span> <span class="n">execute_exception</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">execute_exception</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns ``True`` if the inserter has not been closed yet. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Inserter.close"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Inserter.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If the inserter is not closed yet, discard all data and close it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__close</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__raise_inserter_is_closed</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;The inserter is closed.&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__validate_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">object</span><span class="p">]):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_column_count</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;The table has </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_count</span><span class="si">}</span><span class="s1"> columns, but Inserter.add_row() was called for a row with &#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;more than </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_count</span><span class="si">}</span><span class="s1"> values.&#39;</span><span class="p">)</span>
+
+            <span class="c1"># insert_null will raise an exception if NULL is not allowed</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_validation_functions</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_column_count</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Inserter.add_row() was called for a row with </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> values, but the table has </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_count</span><span class="si">}</span><span class="s1"> &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;columns.&#39;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__format_value</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:</span><span class="mi">20</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;...&#39;</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_bytes_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got an invalid value </span><span class="si">{</span><span class="n">Inserter</span><span class="o">.</span><span class="n">__format_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1"> for column &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">unescaped</span><span class="si">}</span><span class="s1">&quot;, it &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;must be a bytes or a bytearray instance&#39;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_int_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">,</span> <span class="n">min_value</span><span class="p">,</span> <span class="n">max_value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got an invalid value </span><span class="si">{</span><span class="n">Inserter</span><span class="o">.</span><span class="n">__format_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1"> for column &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">unescaped</span><span class="si">}</span><span class="s1">&quot;, it &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;must be an int instance&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="n">min_value</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">max_value</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got an invalid value </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1"> for column &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">unescaped</span><span class="si">}</span><span class="s1">&quot;, it must be in the range &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;from </span><span class="si">{</span><span class="n">min_value</span><span class="si">}</span><span class="s1"> to </span><span class="si">{</span><span class="n">max_value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_text_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got an invalid value </span><span class="si">{</span><span class="n">Inserter</span><span class="o">.</span><span class="n">__format_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1"> for column &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">unescaped</span><span class="si">}</span><span class="s1">&quot;, it &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;must be an str, bytes, or bytearray instance&#39;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_bool</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got an invalid value </span><span class="si">{</span><span class="n">Inserter</span><span class="o">.</span><span class="n">__format_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1"> for column &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">unescaped</span><span class="si">}</span><span class="s1">&quot;, it &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;must be a bool instance&#39;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_big_int</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_int_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">_MIN_BIG_INT</span><span class="p">,</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">_MAX_BIG_INT</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_small_int</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_int_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">_MIN_SMALL_INT</span><span class="p">,</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">_MAX_SMALL_INT</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_int</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_int_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">_MIN_INT</span><span class="p">,</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">_MAX_INT</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_double</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got an invalid value </span><span class="si">{</span><span class="n">Inserter</span><span class="o">.</span><span class="n">__format_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1"> for column &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">unescaped</span><span class="si">}</span><span class="s1">&quot;, it &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;must be a float instance&#39;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_oid</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_int_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">_MIN_OID</span><span class="p">,</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">_MAX_OID</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_bytes_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_text</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_text_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_varchar</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_text_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_char</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_text_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_json</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_text_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_date</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Timestamp</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Date</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got an invalid value </span><span class="si">{</span><span class="n">Inserter</span><span class="o">.</span><span class="n">__format_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1"> for column &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">unescaped</span><span class="si">}</span><span class="s1">&quot;, it &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;must be a Date, Timestamp, datetime, or date instance&#39;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_interval</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Interval</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got an invalid value </span><span class="si">{</span><span class="n">Inserter</span><span class="o">.</span><span class="n">__format_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1"> for column &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">unescaped</span><span class="si">}</span><span class="s1">&quot;, it &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;must be a Interval instance&#39;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_time</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got an invalid value </span><span class="si">{</span><span class="n">Inserter</span><span class="o">.</span><span class="n">__format_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1"> for column &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">unescaped</span><span class="si">}</span><span class="s1">&quot;, it &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;must be a datetime or a time instance&#39;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_timestamp_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Timestamp</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got an invalid value </span><span class="si">{</span><span class="n">Inserter</span><span class="o">.</span><span class="n">__format_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1"> for column &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">unescaped</span><span class="si">}</span><span class="s1">&quot;, it &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;must be a Timestamp or a datetime instance&#39;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_timestamp</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_timestamp_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_timestamp_tz</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_timestamp_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_geography</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="n">Inserter</span><span class="o">.</span><span class="n">__validate_bytes_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__validate_numeric</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got an invalid value </span><span class="si">{</span><span class="n">Inserter</span><span class="o">.</span><span class="n">__format_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1"> for column &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">unescaped</span><span class="si">}</span><span class="s1">&quot;, it &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;must be a Decimal instance&#39;</span><span class="p">)</span>
+
+    <span class="n">_MIN_BIG_INT</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">63</span>
+    <span class="n">_MAX_BIG_INT</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">63</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">_TWO_TO_THIRTY_TWO</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">32</span>
+    <span class="n">_TWO_TO_SIXTY_FOUR</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">64</span>
+    <span class="n">_MIN_INT</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">31</span>
+    <span class="n">_MAX_INT</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">31</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">_MIN_SMALL_INT</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">15</span>
+    <span class="n">_MAX_SMALL_INT</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">15</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">_MIN_OID</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">_MAX_OID</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">32</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">__write_null</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_null</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__write_bool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__write_small_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_int16</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__write_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_int32</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__write_uint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="c1"># cffi verifies that the value is in range for the target type, so we have to convert the unsigned</span>
+        <span class="c1"># value to an int32_t here. E.g. 0xFFFFFFFF gets transformed into -1.</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">v</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">_MAX_INT</span> <span class="k">else</span> <span class="n">v</span> <span class="o">-</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">_TWO_TO_THIRTY_TWO</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_int32</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__write_big_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_int64</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__write_double</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_double</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__write_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">]):</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_binary</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ffi_from_buffer</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">__write_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">]):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_binary</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ffi_from_buffer</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">__write_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="n">Date</span><span class="p">]):</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_date</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">day</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__write_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">]):</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_int64</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">,</span> <span class="n">Converter</span><span class="o">.</span><span class="n">time_to_hyper</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">__write_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="n">Timestamp</span><span class="p">]):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">Converter</span><span class="o">.</span><span class="n">to_hyper_timestamp</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">v</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">_MAX_BIG_INT</span> <span class="k">else</span> <span class="n">v</span> <span class="o">-</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">_TWO_TO_SIXTY_FOUR</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_int64</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__write_timestamp_tz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="n">Timestamp</span><span class="p">]):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">Converter</span><span class="o">.</span><span class="n">to_hyper_timestamp_tz</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">v</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">_MAX_BIG_INT</span> <span class="k">else</span> <span class="n">v</span> <span class="o">-</span> <span class="n">Inserter</span><span class="o">.</span><span class="n">_TWO_TO_SIXTY_FOUR</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_int64</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__write_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Interval</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_py_interval</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">microseconds</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">microseconds</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">days</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">days</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">months</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">months</span>
+        <span class="n">Error</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hyper_add_raw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_py_interval_buf</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cdata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Inserter has not been closed. Use Inserter object in a with statement or call its close() &#39;</span>
+                          <span class="s1">&#39;method when done.&#39;</span><span class="p">,</span> <span class="n">UnclosedObjectWarning</span><span class="p">)</span>
+            <span class="n">hapi</span><span class="o">.</span><span class="n">hyper_close_inserter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cdata</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cdata</span> <span class="o">=</span> <span class="kc">None</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019 - 2022, Tableau Software
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

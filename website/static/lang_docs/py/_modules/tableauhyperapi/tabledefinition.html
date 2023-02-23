@@ -1,0 +1,442 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tableauhyperapi.tabledefinition &mdash; Tableau Hyper API 0.0.16640 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/hapitheme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Tableau Hyper API
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tableauhyperapi.html">tableauhyperapi reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Tableau Hyper API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tableauhyperapi.tabledefinition</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tableauhyperapi.tabledefinition</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">cast</span><span class="p">,</span> <span class="n">overload</span>
+
+<span class="kn">from</span> <span class="nn">.name</span> <span class="kn">import</span> <span class="n">Name</span>
+<span class="kn">from</span> <span class="nn">.sqltype</span> <span class="kn">import</span> <span class="n">SqlType</span>
+<span class="kn">from</span> <span class="nn">.tablename</span> <span class="kn">import</span> <span class="n">TableName</span>
+<span class="kn">from</span> <span class="nn">.impl</span> <span class="kn">import</span> <span class="n">hapi</span>
+<span class="kn">from</span> <span class="nn">.impl.immutablelistwrapper</span> <span class="kn">import</span> <span class="n">ImmutableListWrapper</span>
+<span class="kn">from</span> <span class="nn">.impl.util</span> <span class="kn">import</span> <span class="n">check_precondition</span>
+
+
+<div class="viewcode-block" id="Nullability"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Nullability">[docs]</a><span class="k">class</span> <span class="nc">Nullability</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constants which define whether a column may contain NULL values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">NOT_NULLABLE</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="sd">&quot;&quot;&quot; Column is not nullable, i.e., it may not contain NULL values. &quot;&quot;&quot;</span>
+
+    <span class="n">NULLABLE</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="sd">&quot;&quot;&quot; Column is nullable, i.e., it may contain NULL values. &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_from_bool_nullable</span><span class="p">(</span><span class="n">nullable</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Nullability&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Nullability</span><span class="o">.</span><span class="n">NULLABLE</span> <span class="k">if</span> <span class="n">nullable</span> <span class="k">else</span> <span class="n">Nullability</span><span class="o">.</span><span class="n">NOT_NULLABLE</span></div>
+
+
+<div class="viewcode-block" id="Persistence"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.Persistence">[docs]</a><span class="k">class</span> <span class="nc">Persistence</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Persistence type of a table.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">PERMANENT</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_PERMANENT</span>
+    <span class="sd">&quot;&quot;&quot; Table is permanent, stored in the database on disk. &quot;&quot;&quot;</span>
+
+    <span class="n">TEMPORARY</span> <span class="o">=</span> <span class="n">hapi</span><span class="o">.</span><span class="n">HYPER_TEMPORARY</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Table is temporary. It is only visible to the connection that created the table and will be deleted</span>
+<span class="sd">    once this connection is closed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_from_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">Persistence</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">v</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid persistence value </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TableDefinition"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.TableDefinition">[docs]</a><span class="k">class</span> <span class="nc">TableDefinition</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A SQL table definition.</span>
+
+<span class="sd">    :param table_name: the table name.</span>
+<span class="sd">    :param columns: an optional list of table columns.</span>
+<span class="sd">    :param persistence: an optional persistence mode for the table, :any:`PERMANENT` by default.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">    .. testsetup:: TableDefinition.__init__</span>
+
+<span class="sd">        from tableauhyperapi import *</span>
+
+<span class="sd">    .. testcode:: TableDefinition.__init__</span>
+
+<span class="sd">        table_def = TableDefinition(&#39;products&#39;, [</span>
+<span class="sd">            TableDefinition.Column(&#39;id&#39;, SqlType.int(), Nullability.NOT_NULLABLE),</span>
+<span class="sd">            TableDefinition.Column(&#39;name&#39;, SqlType.text()),</span>
+<span class="sd">            TableDefinition.Column(&#39;price&#39;, SqlType.double()),</span>
+<span class="sd">        ])</span>
+
+<span class="sd">        table_def.add_column(&#39;category&#39;, SqlType.text())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TableDefinition.Column"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.TableDefinition.Column">[docs]</a>    <span class="k">class</span> <span class="nc">Column</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        An object which represents a table column.</span>
+
+<span class="sd">        :param name: the column name.</span>
+<span class="sd">        :param type: the column type.</span>
+<span class="sd">        :param nullability: the optional column nullability, :any:`NULLABLE` by default.</span>
+<span class="sd">        :param collation: the text column collation, ``None`` by default. ``None`` means default binary collation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Name</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">type</span><span class="p">:</span> <span class="n">SqlType</span><span class="p">,</span>
+                     <span class="n">nullability</span><span class="p">:</span> <span class="n">Nullability</span> <span class="o">=</span> <span class="n">Nullability</span><span class="o">.</span><span class="n">NULLABLE</span><span class="p">,</span>
+                     <span class="n">collation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">check_precondition</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">SqlType</span><span class="p">),</span> <span class="s2">&quot;&#39;type&#39; must be a SqlType instance&quot;</span><span class="p">)</span>
+            <span class="n">check_precondition</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">nullability</span><span class="p">,</span> <span class="n">Nullability</span><span class="p">),</span> <span class="s2">&quot;&#39;nullability&#39; must be a Nullability instance&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="n">Name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__type</span> <span class="o">=</span> <span class="nb">type</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__nullability</span> <span class="o">=</span> <span class="n">nullability</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__collation</span> <span class="o">=</span> <span class="n">collation</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Name</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot; The name of the column. &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SqlType</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot; The type of the column. &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__type</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">nullability</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Nullability</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot; The nullability of the column. &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nullability</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">collation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+            <span class="sd">&quot;&quot;&quot; The collation of the column. &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__collation</span>
+
+        <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">collation</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__collation</span><span class="si">!r}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__collation</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">cls_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="n">namestr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="o">.</span><span class="n">unescaped</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cls_name</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="n">namestr</span><span class="si">!r}</span><span class="s1">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__type</span><span class="si">!r}</span><span class="s1">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__nullability</span><span class="si">!s}{</span><span class="n">collation</span><span class="si">}</span><span class="s1">)&#39;</span></div>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Name</span><span class="p">,</span> <span class="n">TableName</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+                 <span class="n">columns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Column</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">persistence</span><span class="p">:</span> <span class="n">Persistence</span> <span class="o">=</span> <span class="n">Persistence</span><span class="o">.</span><span class="n">PERMANENT</span><span class="p">):</span>
+        <span class="n">check_precondition</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">persistence</span><span class="p">,</span> <span class="n">Persistence</span><span class="p">),</span>
+                           <span class="s2">&quot;&#39;persistence&#39; must be a Persistence instance&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__table_name</span> <span class="o">=</span> <span class="n">TableName</span><span class="p">(</span><span class="n">table_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="k">if</span> <span class="n">columns</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__immutable_columns</span> <span class="o">=</span> <span class="n">ImmutableListWrapper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__columns</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__persistence</span> <span class="o">=</span> <span class="n">persistence</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">columns</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Column</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;  The list of table columns. This list cannot be modified, use :any:`add_column()` to add a new column. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">Sequence</span><span class="p">[</span><span class="s1">&#39;Column&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__immutable_columns</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">column_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; The number of columns in the table. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__columns</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TableDefinition.get_column"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.TableDefinition.get_column">[docs]</a>    <span class="k">def</span> <span class="nf">get_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Column</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the column at the given position.</span>
+
+<span class="sd">        :param position: column position, must be in the range from 0 to :any:`column_count` - 1.</span>
+<span class="sd">        :return: the column.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_precondition</span><span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">position</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__columns</span><span class="p">),</span>
+                           <span class="s2">&quot;&#39;position&#39; must be between 0 and </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__columns</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__columns</span><span class="p">[</span><span class="n">position</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="TableDefinition.get_column_by_name"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.TableDefinition.get_column_by_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_column_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Name</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Column</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the column with the given name if it exists.</span>
+
+<span class="sd">        :param name: the column name.</span>
+<span class="sd">        :return: the column, or None if it does not exist.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">compare_name</span> <span class="o">=</span> <span class="n">Name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">compare_name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">col</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="TableDefinition.get_column_position_by_name"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.TableDefinition.get_column_position_by_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_column_position_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Name</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the position of the column with the given name.</span>
+
+<span class="sd">        :param name: the column name.</span>
+<span class="sd">        :return: the column position, or None if it does not exist.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">compare_name</span> <span class="o">=</span> <span class="n">Name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__columns</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">compare_name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">i</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">table_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TableName</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns the table name. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__table_name</span>
+
+    <span class="nd">@table_name</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">table_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Name</span><span class="p">,</span> <span class="n">TableName</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot; Sets table name. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__table_name</span> <span class="o">=</span> <span class="n">TableName</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">persistence</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Persistence</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns the table&#39;s persistence mode. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__persistence</span>
+
+    <span class="nd">@persistence</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">persistence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">persistence</span><span class="p">:</span> <span class="n">Persistence</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Sets the table persistence mode. &quot;&quot;&quot;</span>
+        <span class="n">check_precondition</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">persistence</span><span class="p">,</span> <span class="n">Persistence</span><span class="p">),</span>
+                           <span class="s2">&quot;&#39;persistence&#39; must be a Persistence instance&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__persistence</span> <span class="o">=</span> <span class="n">persistence</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span> <span class="nf">add_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">Column</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;TableDefinition&#39;</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span> <span class="nf">add_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="n">SqlType</span><span class="p">,</span>
+                   <span class="n">nullability</span><span class="p">:</span> <span class="n">Nullability</span> <span class="o">=</span> <span class="n">Nullability</span><span class="o">.</span><span class="n">NULLABLE</span><span class="p">,</span>
+                   <span class="n">collation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;TableDefinition&#39;</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="TableDefinition.add_column"><a class="viewcode-back" href="../../tableauhyperapi.html#tableauhyperapi.TableDefinition.add_column">[docs]</a>    <span class="k">def</span> <span class="nf">add_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;TableDefinition&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a column. The parameters are either the :any:`Column` object to add, or arguments for the :any:`Column`</span>
+<span class="sd">        constructor.</span>
+
+<span class="sd">        :return: self.</span>
+
+<span class="sd">        Examples:</span>
+
+<span class="sd">        .. testsetup:: TableDefinition.add_column</span>
+
+<span class="sd">            from tableauhyperapi import *</span>
+<span class="sd">            table_def = TableDefinition(&#39;foo&#39;)</span>
+
+<span class="sd">        .. testcode:: TableDefinition.add_column</span>
+
+<span class="sd">            column = TableDefinition.Column(&quot;a&quot;, SqlType.int())</span>
+<span class="sd">            table_def.add_column(column)</span>
+
+<span class="sd">            table_def.add_column(&quot;b&quot;, SqlType.text(), collation=&#39;en_US_CI&#39;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">):</span>
+            <span class="n">column</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">column</span> <span class="o">=</span> <span class="n">TableDefinition</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="nf">_clone</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;TableDefinition&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TableDefinition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">persistence</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_for_list_of_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_names</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s1">&#39;TableDefinition&#39;</span><span class="p">:</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">column_names</span><span class="p">:</span>
+            <span class="n">column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">column</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Column with name &quot;</span><span class="si">{}</span><span class="s1">&quot; does not exist&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+            <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">TableDefinition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_name</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">persistence</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cls_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cls_name</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__table_name</span><span class="si">!r}</span><span class="s1">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__columns</span><span class="si">!r}</span><span class="s1">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__persistence</span><span class="si">!s}</span><span class="s1">)&#39;</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019 - 2022, Tableau Software
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

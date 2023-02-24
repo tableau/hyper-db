@@ -1,0 +1,153 @@
+# Conditional Expressions {#functions-conditional}
+
+This section describes the SQL-compliant conditional expressions
+available in Hyper.
+
+## `CASE` {#functions-case}
+
+The SQL CASE expression is a generic conditional expression, similar to
+if/else statements in other programming languages: CASE WHEN
+\<condition\> THEN \<result\> \[WHEN \...\] \[ELSE \<result\>\] END CASE
+clauses can be used wherever an expression is valid. Each \<condition\>
+is an expression that returns a `boolean` result. If the condition\'s
+result is true, the value of the CASE expression is the \<result\> that
+follows the condition, and the remainder of the CASE expression is not
+processed. If the condition\'s result is not true, any subsequent WHEN
+clauses are examined in the same manner. If no WHEN \<condition\> yields
+true, the value of the CASE expression is the \<result\> of the ELSE
+clause. If the ELSE clause is omitted and no condition is true, the
+result is null.
+
+An example:
+
+    CREATE TABLE test AS VALUES(1),(2),(3);
+
+    SELECT a,
+    CASE WHEN a=1 THEN 'one'
+    WHEN a=2 THEN 'two'
+    ELSE 'other'
+    END
+    FROM test;
+
+    a | case
+    --+-------
+    1 | one
+    2 | two
+    3 | other
+
+The data types of all the \<result\> expressions must be convertible to
+a single output type.
+
+There is a "simple" form of CASE expression that is a variant of the
+general form above: CASE \<expression\> WHEN \<value\> THEN \<result\>
+\[WHEN \...\] \[ELSE \<result\>\] END The first \<expression\> is
+computed, then compared to each of the \<value\> expressions in the WHEN
+clauses until one is found that is equal to it. If no match is found,
+the \<result\> of the ELSE clause (or a null value) is returned. This is
+similar to the `switch` statement in C.
+
+The example above can be written using the simple CASE syntax:
+
+    SELECT a,
+    CASE a WHEN 1 THEN 'one'
+    WHEN 2 THEN 'two'
+    ELSE 'other'
+    END
+    FROM test;
+
+    a | case
+    --+-------
+    1 | one
+    2 | two
+    3 | other
+
+A CASE expression does not evaluate any subexpressions that are not
+needed to determine the result. For example, this is a possible way of
+avoiding a division-by-zero failure:
+
+    SELECT ... WHERE CASE WHEN x <> 0 THEN y/x > 1.5 ELSE false END;
+
+## `COALESCE` {#functions-coalesce-nvl-ifnull}
+
+COALESCE
+
+(
+
+value
+
+, \...
+
+)
+
+The `COALESCE` function returns the first of its arguments that is not
+null. Null is returned only if all arguments are null. It is often used
+to substitute a default value for null values when data is retrieved for
+display, for example:
+
+    SELECT COALESCE(description, short_description, '(none)') ...
+
+This returns `description` if it is not null, otherwise
+`short_description` if it is not null, otherwise `(none)`.
+
+Like a CASE expression, `COALESCE` only evaluates the arguments that are
+needed to determine the result; that is, arguments to the right of the
+first non-null argument are not evaluated.
+
+## `NULLIF` {#functions-nullif}
+
+NULLIF
+
+(
+
+value1
+
+,
+
+value2
+
+)
+
+The `NULLIF` function returns a null value if \<value1\> equals
+\<value2\>; otherwise it returns \<value1\>. This can be used to perform
+the inverse operation of the `COALESCE` example given above:
+
+    SELECT NULLIF(value, '(none)') ...
+
+In this example, if `value` is `(none)`, null is returned, otherwise the
+value of `value` is returned.
+
+## `GREATEST` and `LEAST` {#functions-greatest-least}
+
+GREATEST
+
+(
+
+value
+
+, \...
+
+)
+
+LEAST
+
+(
+
+value
+
+, \...
+
+)
+
+The `GREATEST` and `LEAST` functions select the largest or smallest
+value from a list of any number of expressions. The expressions must all
+be convertible to a common data type, which will be the type of the
+result. NULL values in the list are ignored. The result will be NULL
+only if all the expressions evaluate to NULL.
+
+If you would like to preserver any NULL `GREATEST` and `LEAST` you can
+add `PRESERVE NULLS` before the first value. In this case the result
+will be NULL if any expression evaluates to NULL. `GREATEST`(PRESERVE
+NULLS \<value\> \[, \...\]) `LEAST`(PRESERVE NULLS \<value\> \[, \...\])
+
+Note that `GREATEST` and `LEAST` are not in the SQL standard, but are a
+common extension.

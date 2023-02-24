@@ -3,7 +3,7 @@ const pyversion = version.substr(0, version.lastIndexOf('.'));
 
 const downloadBaseUrl = 'https://downloads.tableau.com/tssoftware/';
 
-export const siteConfig = {
+export const config = {
     download: {
         windows_py: `${downloadBaseUrl}/tableauhyperapi-${pyversion}-py3-none-win_amd64.whl`,
         windows_cxx: `${downloadBaseUrl}/tableauhyperapi-cxx-windows-x86_64-release-main.${version}.zip`,

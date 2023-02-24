@@ -1,4 +1,4 @@
-UPDATE
+# UPDATE
 
 \[ WITH \[ RECURSIVE \]
 
@@ -54,7 +54,7 @@ output_name
 
 \] \[, \...\] \]
 
-# Description
+## Description
 
 `UPDATE` changes the values of the specified columns in all rows that
 satisfy the condition. Only the columns to be modified need be mentioned
@@ -78,7 +78,7 @@ can be computed. The new (post-update) values of the table\'s columns
 are used. The syntax of the `RETURNING` list is identical to that of the
 output list of `SELECT`.
 
-# Parameters
+## Parameters
 
 \<with_query\>
 
@@ -149,14 +149,14 @@ output list of `SELECT`.
 
 :   A name to use for a returned column.
 
-# Outputs
+## Outputs
 
 If the `UPDATE` command contains a `RETURNING` clause, the result will
 be similar to that of a `SELECT` statement containing the columns and
 values defined in the `RETURNING` list, computed over the row(s) updated
 by the command.
 
-# Notes
+## Notes
 
 When a `FROM` clause is present, what essentially happens is that the
 target table is joined to the tables mentioned in the \<from_list\>, and
@@ -167,7 +167,7 @@ target row shouldn\'t join to more than one row from the other table(s).
 If it does, then only one of the join rows will be used to update the
 target row, but which one will be used is not readily predictable.
 
-# Examples
+## Examples
 
 Change the word `Drama` to `Dramatic` in the column kind of the table
 films:
@@ -229,7 +229,7 @@ Update statistics in a summary table to match the current data:
         (SELECT sum(x), sum(y), avg(x), avg(y) FROM data d
          WHERE d.group_id = s.group_id);
 
-# Compatibility
+## Compatibility
 
 This command conforms to the SQL standard, except that the `FROM` and
 `RETURNING` clauses are Hyper extensions (also available in PostgreSQL),

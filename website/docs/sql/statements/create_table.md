@@ -1,4 +1,4 @@
-CREATE TABLE
+# CREATE TABLE
 
 CREATE \[ { TEMPORARY \| TEMP } \] TABLE \[ IF NOT EXISTS \]
 
@@ -72,7 +72,7 @@ refcolumn
 
 ) \] \[ MATCH FULL \| MATCH SIMPLE \] }
 
-# Description {#sql-createtable-description}
+## Description {#sql-createtable-description}
 
 `CREATE TABLE` will create a new, initially empty table in the current
 database. The table will be owned by the user issuing the command.
@@ -106,7 +106,7 @@ constraint can also be written as a table constraint; a column
 constraint is only a notational convenience for use when the constraint
 only affects one column.
 
-# Parameters
+## Parameters
 
 `TEMPORARY` or `TEMP`
 
@@ -234,7 +234,7 @@ only affects one column.
     `ASSUMED` constraints are not checked by the database. The user has
     to ensure that they hold, otherwise queries may yield wrong results.
 
-# Examples {#sql-createtable-examples}
+## Examples {#sql-createtable-examples}
 
 Create table films and table distributors:
 
@@ -330,7 +330,7 @@ The same, specified as a table constraint:
         ASSUMED UNIQUE(name)
     );
 
-# Compatibility {#sql-createtable-compatibility}
+## Compatibility {#sql-createtable-compatibility}
 
 The `CREATE TABLE` command conforms to the SQL standard, with exceptions
 listed below.
@@ -370,4 +370,4 @@ Hyper allows a table of no columns to be created (for example,
 `CREATE TABLE foo();`). This is an extension from the SQL standard,
 which does not allow zero-column tables.
 
-# See Also
+## See Also

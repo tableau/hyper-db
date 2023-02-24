@@ -1,3 +1,7 @@
+---
+sidebar_position: 6
+---
+
 # Connection Settings {#connectionsettings}
 
 Connection settings are settings that apply only on a connection level.

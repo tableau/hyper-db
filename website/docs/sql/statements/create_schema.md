@@ -1,10 +1,10 @@
-CREATE SCHEMA
+# CREATE SCHEMA
 
-CREATE SCHEMA \[ IF NOT EXISTS \]
+```
+CREATE SCHEMA [IF NOT EXISTS] <schema_name>
+```
 
-schema_name
-
-# Description
+## Description
 
 `CREATE SCHEMA` enters a new schema into the current database. The
 schema name must be distinct from the name of any existing schema in the
@@ -19,7 +19,7 @@ command specifying an unqualified object name creates the object in the
 current schema (the one at the front of the search path, which can be
 determined with the function `current_schema`).
 
-# Parameters
+## Parameters
 
 \<schema_name\>
 
@@ -30,14 +30,12 @@ determined with the function `current_schema`).
 
 :   Do nothing if a schema with the same name already exists.
 
-# Examples
+## Examples
 
 Create a schema:
 
     CREATE SCHEMA myschema;
 
-# Compatibility
+## Compatibility
 
 The `IF NOT EXISTS` option is a Hyper extension.
-
-# See Also

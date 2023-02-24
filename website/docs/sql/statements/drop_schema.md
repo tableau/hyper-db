@@ -1,4 +1,4 @@
-DROP SCHEMA
+# DROP SCHEMA
 
 DROP SCHEMA \[ IF EXISTS \]
 
@@ -6,13 +6,13 @@ name
 
 \[, \...\] \[ CASCADE \| RESTRICT \]
 
-# Description
+## Description
 
 `DROP SCHEMA` removes schemas from the database.
 
 A schema can only be dropped by its owner or a superuser.
 
-# Parameters
+## Parameters
 
 `IF EXISTS`
 
@@ -34,22 +34,22 @@ A schema can only be dropped by its owner or a superuser.
 :   Refuse to drop the schema if it contains any objects. This is the
     default.
 
-# Notes
+## Notes
 
 Using the `CASCADE` option might make the command remove objects in
 other schemas besides the one(s) named.
 
-# Examples
+## Examples
 
 To remove schema `mystuff` from the database, along with everything it
 contains:
 
     DROP SCHEMA mystuff CASCADE;
 
-# Compatibility
+## Compatibility
 
 `DROP SCHEMA` is fully conforming with the SQL standard, except that the
 standard only allows one schema to be dropped per command, and apart
 from the `IF EXISTS` option, which is a Hyper extension.
 
-# See Also
+## See Also

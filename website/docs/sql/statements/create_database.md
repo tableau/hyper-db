@@ -1,4 +1,4 @@
-CREATE DATABASE
+# CREATE DATABASE
 
 CREATE DATABASE \[ IF NOT EXISTS \]
 
@@ -10,11 +10,11 @@ source_database
 
 \]
 
-# Description
+## Description
 
 `CREATE DATABASE` creates a new Hyper database.
 
-# Parameters
+## Parameters
 
 `IF NOT EXISTS`
 
@@ -37,7 +37,7 @@ source_database
     contain a copy of \<source_database\>, including the content of all
     tables and all metadata.
 
-# Examples
+## Examples
 
 To create a new database:
 
@@ -57,10 +57,10 @@ To copy a database `sales` into a new database `sales_copy`:
 
     CREATE DATABASE sales_copy FROM sales;
 
-# Compatibility
+## Compatibility
 
 There is no `CREATE DATABASE` statement in the SQL standard. Databases
 are equivalent to the concept of catalogs, whose creation the SQL
 standard leaves to the application.
 
-# See Also
+## See Also

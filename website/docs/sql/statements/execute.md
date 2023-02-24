@@ -1,4 +1,4 @@
-EXECUTE
+# EXECUTE
 
 EXECUTE
 
@@ -10,7 +10,7 @@ parameter
 
 \[, \...\] ) \]
 
-# Description
+## Description
 
 `EXECUTE` is used to execute a previously prepared statement. Since
 prepared statements only exist for the duration of a session, the
@@ -27,7 +27,7 @@ unique within a database session.
 For more information on the creation and usage of prepared statements,
 see [???](#sql-prepare).
 
-# Parameters
+## Parameters
 
 \<name\>
 
@@ -40,15 +40,15 @@ see [???](#sql-prepare).
     type of this parameter, as was determined when the prepared
     statement was created.
 
-# Examples
+## Examples
 
 Examples are given in the [???](#sql-prepare-examples) section of the
 [???](#sql-prepare) documentation.
 
-# Compatibility
+## Compatibility
 
 The SQL standard includes an `EXECUTE` statement, but it is only for use
 in embedded SQL. This version of the `EXECUTE` statement also uses a
 somewhat different syntax, derived from PostgreSQL.
 
-# See Also
+## See Also

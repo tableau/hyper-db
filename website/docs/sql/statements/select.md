@@ -1,4 +1,4 @@
-SELECT
+# SELECT
 
 TABLE
 
@@ -221,7 +221,7 @@ count
 
 \] { ROW \| ROWS } ONLY \]
 
-# Description
+## Description
 
 `SELECT` retrieves rows from zero or more tables. The general processing
 of `SELECT` is as follows:
@@ -280,7 +280,7 @@ of `SELECT` is as follows:
 You must have `SELECT` privilege on each column used in a `SELECT`
 command.
 
-# Parameters
+## Parameters
 
 ## `WITH` Clause {#sql-with}
 
@@ -1085,7 +1085,7 @@ may still contain duplicates. If any of the ungrouped columns contains
 NULL, it will be indistinguishable from the NULL used when that same
 column is grouped.
 
-# Examples
+## Examples
 
 To join the table `films` with the table `distributors`:
 
@@ -1272,7 +1272,7 @@ of columns within a singly query (see
            | M    |  35
            |      |  50
 
-# Compatibility
+## Compatibility
 
 Of course, the `SELECT` statement is compatible with the SQL standard.
 But there are some extensions and some missing features.

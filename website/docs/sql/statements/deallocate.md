@@ -1,4 +1,4 @@
-DEALLOCATE
+# DEALLOCATE
 
 DEALLOCATE \[ PREPARE \] {
 
@@ -6,7 +6,7 @@ name
 
 \| ALL }
 
-# Description
+## Description
 
 `DEALLOCATE` is used to deallocate a previously prepared SQL statement.
 If you do not explicitly deallocate a prepared statement, it is
@@ -14,7 +14,7 @@ deallocated when the session ends.
 
 For more information on prepared statements, see [???](#sql-prepare).
 
-# Parameters
+## Parameters
 
 `PREPARE`
 
@@ -28,9 +28,9 @@ For more information on prepared statements, see [???](#sql-prepare).
 
 :   Deallocate all prepared statements.
 
-# Compatibility
+## Compatibility
 
 The SQL standard includes a `DEALLOCATE` statement, but it is only for
 use in embedded SQL.
 
-# See Also
+## See Also

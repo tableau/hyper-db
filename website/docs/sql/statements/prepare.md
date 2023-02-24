@@ -1,4 +1,4 @@
-PREPARE
+# PREPARE
 
 PREPARE
 
@@ -12,7 +12,7 @@ data_type
 
 statement
 
-# Description
+## Description
 
 `PREPARE` creates a prepared statement. A prepared statement is a
 server-side object that can be used to optimize performance. When the
@@ -48,7 +48,7 @@ rules. If the statement is relatively simple to plan and rewrite but
 relatively expensive to execute, the performance advantage of prepared
 statements will be less noticeable.
 
-# Parameters
+## Parameters
 
 \<name\>
 
@@ -68,7 +68,7 @@ statements will be less noticeable.
 
 :   Any `SELECT`, `INSERT`, `UPDATE`, `DELETE`, or `VALUES` statement.
 
-# Notes {#sql-prepare-notes}
+## Notes {#sql-prepare-notes}
 
 Prepared statements do not re-generate query plans for executions of the
 statement with different values supplied as parameters. As such, the
@@ -98,7 +98,7 @@ execution of a prepared statement will not change if the search path is
 changed or if tables are created that would cause name resolution to be
 different at the time of execution.
 
-# Examples {#sql-prepare-examples}
+## Examples {#sql-prepare-examples}
 
 Create a prepared statement for an `INSERT` statement, and then execute
 it:
@@ -118,10 +118,10 @@ it:
 Note that the data type of the second parameter is not specified, so it
 is inferred from the context in which `$2` is used.
 
-# Compatibility
+## Compatibility
 
 The SQL standard includes a `PREPARE` statement, but it is only for use
 in embedded SQL. This version of the `PREPARE` statement also uses a
 somewhat different syntax, which is derived from PostgreSQL.
 
-# See Also
+## See Also

@@ -1,4 +1,4 @@
-CREATE TABLE AS
+# CREATE TABLE AS
 
 CREATE \[ { TEMPORARY \| TEMP } \] TABLE \[ IF NOT EXISTS \]
 
@@ -14,7 +14,7 @@ query
 
 \[ WITH \[ NO \] DATA \]
 
-# Description
+## Description
 
 `CREATE TABLE AS` creates a table and fills it with data computed by a
 `SELECT` command. The table columns have the names and data types
@@ -29,7 +29,7 @@ subsequent changes to the source tables of the query. In contrast, a
 view re-evaluates its defining `SELECT` statement whenever it is
 queried.
 
-# Parameters
+## Parameters
 
 `TEMPORARY` or `TEMP`
 
@@ -62,7 +62,7 @@ queried.
     should be copied into the new table. If not, only the table
     structure is copied. The default is to copy the data.
 
-# Examples
+## Examples
 
 Create a new table `films_recent` consisting of only recent entries from
 the table `films`:
@@ -76,7 +76,7 @@ also be used:
     CREATE TABLE films2 AS
       TABLE films;
 
-# Compatibility
+## Compatibility
 
 `CREATE TABLE AS` conforms to the SQL standard. The following are
 nonstandard extensions:
@@ -88,4 +88,4 @@ nonstandard extensions:
 -   Hyper handles temporary tables in a way rather different from the
     standard; see [???](#sql-createtable) for details.
 
-# See Also
+## See Also

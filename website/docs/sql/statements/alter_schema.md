@@ -1,4 +1,4 @@
-ALTER SCHEMA
+# ALTER SCHEMA
 
 ALTER SCHEMA
 
@@ -8,12 +8,12 @@ RENAME TO
 
 new_name
 
-# Description
+## Description
 
 `ALTER SCHEMA` changes the definition of a schema. Currently, Hyper only
 supports renaming a schema.
 
-# Parameters
+## Parameters
 
 \<name\>
 
@@ -24,8 +24,6 @@ supports renaming a schema.
 :   The new name of the schema. The new name cannot begin with `pg_`, as
     such names are reserved for system schemas.
 
-# Compatibility
+## Compatibility
 
 There is no `ALTER SCHEMA` statement in the SQL standard.
-
-# See Also

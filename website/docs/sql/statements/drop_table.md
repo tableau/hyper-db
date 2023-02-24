@@ -1,4 +1,4 @@
-DROP TABLE
+# DROP TABLE
 
 DROP TABLE \[ IF EXISTS \]
 
@@ -6,13 +6,13 @@ name
 
 \[, \...\] \[ CASCADE \| RESTRICT \]
 
-# Description
+## Description
 
 `DROP TABLE` removes tables from the database. To empty a table of rows
 without destroying the table, use [???](#sql-delete) or
 [???](#sql-truncate).
 
-# Parameters
+## Parameters
 
 `IF EXISTS`
 
@@ -32,17 +32,17 @@ without destroying the table, use [???](#sql-delete) or
 :   Refuse to drop the table if any objects depend on it. This is the
     default.
 
-# Examples
+## Examples
 
 To destroy two tables, `films` and `distributors`:
 
     DROP TABLE films, distributors;
 
-# Compatibility
+## Compatibility
 
 This command conforms to the SQL standard, except that the standard only
 allows one table to be dropped per command, and apart from the
 `IF EXISTS` option, which is a Hyper extension (also available in
 PostgreSQL).
 
-# See Also
+## See Also

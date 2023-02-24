@@ -1,4 +1,4 @@
-COPY
+# COPY
 
 COPY
 
@@ -78,7 +78,7 @@ format_specific_option
 
 value
 
-# Description
+## Description
 
 `COPY` moves data between Hyper tables and external locations.
 `COPY FROM` copies data *from* a source location to a table, appending
@@ -93,7 +93,7 @@ a file. The file must be accessible by the Hyper user (the user ID the
 server runs as) and the name must be specified from the viewpoint of the
 server.
 
-# Parameters
+## Parameters
 
 \<table_name\>
 
@@ -118,7 +118,7 @@ server.
 :   A format-specific option. The available options for each respective
     format can be found in [???](#table-external-formats).
 
-# Examples {#sql-copy-examples}
+## Examples {#sql-copy-examples}
 
 Copy a local CSV file from the working directory of the Hyper server,
 having a custom delimiter. The schema of the CSV file is expected to be
@@ -153,7 +153,7 @@ Same but with explicit Amazon S3 credentials and bucket region:
         region => 'us-east-1'
     )
 
-# Notes
+## Notes
 
 Files named in a `COPY` command are read directly by the server, not by
 the client application. Therefore, they must reside on or be accessible
@@ -172,7 +172,7 @@ supported for PostgreSQL compatibility. When writing SQL for Hyper, we
 recommend using the syntax documented here.
 :::
 
-# Alternatives
+## Alternatives
 
 Issuing a `COPY` is equivalent to an [???](#sql-insert) command that
 reads from the [`external`](#functions-srf-external) function, with the

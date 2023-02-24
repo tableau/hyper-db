@@ -1,4 +1,4 @@
-ALTER TABLE
+# ALTER TABLE
 
 ALTER TABLE \[ IF EXISTS \]
 
@@ -74,7 +74,7 @@ is as described in
 
 .
 
-# Description
+## Description
 
 `ALTER TABLE` changes the definition of an existing table. Hyper
 currently only supports the following changes:
@@ -111,7 +111,7 @@ command. It is also possible to create multiple \<column_constraint\> in
 a single command. It is not possible to combine altering columns with
 adding constraints.
 
-# Parameters
+## Parameters
 
 `IF EXISTS`
 
@@ -138,13 +138,13 @@ adding constraints.
 
 :   Data type of the new column.
 
-# Notes
+## Notes
 
 The key word `COLUMN` is noise and can be omitted.
 
 Changing any part of a system catalog table is not permitted.
 
-# Examples
+## Examples
 
 To add a column of type `varchar` to a table:
 
@@ -167,5 +167,3 @@ To add an unnamed assumed foreign key constraint to a table:
     ALTER TABLE distributors ADD ASSUMED FOREIGN KEY (address) REFERENCES addresses (address);
 
 See [???](#sql-createtable) for more examples of table constraints.
-
-# See Also

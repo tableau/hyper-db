@@ -1,4 +1,4 @@
-CREATE TEMPORARY EXTERNAL TABLE
+# CREATE TEMPORARY EXTERNAL TABLE
 
 CREATE { TEMPORARY \| TEMP } EXTERNAL TABLE \[ IF NOT EXISTS \]
 
@@ -94,7 +94,7 @@ format_specific_option
 
 value
 
-# Description {#sql-createexternaltable-description}
+## Description {#sql-createexternaltable-description}
 
 `CREATE TEMPORARY EXTERNAL TABLE` will create a new temporary external
 table, enabling to refer to external data from \<source_location\> in a
@@ -111,7 +111,7 @@ schema from the file. This only works for certain file formats that
 carry schema information; refer to [???](#table-external-formats) for
 details about which file formats support schema inference.
 
-# Parameters
+## Parameters
 
 `TEMPORARY` or `TEMP`
 
@@ -172,7 +172,7 @@ details about which file formats support schema inference.
 :   A format-specific option. The available options for each respective
     format can be found in [???](#table-external-formats).
 
-# Examples {#sql-createexternaltable-examples}
+## Examples {#sql-createexternaltable-examples}
 
 Create a temporary external table for a local CSV file in the working
 directory of the Hyper server, having two columns and a custom
@@ -219,7 +219,7 @@ Same but with explicit Amazon S3 credentials and bucket region:
         region => 'us-east-1'
     )
 
-# Alternatives
+## Alternatives
 
 Using an external table in a SQL query is functionally equivalent to
 calling the [`external`](#functions-srf-external) function. Using
@@ -242,6 +242,6 @@ data might be accessed multiple times. Therefore, Hyper might cache more
 statistics or schema information for the data, so subsequent queries
 might be faster. This however is by no means guaranteed.
 
-# See Also
+## See Also
 
 external

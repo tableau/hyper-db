@@ -1,25 +1,25 @@
-TRUNCATE
+# TRUNCATE
 
 TRUNCATE \[ TABLE \]
 
 name
 
-# Description
+## Description
 
 `TRUNCATE` removes all rows from a table. It has the same effect as an
 unqualified `DELETE` on the target table. It is just used as a
 convenience statement.
 
-# Parameters
+## Parameters
 
 \<name\>
 
 :   The name (optionally schema-qualified) of a table to truncate.
 
-# Examples
+## Examples
 
 Truncate the table `bigtable`:
 
     TRUNCATE bigtable;
 
-# See Also
+## See Also

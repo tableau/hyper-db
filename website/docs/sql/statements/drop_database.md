@@ -1,10 +1,10 @@
-DROP DATABASE
+# DROP DATABASE
 
 DROP DATABASE \[ IF EXISTS \]
 
 name
 
-# Description
+## Description
 
 `DROP DATABASE` drops a database. It deletes the underlying file
 containing the data, as well as any associated files such as the
@@ -17,7 +17,7 @@ database.
 
 `DROP DATABASE` cannot be undone. Use it with care!
 
-# Parameters
+## Parameters
 
 `IF EXISTS`
 
@@ -27,8 +27,8 @@ database.
 
 :   The name of the database to remove.
 
-# Compatibility
+## Compatibility
 
 There is no `DROP DATABASE` statement in the SQL standard.
 
-# See Also
+## See Also

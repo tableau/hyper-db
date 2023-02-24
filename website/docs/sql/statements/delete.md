@@ -1,4 +1,4 @@
-DELETE
+# DELETE
 
 \[ WITH \[ RECURSIVE \]
 
@@ -30,7 +30,7 @@ output_name
 
 \] \[, \...\] \]
 
-# Description
+## Description
 
 `DELETE` deletes rows that satisfy the `WHERE` clause from the specified
 table. If the `WHERE` clause is absent, the effect is to delete all rows
@@ -52,7 +52,7 @@ table\'s columns, and/or columns of other tables mentioned in the
 `USING` clause, can be computed. The syntax of the `RETURNING` list is
 identical to that of the output list of `SELECT`.
 
-# Parameters
+## Parameters
 
 \<with_query\>
 
@@ -97,14 +97,14 @@ identical to that of the output list of `SELECT`.
 
 :   A name to use for a returned column.
 
-# Outputs
+## Outputs
 
 If the `DELETE` command contains a `RETURNING` clause, the result will
 be similar to that of a `SELECT` statement containing the columns and
 values defined in the `RETURNING` list, computed over the row(s) deleted
 by the command.
 
-# Notes
+## Notes
 
 Hyper lets you reference columns of other tables in the `WHERE`
 condition by specifying the other tables in the `USING` clause. For
@@ -123,7 +123,7 @@ deletion. This syntax is not standard. A more standard way to do it is:
 The query plans generated for both forms are equivalent. Thus, they do
 not differ in terms of performance.
 
-# Examples
+## Examples
 
 Delete all films but musicals:
 
@@ -137,10 +137,10 @@ Delete completed tasks, returning full details of the deleted rows:
 
     DELETE FROM tasks WHERE status = 'DONE' RETURNING *;
 
-# Compatibility
+## Compatibility
 
 This command conforms to the SQL standard, except that the `USING` and
 `RETURNING` clauses are Hyper extensions (also available in PostgreSQL),
 as is the ability to use `WITH` with `DELETE`.
 
-# See Also
+## See Also

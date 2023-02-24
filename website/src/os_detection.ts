@@ -1,4 +1,9 @@
+import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
+
 export function detectOS() {
+    if (!ExecutionEnvironment.canUseDOM) {
+        return undefined;
+    }
     let os = navigator.userAgent;
     if (os.search('Windows') !== -1) {
         return 'windows';

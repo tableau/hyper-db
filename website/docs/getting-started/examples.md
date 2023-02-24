@@ -5,25 +5,29 @@ title: Hyper API Examples
 The best way to learn how to use the Hyper API is to look at the sample code.
 The Hyper API provides samples in your programming language of choice that create extract files and then show how you can read, insert, update, and delete data from the files.
 
-<div class="alert alert-info" > <b>Tip: </b>
+:::tip
+
 Sample code using the Hyper API is also available separately on GitHub, see <a href="https://github.com/tableau/hyper-api-samples">Hyper API Samples</a>.
-</div>
+
+:::
 
 
 When you download the Hyper API for your programming language, you can find the example code in the `examples` folder. We recommend the following steps:
 
-1. Download the Hyper API `.zip` file from [Hyper API - Products Release and Download](https://tableau.com/support/releases/hyper-api/latest){:target="_blank"}{:ref="noopener"} for your programming language and platform of choice.
+1. Download the Hyper API `.zip` file from [our download page](download) for your programming language and platform of choice.
 
 2. Examine the source code in the `examples` folder.
 
-3. Build the examples. For information about building and running the the samples, follow the instructions for your programming language of choice, see [Install the Hyper API]({{site.baseurl}}/docs/hyper_api_installing.html).
+3. Build the examples. For information about building and running the the samples, follow the instructions for your programming language of choice, see [Install the Hyper API](installing).
 
 4. Use the example code as a starting point for your own applications.
 
 
-<div class="alert alert-info" > <b>Tip: </b>
+:::tip
+
 For basic information about creating <code>.hyper</code> files using the Hyper API and Python, see <a href="https://help.tableau.com/current/api/hyper_api/en-us/docs/hyper_api_create_update.html">Create and Update Hyper Files</a>.
-</div>
+
+:::
 
 ---
 

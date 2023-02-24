@@ -75,11 +75,6 @@ const config = {
             label: 'Documentation',
           },
           {to: '/blog', label: 'Blog', position: 'left'},
-          {
-            href: 'https://github.com/tableau/hyper-db',
-            label: 'GitHub',
-            position: 'right',
-          },
         ],
       },
       footer: {
@@ -125,6 +120,14 @@ const config = {
               {
                 label: 'GitHub',
                 href: 'https://github.com/facebook/docusaurus',
+              },
+              {
+                label: 'Slack',
+                href: 'https://join.slack.com/t/tableau-datadev/shared_invite/zt-1q4rrimsh-lHHKzrhid1MR4aMOkrnAFQ',
+              },
+              {
+                label: 'Support',
+                href: '/docs/faq#how-can-i-get-suport-for-hyper',
               },
             ],
           },

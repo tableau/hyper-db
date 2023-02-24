@@ -29,7 +29,7 @@ export function DownloadPicker() {
         <li><a href={config.download.macos_dotnet}>.Net (macOS)</a></li>
       </ul>
       <Admonition type="info" title="Apple Silicon support">
-        <p>Hyper API runs on Apple Silicon only under Rosetta 2 instead of natively. In particular for Python, this means that your host Python needs to be running in Intel mode.</p>
+        <p>Hyper API runs on Apple Silicon only under Rosetta 2 instead of natively. In particular for Python, this means that your host Python needs to be running under Rosetta, too.</p>
       </Admonition>
     </TabItem>
     <TabItem value="linux" label={<><LinuxIcon className={styles.svgicon}/> Linux</>}>

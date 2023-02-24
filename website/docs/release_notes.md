@@ -3,11 +3,6 @@ title: What's New in the Hyper API
 sidebar_position: 2
 ---
 
-* TOC
-{:toc}
-
----
-
 ## What's New in the Hyper API (v0.0.16491)
 
 *February 8, 2023*

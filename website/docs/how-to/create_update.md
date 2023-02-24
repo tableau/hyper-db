@@ -31,10 +31,8 @@ C-->|Stop HyperProcess|B
 The name of the library will vary depending upon the programming language and client library you are using (for example, the library is `tableauhyperapi` for the Python client library).
 
 ```python
-
 from tableauhyperapi import HyperProcess, Telemetry, Connection, CreateMode, NOT_NULLABLE, NULLABLE, \
 SqlType, TableDefinition, Inserter, escape_name, escape_string_literal, HyperException, TableName
-
 ```
 
 ### 2. Start the HyperProcess
@@ -48,9 +46,7 @@ You can also specify the `user_agent`, this is just an arbitrary string that can
 By default, Hyper will use the initial default file format version 0. You can deviate from the default file format version via the `default_database_version` parameter. To learn more about the available versions and product support, see [Hyper Process Settings]({{site.baseurl}}/reference/sql/databasesettings.html#DEFAULT_DATABASE_VERSION).
 
 ```python
-
 with HyperProcess(telemetry=Telemetry.SEND_USAGE_DATA_TO_TABLEAU) as hyper:
-
 ```
 
 <div class="alert alert-info">
@@ -69,15 +65,14 @@ If you create the connection using a **with** statement (in Python), when the **
 The **with** construct means we don't have to call `connection.close()` explicitly. You should always close the connection when your application is finished interacting with the `.hyper` file.
 
 ```python
-
 with Connection(hyper.endpoint, 'TrivialExample.hyper', CreateMode.CREATE_AND_REPLACE) as connection:
-
 ```
 
-<div class="alert alert-info">
-    <b>Important:</b> When you open a connection to a <code>.hyper</code> file and while the connection remains open, no other process can use the file. That is, while your application is connected to the <code>.hyper</code> file, it has exclusive access: no other instance of Hyper can connect to the file. That means, you can't open the file using the Hyper API and have the file open in Tableau at the same time.
-</div>
- 
+:::caution 
+
+When you open a connection to a <code>.hyper</code> file and while the connection remains open, no other process can use the file. That is, while your application is connected to the <code>.hyper</code> file, it has exclusive access: no other instance of Hyper can connect to the file. That means, you can't open the file using the Hyper API and have the file open in Tableau at the same time.
+
+::: 
 
 
 ### 4. Define the table(s)
@@ -85,15 +80,14 @@ with Connection(hyper.endpoint, 'TrivialExample.hyper', CreateMode.CREATE_AND_RE
 Create the table definition(s) using `TableDefinition` method and name the table.
 
 You can create a named schema (or namespace) in the database to help organize and differentiate tables. You can use `connection.catalog.create_schema()` method or the SQL `CREATE SCHEMA` command to create and name the schema. If you do not specify a schema, the default schema name is `public`. To work with tables in the `public` space, you only need to specify the name of the table. If you are working with `.hyper` files that were created by applications that use the Extract API 2.0, the default schema is named `Extract`; for those files you need to specify the schema and the name of the table. To specify the schema when you define the table, or when you want to interact with the table and need to pass the name of the table as an argument, use the fully-qualified name. For example, for a `.hyper` file created with the Extract API 2.0, you might use `TableName('Extract', 'Extract')` as an argument when you want to update that existing table. If you want to create a new table named `Extract` in the `Extract` namespace (`Extract.Extract`), you need to create the `Extract` schema before you define the table, as shown in the following example.
-```python
 
+```python
 connection.catalog.create_schema('Extract')
 
 example_table = TableDefinition( TableName('Extract','Extract'), [
     TableDefinition.Column('rowID', SqlType.big_int()),
     TableDefinition.Column('value', SqlType.big_int()),
 ])
-
 ```
 
 
@@ -102,9 +96,7 @@ example_table = TableDefinition( TableName('Extract','Extract'), [
 You create a table using the connection `catalog`. The catalog is responsible for the metadata about the extract (database) file. You can use the catalog to query the database. For example, the following Python code creates the catalog for the table we defined in the previous step (`example_table`):
 
 ```python
-
 connection.catalog.create_table(example_table)
-
 ```
 
 ### 6. Add data to the table(s)
@@ -112,14 +104,12 @@ connection.catalog.create_table(example_table)
 Populate the table using the `Inserter` or use SQL commands to copy or add data.
 
 ```python
-
 with Inserter(connection, example_table) as inserter:
     for i in range (1, 101):
         inserter.add_row(
             [ i, i ]
         )
     inserter.execute()
-
 ```
 
 You don't need to manually buffer the data you are adding with the `Inserter`, as this handled for you.
@@ -136,7 +126,6 @@ When your application is finished populating the extract file with data, you fir
 The following example creates a simple extract file with a single table. For compatibility with the Extract API 2.0, this example creates a table called `Extract` that uses the schema named `Extract`. 
 
 ```python
-
 from tableauhyperapi import Connection, HyperProcess, SqlType, TableDefinition, \
     escape_string_literal, escape_name, NOT_NULLABLE, Telemetry, Inserter, CreateMode, TableName
 
@@ -161,7 +150,6 @@ with HyperProcess(Telemetry.SEND_USAGE_DATA_TO_TABLEAU) as hyper:
         print("The data was added to the table.")
     print("The connection to the Hyper extract file is closed.")
 print("The HyperProcess has shut down.")
-
 ```
 
 ## Update an existing extract file
@@ -181,7 +169,6 @@ If you are working with `.hyper` files that were created by applications that us
 The following example appends a row to an existing table within an extract file.
 
 ```python
-
 from tableauhyperapi import Connection, HyperProcess, SqlType, TableDefinition, \
     escape_string_literal, escape_name, NOT_NULLABLE, Telemetry, Inserter, CreateMode, TableName
 
@@ -196,5 +183,4 @@ with HyperProcess(Telemetry.SEND_USAGE_DATA_TO_TABLEAU) as hyper:
         print("The data in table \"Extract\" has been updated.")
     print("The connection to the Hyper file is closed.")
 print("The HyperProcess has shutdown.")
-
 ```

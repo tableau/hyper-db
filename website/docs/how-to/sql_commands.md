@@ -19,7 +19,6 @@ To use SQL commands with the Hyper API, you first need a connection to the datab
 #### Example: Connect to database (.hyper file) (Python)
 
 ```python
-
 # Start Hyper
 with HyperProcess(telemetry=Telemetry.SEND_USAGE_DATA_TO_TABLEAU ) as hyper:
 
@@ -27,7 +26,6 @@ with HyperProcess(telemetry=Telemetry.SEND_USAGE_DATA_TO_TABLEAU ) as hyper:
     with Connection(endpoint=hyper.endpoint, database='mydb.hyper') as connection:
 
         # ... use the connection object to send SQL commands or queries
-
 ```
 
 ## Create the SQL command using the connection object
@@ -46,9 +44,7 @@ The `Connection` class in the Hyper API provides methods for creating SQL statem
 **SQL command syntax:**
 
 ```python
-
 connection.execute_command(command="SQL-statement")
-
 ```
 
 Where the *SQL-statement* can be any valid Hyper SQL command. The `execute_command` method returns the row count of the number of rows affected. Be sure to assign the return value to a variable when you call the method. 
@@ -56,9 +52,7 @@ Where the *SQL-statement* can be any valid Hyper SQL command. The `execute_comma
 **SQL query syntax:**
 
 ```python
-
 connection.query_method(query="query_string")
-
 ```
 
 Where the *query_string* can be any Hyper SQL query that returns a result type that is valid for the query method. For example, the `execute_query` method returns a `result` object, and the `execute_scalar_query` method executes a scalar query and returns the value from one row, one column. Be sure to assign the result to a variable when you call the query method. In Python, you should also use a `with` construct when you call the query method, so that you can properly close the results object when you are finished. You can also close the result object directly by calling its `close()` method.  
@@ -79,25 +73,20 @@ In Python, you can use formatted string literals (or f-strings). You add an `f` 
 The following example, shows how you can update values in a table and how to concatenate long SQL statements in a series of strings. The `execute_command` method returns the count of affected rows.
 
 ```python
-
-    row_count = connection.execute_command(
-        command=f"UPDATE {escape_name('Customer')} "
-        f"SET {escape_name('Loyalty Reward Points')} = {escape_name('Loyalty Reward Points')} + 50 "
-        f"WHERE {escape_name('Segment')} = {escape_string_literal('Corporate')}")
-
+row_count = connection.execute_command(
+    command=f"UPDATE {escape_name('Customer')} "
+    f"SET {escape_name('Loyalty Reward Points')} = {escape_name('Loyalty Reward Points')} + 50 "
+    f"WHERE {escape_name('Segment')} = {escape_string_literal('Corporate')}")
 ```
 
 The following example, shows how to delete data from a `.hyper` file, and it also shows how to use `escape_name` and `escape_string_literal` for the names of tables, columns, and values.
 
 
 ```python
-
-
-    row_count = connection.execute_command(
-        command=f"DELETE FROM {escape_name('Orders')} "
-        f"WHERE {escape_name('Customer ID')} = ANY("
-        f"SELECT {escape_name('Customer ID')} FROM {escape_name('Customer')} "
-        f"WHERE {escape_name('Customer Name')} = {escape_string_literal('Dennis Kane')})")
-
+row_count = connection.execute_command(
+    command=f"DELETE FROM {escape_name('Orders')} "
+    f"WHERE {escape_name('Customer ID')} = ANY("
+    f"SELECT {escape_name('Customer ID')} FROM {escape_name('Customer')} "
+    f"WHERE {escape_name('Customer Name')} = {escape_string_literal('Dennis Kane')})")
 ```
 

@@ -12,17 +12,15 @@ The comma-separated values (CSV) file is a popular way to import and export tabu
 
     Just like other extract file operations, anytime you want to work with a `.hyper` extract file, you need to start the `HyperProcess` and then open a connection to create a new file `.hyper`, or to connect to an existing file. In this example, the HyperProcess will send usage data to Tableau. To opt out, set `telemetry` to `Telemetry.DO_NOT_SEND_USAGE_DATA_TO_TABLEAU`. See [About Usage Data]({{site.baseurl}}/docs/hyper_api_create_update.html#usage-data).
 
-
     ```python
+    with HyperProcess(telemetry=Telemetry.SEND_USAGE_DATA_TO_TABLEAU) as hyper:
 
-        with HyperProcess(telemetry=Telemetry.SEND_USAGE_DATA_TO_TABLEAU) as hyper:
-
-            # Creates a new Hyper file or
-            # replaces the file if it already exists.
-            with Connection(endpoint=hyper.endpoint,
-                    database=path_to_hyper_file,
-                    create_mode=CreateMode.CREATE_AND_REPLACE) as connection:
-            # ...
+        # Creates a new Hyper file or
+        # replaces the file if it already exists.
+        with Connection(endpoint=hyper.endpoint,
+                database=path_to_hyper_file,
+                create_mode=CreateMode.CREATE_AND_REPLACE) as connection:
+        # ...
     ```
 
 2. Define and create the table to contain the CSV data.
@@ -39,7 +37,6 @@ The comma-separated values (CSV) file is a popular way to import and export tabu
             TableDefinition.Column("Segment", SqlType.text(), NOT_NULLABLE)
         ]
     )
-
     ```
 
 3. Construct the Hyper SQL command to copy from a CSV file.
@@ -69,7 +66,6 @@ The example refers to the table `customer_table`, which is defined in the exampl
 
 
 ```python
-
 # Using path to current file, create a path that locates CSV file packaged with these examples.
 
 # path_to_csv =  "customers.csv"
@@ -91,6 +87,5 @@ print("of our csv file contains the column names, we use the `header` option to 
 count_in_customer_table = connection.execute_command(
     command=f"COPY {customer_table.name} from {escape_string_literal(path_to_csv)} with "
         f"(format csv, NULL 'NULL', delimiter ',', header)")
- print(f"The number of rows in table {customer_table.name} is {count_in_customer_table}.")
-
+print(f"The number of rows in table {customer_table.name} is {count_in_customer_table}.")
 ```

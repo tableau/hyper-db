@@ -16,15 +16,11 @@ To read data from a file, you first need a connection to the database (the `.hyp
 ### Example: Connect to database (.hyper file) (Python)
 
 ```python
-
 # Start Hyper
 with HyperProcess(telemetry=Telemetry.SEND_USAGE_DATA_TO_TABLEAU ) as hyper:
-
-#  Connect to an existing .hyper file (CreateMode.NONE)
+    #  Connect to an existing .hyper file (CreateMode.NONE)
     with Connection(endpoint=hyper.endpoint, database='mydb.hyper') as connection:
-
         # ... use the connection object to send SQL queries to read data
-
 ```
 
 ## Step 2: Execute the SQL query using the connection object
@@ -41,9 +37,7 @@ The syntax for these SQL query methods is as follows:
 
 
 ```python
-
-    connection.query_method(query="query_string")
-
+connection.query_method(query="query_string")
 ```
 
 Where *query_method* is one of the methods listed in the table. The *query_string* can be any Hyper SQL query that returns a result type that is valid for the query method. For example, the `execute_query` method returns a `result` object, and the `execute_scalar_query` method executes a scalar query and returns the value from one row, one column.
@@ -61,21 +55,17 @@ For more information about the supported SQL statements, see the [Hyper SQL docu
 Prints the values in a table, row by row.
 
 ```python
-
 with connection.execute_query(query=f"SELECT * FROM {TableName('foo')} ") as result:
     rows = list(result)
     print(rows)
-
 ```
 
 The `result` object implements the iterator protocol, so you can use it on the returned object to cycle through the data.
 
 ```python
-
 with connection.execute_query('SELECT * FROM foo') as result:
     for row in result:
         print(row)
-
 ```
 
 ## Example: `execute_query` using an Extract API 2.0 Hyper file (Python)
@@ -84,7 +74,6 @@ If you want to read from a `.hyper` file that was created with the Extract API 2
 For example, to read from a table named **Extract** that is in the `Extract` namespace, you could use a formatted-string literal (f-string) and the `TableName` method to construct the query. 
 
 ```python
-
 with connection.execute_query(query=f"SELECT * FROM {TableName("Extract", "Extract")}") as result:
     for row in result:
         print(row)
@@ -97,10 +86,8 @@ The `execute_query` method returns a `Result` object. Use the `Result` object in
 The method returns a list of rows in the table.
 
 ```python
-
 rows_in_table = connection.execute_list_query(query=f"SELECT * FROM {TableName('foo')}")
 print(rows_in_table)
-
 ```
 
 ## Example: `execute_scalar_query` (Python)
@@ -108,10 +95,8 @@ print(rows_in_table)
 Find the value of a specific column and row in a table and print that value.
 
 ```python
-
 value_in_table = connection.execute_scalar_query(query=f"SELECT value FROM {TableName('foo')} WHERE {escape_name('rowID')} = 12")
 print(value_in_table)
-
 ```
 
 ## Example: `execute_scalar_query` to find maximum value (Python)
@@ -119,9 +104,6 @@ print(value_in_table)
 Find the maximum value in a column of a table and print its value. 
 
 ```python
-
 max_in_table =  connection.execute_scalar_query(query=f"SELECT MAX(value) FROM {TableName('Extract', 'Extract')}") 
 print(f"The max value in the table is: {max_in_table}")
-
-
 ```

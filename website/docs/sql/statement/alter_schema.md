@@ -1,12 +1,12 @@
 # ALTER SCHEMA
 
-ALTER SCHEMA
+— change properties of a schema
 
-name
+## Synopsis
 
-RENAME TO
-
-new_name
+```
+ALTER SCHEMA <name> RENAME TO <new_name>
+```
 
 ## Description
 
@@ -15,15 +15,10 @@ supports renaming a schema.
 
 ## Parameters
 
-\<name\>
-
-:   The name of an existing schema.
-
-\<new_name\>
-
-:   The new name of the schema. The new name cannot begin with `pg_`, as
-    such names are reserved for system schemas.
-
-## Compatibility
-
-There is no `ALTER SCHEMA` statement in the SQL standard.
+<dl>
+    <dt>&lt;name&gt;</dt>
+    <dd>The name of an existing schema.</dd>
+    <dt>&lt;new_name&gt;</dt>
+    <dd>The new name of the schema. The new name cannot begin with `pg_`, as
+    such names are reserved for system schemas.</dd>
+</dl>

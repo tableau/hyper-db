@@ -1,10 +1,12 @@
 # DROP SCHEMA
 
-DROP SCHEMA \[ IF EXISTS \]
+— remove a schema
 
-name
+## Synopsis
 
-\[, \...\] \[ CASCADE \| RESTRICT \]
+```
+DROP SCHEMA [ IF EXISTS ] <name> [, ...] [ CASCADE | RESTRICT ]
+```
 
 ## Description
 

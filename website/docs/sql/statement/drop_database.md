@@ -1,8 +1,12 @@
 # DROP DATABASE
 
-DROP DATABASE \[ IF EXISTS \]
+— remove a database
 
-name
+## Synopsis
+
+```
+DROP DATABASE [IF EXISTS] <name>
+```
 
 ## Description
 

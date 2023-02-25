@@ -1,14 +1,12 @@
 # EXECUTE
 
-EXECUTE
+— execute a prepared statement
 
-name
+## Synopsis
 
-\[ (
-
-parameter
-
-\[, \...\] ) \]
+```
+EXECUTE <name> [ (<parameter> [, ...]) ]
+```
 
 ## Description
 

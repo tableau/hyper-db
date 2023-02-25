@@ -1,5 +1,9 @@
 # CREATE SCHEMA
 
+— define a new schema
+
+## Synopsis
+
 ```
 CREATE SCHEMA [IF NOT EXISTS] <schema_name>
 ```

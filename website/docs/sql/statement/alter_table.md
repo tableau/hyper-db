@@ -1,78 +1,30 @@
 # ALTER TABLE
 
-ALTER TABLE \[ IF EXISTS \]
+— change the definition of a table
 
-name
+## Synopsis
 
-RENAME TO
+```
+ALTER TABLE [IF EXISTS] <name> RENAME TO <new_name>;
+ALTER TABLE [IF EXISTS] <name> RENAME [COLUMN] <column_name> TO <new_name>;
 
-new_name
+ALTER TABLE [IF EXISTS] <name> ADD <table_constraint>;
 
-ALTER TABLE \[ IF EXISTS \]
+ALTER TABLE [IF EXISTS] name
+  ADD [COLUMN] [IF NOT EXISTS] column_name data_type
+  [COLLATE <collation>]
+  [<column_constraint>] [...];
 
-name
+ALTER TABLE [IF EXISTS] DROP [COLUMN] [IF EXISTS] <column_name>
+```
 
-RENAME \[ COLUMN \]
+where `column_constraint`is:
 
-column_name
+```
+{ NOT NULL | NULL | DEFAULT default_expr }
+```
 
-TO
-
-new_column_name
-
-ALTER TABLE \[ IF EXISTS \]
-
-name
-
-ADD
-
-table_constraint
-
-ALTER TABLE \[ IF EXISTS \]
-
-name
-
-ADD \[ COLUMN \] \[ IF NOT EXISTS \]
-
-column_name
-
-data_type
-
-\[ COLLATE
-
-collation
-
-\] \[
-
-column_constraint
-
-\[ \... \] \] ALTER TABLE \[ IF EXISTS \]
-
-name
-
-DROP \[ COLUMN \] \[ IF EXISTS \]
-
-column_name
-
-where
-
-column_constraint
-
-is:
-
-{ NOT NULL \| NULL \| DEFAULT
-
-default_expr
-
-}
-
-and
-
-table_constraint
-
-is as described in
-
-.
+and `table_constraint` is as described in **???**.
 
 ## Description
 

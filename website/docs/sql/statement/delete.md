@@ -1,34 +1,16 @@
 # DELETE
 
-\[ WITH \[ RECURSIVE \]
+— delete rows of a table
 
-with_query
+## Synopsis
 
-\[, \...\] \] DELETE FROM
-
-table_name
-
-\[ \[ AS \]
-
-alias
-
-\] \[ USING
-
-using_list
-
-\] \[ WHERE
-
-condition
-
-\] \[ RETURNING \* \|
-
-output_expression
-
-\[ \[ AS \]
-
-output_name
-
-\] \[, \...\] \]
+```
+[ WITH [RECURSIVE] <with_query> [, ...] ]
+DELETE FROM <table_name> [ [AS] alias ] alias]
+[ USING <using_list> ]
+[ WHERE <condition> ]
+[ RETURNING { * | <output_expression> [AS <output_name>]} [, ...] ]
+```
 
 ## Description
 

@@ -1,38 +1,18 @@
 # INSERT
 
-\[ WITH \[ RECURSIVE \]
+— create new rows in a table
 
-with_query
+## Synopsis
 
-\[, \...\] \] INSERT INTO
-
-table_name
-
-{ { DEFAULT VALUES \| \[ (
-
-column_name
-
-\[, \...\] ) \] VALUES ( {
-
-expression
-
-\| DEFAULT }) \[, \...\] \| \[ (
-
-column_name
-
-\[, \...\] ) \]
-
-query
-
-} \[ RETURNING \* \|
-
-output_expression
-
-\[ \[ AS \]
-
-output_name
-
-\] \[, \...\] \]
+```
+[ WITH [RECURSIVE] <with_query> [, ...] ]
+INSERT INTO <table_name>
+    { DEFAULT VALUES |
+        [ (<column_name> [, ...]) ] VALUES ( { <expression> | DEFAULT } [, ...]) |
+        [ (<column_name> [, ...]) ] <query> ]
+    }
+[ RETURNING { * | <output_expression> [AS <output_name>]} [, ...] ]
+```
 
 ## Description
 

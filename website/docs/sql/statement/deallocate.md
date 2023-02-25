@@ -1,10 +1,12 @@
 # DEALLOCATE
 
-DEALLOCATE \[ PREPARE \] {
+— deallocate a prepared statement
 
-name
+## Synopsis
 
-\| ALL }
+```
+DEALLOCATE [PREPARE] { <name> | ALL }
+```
 
 ## Description
 

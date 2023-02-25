@@ -1,44 +1,23 @@
-# CREATE TEMPORARY EXTERNAL TABLE
+# CREATE EXTERNAL TABLE
 
-CREATE { TEMPORARY \| TEMP } EXTERNAL TABLE \[ IF NOT EXISTS \]
+— define a new external table
 
-table_name
+## Synopsis
 
-\[ ( \[
+```
+CREATE { TEMPORARY | TEMP } EXTERNAL TABLE [IF NOT EXISTS] <table_name>
+    [ ( column_def [, ...]) ]
+    FOR <source_location>
+    [ WITH ( option, [...] ) ]
+```
 
-column_def
+where `column_def` is:
 
-\[, \...\] \] ) \] FOR
+```
+<column_name> <data_type> [COLLATE <collation>] [ {NOT NULL | NULL } ]
+```
 
-source_location
-
-\[ WITH (
-
-option
-
-\[, \...\] ) \]
-
-where
-
-column_def
-
-is:
-
-column_name
-
-data_type
-
-\[ COLLATE
-
-collation
-
-\] \[ NOT NULL \| NULL \]
-
-and
-
-source_location
-
-can be one of:
+and `source_location` can be one of:
 
 \'
 

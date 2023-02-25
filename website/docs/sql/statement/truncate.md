@@ -1,8 +1,12 @@
 # TRUNCATE
 
-TRUNCATE \[ TABLE \]
+— empty a table
 
-name
+## Synopsis
+
+```
+TRUNCATE [ TABLE ] <name>
+```
 
 ## Description
 

@@ -1,10 +1,12 @@
 # DROP TABLE
 
-DROP TABLE \[ IF EXISTS \]
+— remove a table
 
-name
+## Synopsis
 
-\[, \...\] \[ CASCADE \| RESTRICT \]
+```
+DROP TABLE [ IF EXISTS ] <name> [, ...] [ CASCADE | RESTRICT ]
+```
 
 ## Description
 

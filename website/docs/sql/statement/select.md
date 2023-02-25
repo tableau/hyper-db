@@ -1,225 +1,62 @@
 # SELECT
 
-TABLE
-
-WITH
-
-VALUES
-
-\[ WITH \[ RECURSIVE \]
-
-with_query
-
-\[, \...\] \] SELECT \[ ALL \| DISTINCT \[ ON (
-
-expression
-
-\[, \...\] ) \] \] \[ \* \|
-
-expression
-
-\[ \[ AS \]
-
-output_name
-
-\] \[, \...\] \] \[ FROM
-
-from_item
-
-\[, \...\] \] \[ WHERE
-
-condition
-
-\] \[ GROUP BY
-
-expression
-
-\[, \...\] \] \[ HAVING
-
-condition
-
-\[, \...\] \] \[ WINDOW
-
-window_name
-
-AS (
-
-window_definition
-
-) \[, \...\] \] \[ { UNION \| INTERSECT \| EXCEPT } \[ ALL \| DISTINCT
-\]
-
-select
-
-\] \[ ORDER BY
-
-expression
-
-\[ ASC \| DESC \] \[ NULLS { FIRST \| LAST } \] \[, \...\] \] \[ LIMIT {
-
-count
-
-\| ALL } \] \[ OFFSET
-
-start
-
-\[ ROW \| ROWS \] \] \[ FETCH { FIRST \| NEXT } \[
-
-count
-
-\] { ROW \| ROWS } ONLY \]
-
-where
-
-from_item
-
-can be one of:
-
-table_name
-
-\[ \[ AS \]
-
-alias
-
-\[ (
-
-column_alias
-
-\[, \...\] ) \] \] \[ TABLESAMPLE
-
-sampling_method
-
-(
-
-sample_size
-
-) \[ REPEATABLE (
-
-seed
-
-) \] \] \[ LATERAL \] (
-
-select
-
-) \[ AS \] \[
-
-alias
-
-\] \[ (
-
-column_alias
-
-\[, \...\] ) \]
-
-with_query_name
-
-\[ \[ AS \]
-
-alias
-
-\[ (
-
-column_alias
-
-\[, \...\] ) \] \] \[ LATERAL \]
-
-function_name
-
-( \[
-
-argument
-
-\[, \...\] \] ) \[ \[ AS \]
-
-alias
-
-\[ (
-
-column_alias
-
-\[, \...\] ) \] \]
-
-from_item
-
-\[ NATURAL \]
-
-join_type
-
-from_item
-
-\[ ON
-
-join_condition
-
-\| USING (
-
-join_column
-
-\[, \...\] ) \]
-
-and
-
-with_query
-
-is:
-
-with_query_name
-
-\[ (
-
-column_name
-
-\[, \...\] ) \] AS (
-
-select
-
-)
-
-and
-
-sample_size
-
-can be one of:
-
-size
-
-\[ ROWS \| PERCENT \]
-
-size
-
-PERCENT \[ BETWEEN \[
-
-count
-
-\| UNBOUNDED \] ROWS AND \[
-
-count
-
-\| UNBOUNDED \] ROWS \] TABLE
-
-table_name
-
-VALUES (
-
-expression
-
-\[, \...\] ) \[, \...\] \[ ORDER BY
-
-sort_expression
-
-\[ ASC \| DESC \] \[, \...\] \] \[ LIMIT {
-
-count
-
-\| ALL } \] \[ OFFSET
-
-start
-
-\[ ROW \| ROWS \] \] \[ FETCH { FIRST \| NEXT } \[
-
-count
-
-\] { ROW \| ROWS } ONLY \]
+— retrieve rows from a table or view
+
+## Synopsis
+
+```
+TABLE <table_name>;
+
+[ WITH [ RECURSIVE ] <with_query> [, ...] ]
+SELECT [ ALL | DISTINCT [ ON ( <expression> [, ...] ) ] ]
+    [ * | <expression> [ [ AS ] <output_name> ] [, ...] ]
+    [ FROM <from_item> [, ...] ]
+    [ WHERE <condition> ]
+    [ GROUP BY <expression> [, ...] ]
+    [ HAVING <condition> [, ...] ]
+    [ WINDOW <window_name> AS ( <window_definition> ) [, ...] ]
+    [ { UNION | INTERSECT | EXCEPT } [ ALL | DISTINCT ] <select> ]
+    [ ORDER BY <expression> [ ASC | DESC ] [ NULLS { FIRST | LAST } ] [, ...] ]
+    [ LIMIT { <count> | ALL } ]
+    [ OFFSET <start> [ ROW | ROWS ] ]
+    [ FETCH { <FIRST> | <NEXT> } [ <count> ] { ROW | ROWS } ONLY ];
+
+VALUES ( <expression> [, ...] ) [, ...]
+    [ ORDER BY <sort_expression> [ ASC | DESC ] [, ...] ]
+    [ LIMIT { <count> | ALL } ]
+    [ OFFSET <start> [ ROW | ROWS ] ]
+    [ FETCH { FIRST | NEXT } [ <count> ] { ROW | ROWS } ONLY ];
+```
+
+where `from_item` can be one of:
+
+```
+table_name [ [ AS ] <alias> [ ( <column_alias> [, ...] ) ] ]
+    [ TABLESAMPLE <sampling_method> ( <sample_size> ) [ REPEATABLE ( <seed> ) ] ]
+
+<with_query_name> [ [ AS ] <alias> [ ( <column_alias> [, ...] ) ] ]
+
+[ LATERAL ] ( <select> ) [ AS ] [<alias>] [ ( <column_alias> [, ...] ) ]
+
+[ LATERAL ] <function_name> ( [ <argument> [, ...] ] )
+    [ [ AS ] <alias> [ ( <column_alias> [, ...] ) ] ]
+
+<from_item> [ NATURAL ] <join_type> <from_item>
+    [ ON <join_condition> | USING ( <join_column> [, ...] )
+```
+
+and `with_query` is:
+
+```
+<with_query_name> [ ( <column_name> [, ...] ) ] AS ( <select> )
+```
+
+and `sample_size` can be one of:
+
+```
+size [ ROWS | PERCENT ] |
+size PERCENT [ BETWEEN { count | UNBOUNDED } ROWS AND { count | UNBOUNDED } ROWS }
+```
 
 ## Description
 

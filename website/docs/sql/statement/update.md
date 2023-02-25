@@ -1,58 +1,20 @@
 # UPDATE
 
-\[ WITH \[ RECURSIVE \]
+— update rows in a table
 
-with_query
+## Synopsis
 
-\[, \...\] \] UPDATE
-
-table_name
-
-\[ \[ AS \]
-
-alias
-
-\] SET {
-
-column_name
-
-= {
-
-expression
-
-\| DEFAULT } \| (
-
-column_name
-
-\[, \...\] ) = \[ ROW \] ( {
-
-expression
-
-\| DEFAULT } \[, \...\] ) \| (
-
-column_name
-
-\[, \...\] ) = (
-
-sub-SELECT
-
-) } \[, \...\] \[ FROM
-
-from_list
-
-\] \[ WHERE
-
-condition
-
-\] \[ RETURNING \* \|
-
-output_expression
-
-\[ \[ AS \]
-
-output_name
-
-\] \[, \...\] \]
+```
+[ WITH [RECURSIVE] <with_query> [, ...] ]
+UPDATE table_name [ [ AS ] alias ]
+    SET { <column_name> = { <expression> | DEFAULT } |
+          ( <column_name> [, ...] ) = [ ROW ] ( { <expression> | DEFAULT } [, ...] ) |
+          ( <column_name> [, ...] ) = ( <sub_select> )
+        } [, ...]
+[ FROM <from_list> ]
+[ WHERE <condition> ]
+[ RETURNING { * | <output_expression> } [ [ AS ] <output_name> ] [, ...] ]
+```
 
 ## Description
 

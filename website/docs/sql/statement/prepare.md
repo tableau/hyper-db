@@ -1,16 +1,12 @@
 # PREPARE
 
-PREPARE
+— prepare a statement for execution
 
-name
+## Synopsis
 
-\[ (
-
-data_type
-
-\[, \...\] ) \] AS
-
-statement
+```
+PREPARE <name> [ ( <data_type> [, ...] ) ] AS <statement>
+```
 
 ## Description
 

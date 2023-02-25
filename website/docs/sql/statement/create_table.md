@@ -1,76 +1,41 @@
 # CREATE TABLE
 
-CREATE \[ { TEMPORARY \| TEMP } \] TABLE \[ IF NOT EXISTS \]
+— define a new table
 
-table_name
+## Synopsis
 
-( \[ {
+```
+CREATE [ { TEMPORARY | TEMP } ] TABLE [IF NOT EXISTS] <table_name> (
+    {
+        <column_name> <data_type> [COLLATE <collation>] [<column_constraint>] |
+        <table_constraint>
+    } [, ...]
+)
+```
 
-column_name
+where `column_constraint` is:
 
-data_type
+```
+{ NOT NULL |
+  NULL |
+  DEFAULT <default_expr> |
+  ASSUMED UNIQUE |
+  ASSUMED PRIMARY KEY |
+  ASSUMED REFERENCES <reftable> (<refcolumn> [, ...]) [ MATCH FULL | MATCH SIMPLE ]
+}
+```
 
-\[ COLLATE
+and `table_constraint` is:
 
-collation
-
-\] \[
-
-column_constraint
-
-\[ \... \] \] \|
-
-table_constraint
-
-} \[, \... \] \] )
-
-where
-
-column_constraint
-
-is:
-
-{ NOT NULL \| NULL \| DEFAULT
-
-default_expr
-
-\| ASSUMED UNIQUE \| ASSUMED PRIMARY KEY \| ASSUMED REFERENCES
-
-reftable
-
-\[ (
-
-refcolumn
-
-) \] \[ MATCH FULL \| MATCH SIMPLE \] }
-
-and
-
-table_constraint
-
-is:
-
-{ ASSUMED UNIQUE (
-
-column_name
-
-\[, \... \] ) \| ASSUMED PRIMARY KEY (
-
-column_name
-
-\[, \... \] ) \| ASSUMED FOREIGN KEY (
-
-column_name
-
-\[, \... \] ) REFERENCES
-
-reftable
-
-\[ (
-
-refcolumn
-
-) \] \[ MATCH FULL \| MATCH SIMPLE \] }
+```
+{ 
+    ASSUMED UNIQUE (<column_name> [, ...]) |
+    ASSUMED PRIMARY KEY (<column_name> [, ...]) |
+    ASSUMED FOREIGN KEY (<column_name> [, ...])
+        REFERENCES <reftale> [ (<refcolumn> [, ...]) ]
+        [ MATCH FULL | MATCH SIMPLE ]
+}
+```
 
 ## Description {#sql-createtable-description}
 

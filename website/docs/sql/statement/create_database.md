@@ -1,14 +1,12 @@
 # CREATE DATABASE
 
-CREATE DATABASE \[ IF NOT EXISTS \]
+— create a new database
 
-name
+## Synopsis
 
-\[ FROM
-
-source_database
-
-\]
+```
+CREATE DATABASE [IF NOT EXISTS] <name> [FROM <source_database>]
+```
 
 ## Description
 

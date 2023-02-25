@@ -1,28 +1,15 @@
 # COPY FROM
 
-COPY
+— copy data from a file into a table
 
-table_name
+## Synopsis
 
-\[ (
+```
+COPY <table_name> [ (column_name [, ...] ) ] FROM <source_location>
+[ WITH (option [, ...]) ]
+```
 
-column_name
-
-\[, \...\] ) \] FROM {
-
-source_location
-
-} \[ WITH (
-
-option
-
-\[, \...\] ) \]
-
-where
-
-source_location
-
-can be one of:
+where `source_location` can be one of:
 
 \'
 
@@ -62,11 +49,7 @@ source_location
 
 \]
 
-and
-
-option
-
-can be one of:
+and `option` can be one of:
 
 FORMAT =\>
 

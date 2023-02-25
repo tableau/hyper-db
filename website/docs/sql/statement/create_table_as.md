@@ -1,18 +1,15 @@
 # CREATE TABLE AS
 
-CREATE \[ { TEMPORARY \| TEMP } \] TABLE \[ IF NOT EXISTS \]
+— define a new table from the results of a query
 
-table_name
+## Synopsis
 
-\[ (
-
-column_name
-
-\[, \...\] ) \] AS
-
-query
-
-\[ WITH \[ NO \] DATA \]
+```
+CREATE [ { TEMPORARY | TEMP } ] TABLE [IF NOT EXISTS] <table_name>
+    [ (<column_name> [, ...] ) ]
+    AS <query>
+    [WITH [NO] DATA]
+```
 
 ## Description
 

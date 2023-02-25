@@ -6,25 +6,10 @@ operator (added in SQL:1999).
 
 ## `LIKE` {#functions-like}
 
-string
-
-LIKE
-
-pattern
-
-ESCAPE
-
-escape-character
-
-string
-
-NOT LIKE
-
-pattern
-
-ESCAPE
-
-escape-character
+```sql_template
+<string> LIKE <pattern> ESCAPE <escape_character>
+<string> NOT LIKE <pattern> ESCAPE <escape_character>
+```
 
 The `LIKE` expression returns true if the \<string\> matches the
 supplied \<pattern\>. (As expected, the `NOT LIKE` expression returns
@@ -73,12 +58,12 @@ Hyper-specific (similarly to PostgreSQL).
 [table_title](#functions-posix-table) lists the available operators for
 pattern matching using POSIX regular expressions.
 
-  Operator   Description                                           Example
-  ---------- ----------------------------------------------------- ----------------------------
-  `~`        Matches regular expression, case sensitive            `'thomas' ~ '.*thomas.*'`
-  `~*`       Matches regular expression, case insensitive          `'thomas' ~* '.*Thomas.*'`
-  `!~`       Does not match regular expression, case sensitive     `'thomas' !~ '.*Thomas.*'`
-  `!~*`      Does not match regular expression, case insensitive   `'thomas' !~* '.*vadim.*'`
+  Operator  |Description                                          |Example
+  ----------|-----------------------------------------------------|----------------------------
+  `~`       |Matches regular expression, case sensitive           |`'thomas' ~ '.*thomas.*'`
+  `~*`      |Matches regular expression, case insensitive         |`'thomas' ~* '.*Thomas.*'`
+  `!~`      |Does not match regular expression, case sensitive    |`'thomas' !~ '.*Thomas.*'`
+  `!~*`     |Does not match regular expression, case insensitive  |`'thomas' !~* '.*vadim.*'`
 
   : Regular Expression Match Operators
 
@@ -130,24 +115,24 @@ conditions are met. A constraint can be used where an atom could be
 used, except it cannot be followed by a quantifier. The simple
 constraints are shown in [table_title](#posix-constraints-table).
 
-  Atom              Description
-  ----------------- -----------------------------------------------------------------------------------------------------------------------------------------------------------------
-  `.`               matches any single character
-  `[`\<chars\>`]`   a bracket expression, matching any one of the \<chars\>
-  `\`\<k\>          (where \<k\> is a non-alphanumeric character) matches that character taken as an ordinary character, e.g., `\\` matches a backslash character
-  `{`               when followed by a character other than a digit, matches the left-brace character `{`; when followed by a digit, it is the beginning of a \<bound\> (see below)
-  \<x\>             where \<x\> is a single character with no other significance, matches that character
+  Atom        |Description
+  ------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+  `.`         |matches any single character
+  `[<chars>]` |a bracket expression, matching any one of the \<chars\>
+  `\<k>`       |(where `<k>` is a non-alphanumeric character) matches that character taken as an ordinary character, e.g., `\\` matches a backslash character
+  `{`         |when followed by a character other than a digit, matches the left-brace character `{`; when followed by a digit, it is the beginning of a \<bound\> (see below)
+  `<x>`       |where \<x\> is a single character with no other significance, matches that character
 
   : Regular Expression Atoms
 
-  Quantifier            Matches
-  --------------------- ----------------------------------------------------------------------------------------------
-  `*`                   a sequence of 0 or more matches of the atom
-  `+`                   a sequence of 1 or more matches of the atom
-  `?`                   a sequence of 0 or 1 matches of the atom
-  `{`\<m\>`}`           a sequence of exactly \<m\> matches of the atom
-  `{`\<m\>`,}`          a sequence of \<m\> or more matches of the atom
-  `{`\<m\>`,`\<n\>`}`   a sequence of \<m\> through \<n\> (inclusive) matches of the atom; \<m\> cannot exceed \<n\>
+  Quantifier     |Matches
+  ---------------|----------------------------------------------------------------------------------------------
+  `*`            |a sequence of 0 or more matches of the atom
+  `+`            |a sequence of 1 or more matches of the atom
+  `?`            |a sequence of 0 or 1 matches of the atom
+  `{<m>}`        |a sequence of exactly \<m\> matches of the atom
+  `{<m>,}`       |a sequence of \<m\> or more matches of the atom
+  `{<m>,`<n\>`}` |a sequence of \<m\> through \<n\> (inclusive) matches of the atom; \<m\> cannot exceed \<n\>
 
   : Regular Expression Quantifiers
 
@@ -155,9 +140,9 @@ The forms using `{`\<\...\>`}` are known as bounds. The numbers \<m\>
 and \<n\> within a bound are unsigned decimal integers with permissible
 values from 0 to 255 inclusive.
 
-  Constraint   Description
-  ------------ ----------------------------------------
-  `^`          matches at the beginning of the string
-  `$`          matches at the end of the string
+  Constraint  |Description
+  ------------|----------------------------------------
+  `^`         |matches at the beginning of the string
+  `$`         |matches at the end of the string
 
   : Regular Expression Constraints

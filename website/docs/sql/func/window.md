@@ -449,7 +449,7 @@ This query produces the following result:
 clause `RESPECT NULLS` does not ignore `NULL` values, which is the
 default behavior supported in all window functions.
 
-::: note
+:::note
 The SQL standard defines `RESPECT NULLS` and `IGNORE NULLS` as options
 for `lead`, `lag`, `first_value`, `last_value`, and `nth_value`, the
 former one being the default behavior. In Hyper the `IGNORE NULLS`

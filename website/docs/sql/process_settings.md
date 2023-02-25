@@ -48,7 +48,7 @@ These settings control how Hyper communicates with it\'s clients.
 
 ### domain_socket_dir
 
-::: note
+:::note
 This Setting has no effect on Windows machines.
 :::
 
@@ -58,7 +58,7 @@ default behavior, see: [use_tcp_port](#use_tcp_port)).
 
 Default value: `/tmp`
 
-::: note
+:::note
 The maximum path length for valid domain sockets is limited on many
 platforms. It is therefore recommended to use a short path as the domain
 socket directory.
@@ -84,7 +84,7 @@ Accepted values: `auto`, `off` or a port number between 1 and 65535
 
 These settings control how Hyper writes it\'s activity logs.
 
-::: note
+:::note
 These setting controls the activity log of Hyper and not a transactional
 write-ahead log.
 :::
@@ -139,7 +139,7 @@ These settings control Hyper\'s database files.
 
 ### default_database_version
 
-::: warning
+:::warning
 Newer database file format versions than the initial version `0` are
 unsupported in older product versions. This means that you can use newer
 database versions with the latest Hyper API and newer product versions
@@ -186,7 +186,7 @@ To create a new Hyper database file with this version, set
 `default_database_version=1`. Note: Writing file version 1 is deprecated
 and will be removed in a future Hyper API release.
 
-::: note
+:::note
 The database file format version `1` is supported by Tableau
 Desktop/Server 2019.2.10, 2019.3.6, 2019.4.5, 2020.1.1 and newer product
 versions. It is supported by Tableau Prep 2020.2 and newer versions.
@@ -207,7 +207,7 @@ textual data with arbitrary versions of the Unicode collation tables.
 To create a new Hyper database file with this version, set
 `default_database_version=2`.
 
-::: note
+:::note
 The database file format version `2` is supported by Tableau
 Desktop/Server 2020.4.15, 2021.1.12, 2021.2.9, 2021.3.8, 2021.4.4,
 2022.1.2 and newer product versions. It is supported by Tableau Prep
@@ -223,7 +223,7 @@ please update your product. (error code 0AS01)\"
 
 These settings control experimental features of Hyper.
 
-::: warning
+:::warning
 This page describes pre-release features that are not supported and
 should not be used in production code. Their interfaces, semantics, and
 performance characteristics are subject to change or they could be

@@ -8,21 +8,21 @@ all follow a common calling convention: the first argument is the value
 to be formatted and the second argument is a template that defines the
 output or input format.
 
-  Function                     Return Type                  Description                   Example
-  ---------------------------- ---------------------------- ----------------------------- ------------------------------------------------
-  `to_char(timestamp, text)`   `text`                       convert timestamp to string   `to_char(current_timestamp, 'HH12:MI:SS')`
-  `to_char(interval, text)`    `text`                       convert interval to string    `to_char(interval '15h 2m 12s', 'HH24:MI:SS')`
-  `to_date(text, text)`        `date`                       convert string to date        `to_date('05 Dec 2000', 'DD Mon YYYY')`
-  `to_timestamp(text, text)`   `timestamp with time zone`   convert string to timestamp   `to_timestamp('05 Dec 2000', 'DD Mon YYYY')`
+  Function                    |Return Type                 |Description                  |Example
+  ----------------------------|----------------------------|-----------------------------|------------------------------------------------
+  `to_char(timestamp, text)`  |`text`                      |convert timestamp to string  |`to_char(current_timestamp, 'HH12:MI:SS')`
+  `to_char(interval, text)`   |`text`                      |convert interval to string   |`to_char(interval '15h 2m 12s', 'HH24:MI:SS')`
+  `to_date(text, text)`       |`date`                      |convert string to date       |`to_date('05 Dec 2000', 'DD Mon YYYY')`
+  `to_timestamp(text, text)`  |`timestamp with time zone`  |convert string to timestamp  |`to_timestamp('05 Dec 2000', 'DD Mon YYYY')`
 
   : Formatting Functions
 
-::: note
+:::note
 There is also a single-argument `to_timestamp` function; see
 [???](#functions-datetime-table).
 :::
 
-::: tip
+:::tip
 `to_timestamp` and `to_date` exist to handle input formats that cannot
 be converted by simple casting. For most standard date/time formats,
 simply casting the source string to the required data type works, and is
@@ -42,60 +42,60 @@ the template string characters).
 [table_title](#functions-formatting-datetime-table) shows the template
 patterns available for formatting date and time values.
 
-  Pattern                            Description
-  ---------------------------------- --------------------------------------------------------------------------------------------------
-  `HH`                               hour of day (01-12)
-  `HH12`                             hour of day (01-12)
-  `HH24`                             hour of day (00-23)
-  `MI`                               minute (00-59)
-  `SS`                               second (00-59)
-  `MS`                               millisecond (000-999)
-  `US`                               microsecond (000000-999999)
-  `SSSS`                             seconds past midnight (0-86399)
-  `AM`, `am`, `PM` or `pm`           meridiem indicator (without periods)
-  `A.M.`, `a.m.`, `P.M.` or `p.m.`   meridiem indicator (with periods)
-  `Y,YYY`                            year (4 or more digits) with comma
-  `YYYY`                             year (4 or more digits)
-  `YYY`                              last 3 digits of year
-  `YY`                               last 2 digits of year
-  `Y`                                last digit of year
-  `IYYY`                             ISO 8601 week-numbering year (4 or more digits)
-  `IYY`                              last 3 digits of ISO 8601 week-numbering year
-  `IY`                               last 2 digits of ISO 8601 week-numbering year
-  `I`                                last digit of ISO 8601 week-numbering year
-  `BC`, `bc`, `AD` or `ad`           era indicator (without periods)
-  `B.C.`, `b.c.`, `A.D.` or `a.d.`   era indicator (with periods)
-  `MONTH`                            full upper case English month name (blank-padded to 9 chars)
-  `Month`                            full capitalized English month name (blank-padded to 9 chars)
-  `month`                            full lower case English month name (blank-padded to 9 chars)
-  `MON`                              abbreviated upper case English month name (3 chars)
-  `Mon`                              abbreviated capitalized English month name (3 chars)
-  `mon`                              abbreviated lower case English month name (3 chars)
-  `MM`                               month number (01-12)
-  `DAY`                              full upper case English day name (blank-padded to 9 chars)
-  `Day`                              full capitalized English day name (blank-padded to 9 chars)
-  `day`                              full lower case English day name (blank-padded to 9 chars)
-  `DY`                               abbreviated upper case English day name (3 chars)
-  `Dy`                               abbreviated capitalized English day name (3 chars)
-  `dy`                               abbreviated lower case English day name (3 chars)
-  `DDD`                              day of year (001-366)
-  `IDDD`                             day of ISO 8601 week-numbering year (001-371; day 1 of the year is Monday of the first ISO week)
-  `DD`                               day of month (01-31)
-  `D`                                day of the week, Sunday (`1`) to Saturday (`7`)
-  `ID`                               ISO 8601 day of the week, Monday (`1`) to Sunday (`7`)
-  `W`                                week of month (1-5) (the first week starts on the first day of the month)
-  `WW`                               week number of year (1-53) (the first week starts on the first day of the year)
-  `IW`                               week number of ISO 8601 week-numbering year (01-53; the first Thursday of the year is in week 1)
-  `CC`                               century (2 digits) (the twenty-first century starts on 2001-01-01)
-  `J`                                Julian Day (integer days since November 24, 4714 BC at midnight UTC)
-  `Q`                                quarter
-  `RM`                               month in upper case Roman numerals (I-XII; I=January)
-  `rm`                               month in lower case Roman numerals (i-xii; i=January)
-  `TZ`                               upper case time-zone abbreviation (only supported in `to_char`)
-  `tz`                               lower case time-zone abbreviation (only supported in `to_char`)
-  `TZH`                              time-zone hours
-  `TZM`                              time-zone minutes
-  `OF`                               time-zone offset from UTC (only supported in `to_char`)
+  Pattern                           |Description
+  ----------------------------------|--------------------------------------------------------------------------------------------------
+  `HH`                              |hour of day (01-12)
+  `HH12`                            |hour of day (01-12)
+  `HH24`                            |hour of day (00-23)
+  `MI`                              |minute (00-59)
+  `SS`                              |second (00-59)
+  `MS`                              |millisecond (000-999)
+  `US`                              |microsecond (000000-999999)
+  `SSSS`                            |seconds past midnight (0-86399)
+  `AM`, `am`, `PM` or `pm`          |meridiem indicator (without periods)
+  `A.M.`, `a.m.`, `P.M.` or `p.m.`  |meridiem indicator (with periods)
+  `Y,YYY`                           |year (4 or more digits) with comma
+  `YYYY`                            |year (4 or more digits)
+  `YYY`                             |last 3 digits of year
+  `YY`                              |last 2 digits of year
+  `Y`                               |last digit of year
+  `IYYY`                            |ISO 8601 week-numbering year (4 or more digits)
+  `IYY`                             |last 3 digits of ISO 8601 week-numbering year
+  `IY`                              |last 2 digits of ISO 8601 week-numbering year
+  `I`                               |last digit of ISO 8601 week-numbering year
+  `BC`, `bc`, `AD` or `ad`          |era indicator (without periods)
+  `B.C.`, `b.c.`, `A.D.` or `a.d.`  |era indicator (with periods)
+  `MONTH`                           |full upper case English month name (blank-padded to 9 chars)
+  `Month`                           |full capitalized English month name (blank-padded to 9 chars)
+  `month`                           |full lower case English month name (blank-padded to 9 chars)
+  `MON`                             |abbreviated upper case English month name (3 chars)
+  `Mon`                             |abbreviated capitalized English month name (3 chars)
+  `mon`                             |abbreviated lower case English month name (3 chars)
+  `MM`                              |month number (01-12)
+  `DAY`                             |full upper case English day name (blank-padded to 9 chars)
+  `Day`                             |full capitalized English day name (blank-padded to 9 chars)
+  `day`                             |full lower case English day name (blank-padded to 9 chars)
+  `DY`                              |abbreviated upper case English day name (3 chars)
+  `Dy`                              |abbreviated capitalized English day name (3 chars)
+  `dy`                              |abbreviated lower case English day name (3 chars)
+  `DDD`                             |day of year (001-366)
+  `IDDD`                            |day of ISO 8601 week-numbering year (001-371; day 1 of the year is Monday of the first ISO week)
+  `DD`                              |day of month (01-31)
+  `D`                               |day of the week, Sunday (`1`) to Saturday (`7`)
+  `ID`                              |ISO 8601 day of the week, Monday (`1`) to Sunday (`7`)
+  `W`                               |week of month (1-5) (the first week starts on the first day of the month)
+  `WW`                              |week number of year (1-53) (the first week starts on the first day of the year)
+  `IW`                              |week number of ISO 8601 week-numbering year (01-53; the first Thursday of the year is in week 1)
+  `CC`                              |century (2 digits) (the twenty-first century starts on 2001-01-01)
+  `J`                               |Julian Day (integer days since November 24, 4714 BC at midnight UTC)
+  `Q`                               |quarter
+  `RM`                              |month in upper case Roman numerals (I-XII; I=January)
+  `rm`                              |month in lower case Roman numerals (i-xii; i=January)
+  `TZ`                              |upper case time-zone abbreviation (only supported in `to_char`)
+  `tz`                              |lower case time-zone abbreviation (only supported in `to_char`)
+  `TZH`                             |time-zone hours
+  `TZM`                             |time-zone minutes
+  `OF`                              |time-zone offset from UTC (only supported in `to_char`)
 
   : Template Patterns for Date/Time Formatting
 
@@ -104,11 +104,11 @@ For example, `FMMonth` is the `Month` pattern with the `FM` modifier.
 [table_title](#functions-formatting-datetimemod-table) shows the
 modifier patterns for date/time formatting.
 
-  Modifier      Description                                              Example
-  ------------- -------------------------------------------------------- ----------------------
-  `FM` prefix   fill mode (suppress leading zeroes and padding blanks)   `FMMonth`
-  `TH` suffix   upper case ordinal number suffix                         `DDTH`, e.g., `12TH`
-  `th` suffix   lower case ordinal number suffix                         `DDth`, e.g., `12th`
+  Modifier     |Description                                             |Example
+  -------------|--------------------------------------------------------|----------------------
+  `FM` prefix  |fill mode (suppress leading zeroes and padding blanks)  |`FMMonth`
+  `TH` suffix  |upper case ordinal number suffix                        |`DDTH`, e.g., `12TH`
+  `th` suffix  |lower case ordinal number suffix                        |`DDth`, e.g., `12th`
 
   : Template Pattern Modifiers for Date/Time Formatting
 
@@ -171,7 +171,7 @@ Usage notes for date/time formatting:
     no meaning. On the other hand, in the context of a Gregorian year,
     the ISO week has no meaning.
 
-    ::: caution
+    :::caution
     While `to_date` and `to_timestamp` will reject a mixture of
     Gregorian and ISO week-numbering date fields, `to_char` will not,
     since output format specifications like `YYYY-MM-DD (IYYY-IDDD)` can

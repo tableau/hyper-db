@@ -187,7 +187,7 @@ null string data values to `NULL`.
 column. This results in converting only quoted null strings to null
 values while unquoted null strings remain unchanged.
 
-::: note
+:::note
 In `CSV` format, all characters are significant. A quoted value
 surrounded by white space, or any characters other than `DELIMITER`,
 will include those characters. This can cause errors if you import data
@@ -197,7 +197,7 @@ file to remove the trailing white space, before importing the data into
 Hyper.
 :::
 
-::: note
+:::note
 CSV format will recognize CSV files with quoted values containing
 embedded carriage returns and line feeds. Thus the files are not
 strictly one line per table row like text-format files.
@@ -284,7 +284,7 @@ reading Parquet:
 
 -   Supported compressions are `SNAPPY`, `GZIP`, `ZSTD`, and `LZ4_RAW`.
 
-::: note
+:::note
 If a Parquet file contains columns with unsupported data types or
 encodings, Hyper can still read the other columns in the file, as long
 as you do not select any unsupported columns.
@@ -326,7 +326,7 @@ when using the Iceberg format:
 
 -   Schema changes like added, dropped and renamed columns are supported
 
-::: note
+:::note
 Hypers support for the Iceberg format is still in an early state and
 should be considered experimental. We recommend to not use it in
 production workloads yet.

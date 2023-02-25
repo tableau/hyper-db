@@ -69,7 +69,7 @@ with Connection(hyper.endpoint, 'TrivialExample.hyper', CreateMode.CREATE_AND_RE
 
 When you open a connection to a <code>.hyper</code> file and while the connection remains open, no other process can use the file. That is, while your application is connected to the <code>.hyper</code> file, it has exclusive access: no other instance of Hyper can connect to the file. That means, you can't open the file using the Hyper API and have the file open in Tableau at the same time.
 
-::: 
+:::
 
 
 ### 4. Define the table(s)

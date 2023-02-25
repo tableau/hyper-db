@@ -16,7 +16,7 @@ calendar was introduced.
 
   : Date/Time Types
 
-::: note
+:::note
 The SQL standard requires that writing just `timestamp` be equivalent to
 `timestamp without time zone`, and Hyper honors that behavior.
 `timestamptz` is accepted as an abbreviation for
@@ -165,7 +165,7 @@ shown in the example below.
 
   : Date/Time Output Styles
 
-::: note
+:::note
 ISO 8601 specifies the use of uppercase letter `T` to separate the date
 and time. Hyper accepts that format on input, but on output it uses a
 space rather than `T`, as shown above. This is for readability and for

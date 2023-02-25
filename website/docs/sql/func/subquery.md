@@ -6,11 +6,9 @@ Boolean results.
 
 ## `EXISTS` {#functions-subquery-exists}
 
-EXISTS (
-
-subquery
-
-)
+```sql_template
+EXISTS ( <subquery> )
+```
 
 The argument of EXISTS is an arbitrary `SELECT` statement, or subquery.
 The subquery is evaluated to determine whether it returns any rows. If
@@ -45,13 +43,9 @@ matching `tab2` rows:
 
 ## `IN` {#functions-subquery-in}
 
-expression
-
-IN (
-
-subquery
-
-)
+```sql_template
+<expression> IN ( <subquery> )
+```
 
 The right-hand side is a parenthesized subquery, which must return
 exactly one column. The left-hand expression is evaluated and compared
@@ -70,13 +64,9 @@ evaluated completely.
 
 ## `NOT IN` {#functions-subquery-notin}
 
-expression
-
-NOT IN (
-
-subquery
-
-)
+```sql_template
+<expression> NOT IN ( <subquery> )
+```
 
 The right-hand side is a parenthesized subquery, which must return
 exactly one column. The left-hand expression is evaluated and compared
@@ -96,25 +86,10 @@ evaluated completely.
 
 ## `ANY`/`SOME` {#functions-subquery-any-some}
 
-expression
-
-operator
-
-ANY (
-
-subquery
-
-)
-
-expression
-
-operator
-
-SOME (
-
-subquery
-
-)
+```sql_template
+<expression> <operator> ANY ( <subquery> )
+<expression> <operator> SOME ( <subquery> )
+```
 
 The right-hand side is a parenthesized subquery, which must return
 exactly one column. The left-hand expression is evaluated and compared
@@ -135,15 +110,9 @@ evaluated completely.
 
 ## `ALL` {#functions-subquery-all}
 
-expression
-
-operator
-
-ALL (
-
-subquery
-
-)
+```sql_template
+<expression> <operator> ALL ( <subquery> )
+```
 
 The right-hand side is a parenthesized subquery, which must return
 exactly one column. The left-hand expression is evaluated and compared

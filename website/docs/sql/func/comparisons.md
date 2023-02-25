@@ -8,15 +8,9 @@ this section return Boolean results.
 
 ## `IN` {#functions-comparisons-in-scalar}
 
-expression
-
-IN (
-
-value
-
-, \...
-
-)
+```sql_template
+<expression> IN ( <value>, ... )
+```
 
 The right-hand side is a parenthesized list of scalar expressions. The
 result is "true" if the left-hand expression\'s result is equal to any
@@ -31,15 +25,9 @@ values.
 
 ## `NOT IN`
 
-expression
-
-NOT IN (
-
-value
-
-, \...
-
-)
+```sql_template
+<expression> NOT IN ( <value>, \...)
+```
 
 The right-hand side is a parenthesized list of scalar expressions. The
 result is "true" if the left-hand expression\'s result is unequal to all
@@ -53,7 +41,7 @@ null, the result of the NOT IN construct will be null, not true as one
 might expect. This is in accordance with SQL\'s normal rules for Boolean
 combinations of null values.
 
-::: tip
+:::tip
 `x NOT IN y` is equivalent to `NOT (x IN y)` in all cases. However, null
 values are much more likely to trip up the novice when working with NOT
 IN than when working with IN. It is best to express your condition

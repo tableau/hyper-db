@@ -3,14 +3,14 @@
 The usual comparison operators are available, as shown in
 [table_title](#functions-comparison-op-table).
 
-  Operator       Description
-  -------------- --------------------------
-  `<`            less than
-  `>`            greater than
-  `<=`           less than or equal to
-  `>=`           greater than or equal to
-  `=`            equal
-  `<>` or `!=`   not equal
+  Operator      |Description
+  --------------|--------------------------
+  `<`           |less than
+  `>`           |greater than
+  `<=`          |less than or equal to
+  `>=`          |greater than or equal to
+  `=`           |equal
+  `<>` or `!=`  |not equal
 
   : Comparison Operators
 
@@ -23,30 +23,30 @@ There are also some comparison predicates, as shown in
 [table_title](#functions-comparison-pred-table). These behave much like
 operators, but have special syntax mandated by the SQL standard.
 
-  Predicate                                 Description
-  ----------------------------------------- -------------------------------------------------
-  \<a\> `BETWEEN` \<x\> `AND` \<y\>         between
-  \<a\> `NOT BETWEEN` \<x\> `AND` \<y\>     not between
-  \<a\> `IS DISTINCT FROM` \<b\>            not equal, treating null like an ordinary value
-  \<a\> `IS NOT DISTINCT FROM` \<b\>        equal, treating null like an ordinary value
-  \<expression\> `IS NULL`                  is null
-  \<expression\> `IS NOT NULL`              is not null
-  \<expression\> `ISNULL`                   is null (nonstandard syntax)
-  \<expression\> `NOTNULL`                  is not null (nonstandard syntax)
-  \<boolean_expression\> `IS TRUE`          is true
-  \<boolean_expression\> `IS NOT TRUE`      is false or unknown
-  \<boolean_expression\> `IS FALSE`         is false
-  \<boolean_expression\> `IS NOT FALSE`     is true or unknown
-  \<boolean_expression\> `IS UNKNOWN`       is unknown
-  \<boolean_expression\> `IS NOT UNKNOWN`   is true or false
+  Predicate                             |Description
+  --------------------------------------|-------------------------------------------------
+  `<a> BETWEEN <x> AND <y>`             |between
+  `<a\> NOT BETWEEN <x> AND <y>`        |not between
+  `<a\> IS DISTINCT FROM <b\>`          |not equal, treating null like an ordinary value
+  `<a\> IS NOT DISTINCT FROM <b\>`      |equal, treating null like an ordinary value
+  `<expression\> IS NULL`               |is null
+  `<expression\> IS NOT NULL`           |is not null
+  `<expression\> ISNULL`                |is null (nonstandard syntax)
+  `<expression\> NOTNULL`               |is not null (nonstandard syntax)
+  `<boolean_expression> IS TRUE`        |is true
+  `<boolean_expression> IS NOT TRUE`    |is false or unknown
+  `<boolean_expression> IS FALSE`       |is false
+  `<boolean_expression> IS NOT FALSE`   |is true or unknown
+  `<boolean_expression> IS UNKNOWN`     |is unknown
+  `<boolean_expression> IS NOT UNKNOWN` |is true or false
 
   : Comparison Predicates
 
-The BETWEEN predicate simplifies range tests: \<a\> BETWEEN \<x\> AND
-\<y\> is equivalent to \<a\> \>= \<x\> AND \<a\> \<= \<y\> Notice that
-BETWEEN treats the endpoint values as included in the range.
-`NOT BETWEEN` does the opposite comparison: \<a\> NOT BETWEEN \<x\> AND
-\<y\> is equivalent to \<a\> \< \<x\> OR \<a\> \> \<y\>
+The `BETWEEN` predicate simplifies range tests: `a BETWEEN x AND y`
+is equivalent to `a >= x AND a <= y`. Notice that
+`BETWEEN` treats the endpoint values as included in the range.
+`NOT BETWEEN` does the opposite comparison: `a NOT BETWEEN x AND y`
+is equivalent to `a < x OR a > y`.
 
 Ordinary comparison operators yield null (signifying "unknown"), not
 true or false, when either input is null. For example, `7 = NULL` yields

@@ -16,7 +16,7 @@ these variants are not shown separately. Also, the `+` and `*` operators
 come in commutative pairs (for example both date + integer and integer +
 date); we show only one of each such pair.
 
-::: note
+:::note
 The examples in this section that show `interval` values use a
 human-readable style similar to
 [PostgreSQL](https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-INTERVAL-OUTPUT)
@@ -31,27 +31,27 @@ converting intervals to strings for output, you might see a different
 format than what is shown in this page.
 :::
 
-  Operator   Example                                                         Result
-  ---------- --------------------------------------------------------------- -----------------------------------
-  `+`        `date '2001-09-28' + integer '7'`                               `date '2001-10-05'`
-  `+`        `date '2001-09-28' + interval '1 hour'`                         `timestamp '2001-09-28 01:00:00'`
-  `+`        `date '2001-09-28' + time '03:00'`                              `timestamp '2001-09-28 03:00:00'`
-  `+`        `interval '1 day' + interval '1 hour'`                          `interval '1 day 01:00:00'`
-  `+`        `timestamp '2001-09-28 01:00' + interval '23 hours'`            `timestamp '2001-09-29 00:00:00'`
-  `+`        `time '01:00' + interval '3 hours'`                             `time '04:00:00'`
-  `-`        `- interval '23 hours'`                                         `interval '-23:00:00'`
-  `-`        `date '2001-10-01' - date '2001-09-28'`                         `integer '3'` (days)
-  `-`        `date '2001-10-01' - integer '7'`                               `date '2001-09-24'`
-  `-`        `date '2001-09-28' - interval '1 hour'`                         `timestamp '2001-09-27 23:00:00'`
-  `-`        `time '05:00' - time '03:00'`                                   `interval '02:00:00'`
-  `-`        `time '05:00' - interval '2 hours'`                             `time '03:00:00'`
-  `-`        `timestamp '2001-09-28 23:00' - interval '23 hours'`            `timestamp '2001-09-28 00:00:00'`
-  `-`        `interval '1 day' - interval '1 hour'`                          `interval '1 day -01:00:00'`
-  `-`        `timestamp '2001-09-29 03:00' - timestamp '2001-09-27 12:00'`   `interval '1 day 15:00:00'`
-  `*`        `900 * interval '1 second'`                                     `interval '00:15:00'`
-  `*`        `21 * interval '1 day'`                                         `interval '21 days'`
-  `*`        `double precision '3.5' * interval '1 hour'`                    `interval '03:30:00'`
-  `/`        `interval '1 hour' / double precision '1.5'`                    `interval '00:40:00'`
+  Operator  |Example                                                        |Result
+  ----------|---------------------------------------------------------------|-----------------------------------
+  `+`       |`date '2001-09-28' + integer '7'`                              |`date '2001-10-05'`
+  `+`       |`date '2001-09-28' + interval '1 hour'`                        |`timestamp '2001-09-28 01:00:00'`
+  `+`       |`date '2001-09-28' + time '03:00'`                             |`timestamp '2001-09-28 03:00:00'`
+  `+`       |`interval '1 day' + interval '1 hour'`                         |`interval '1 day 01:00:00'`
+  `+`       |`timestamp '2001-09-28 01:00' + interval '23 hours'`           |`timestamp '2001-09-29 00:00:00'`
+  `+`       |`time '01:00' + interval '3 hours'`                            |`time '04:00:00'`
+  `-`       |`- interval '23 hours'`                                        |`interval '-23:00:00'`
+  `-`       |`date '2001-10-01' - date '2001-09-28'`                        |`integer '3'` (days)
+  `-`       |`date '2001-10-01' - integer '7'`                              |`date '2001-09-24'`
+  `-`       |`date '2001-09-28' - interval '1 hour'`                        |`timestamp '2001-09-27 23:00:00'`
+  `-`       |`time '05:00' - time '03:00'`                                  |`interval '02:00:00'`
+  `-`       |`time '05:00' - interval '2 hours'`                            |`time '03:00:00'`
+  `-`       |`timestamp '2001-09-28 23:00' - interval '23 hours'`           |`timestamp '2001-09-28 00:00:00'`
+  `-`       |`interval '1 day' - interval '1 hour'`                         |`interval '1 day -01:00:00'`
+  `-`       |`timestamp '2001-09-29 03:00' - timestamp '2001-09-27 12:00'`  |`interval '1 day 15:00:00'`
+  `*`       |`900 * interval '1 second'`                                    |`interval '00:15:00'`
+  `*`       |`21 * interval '1 day'`                                        |`interval '21 days'`
+  `*`       |`double precision '3.5' * interval '1 hour'`                   |`interval '03:30:00'`
+  `/`       |`interval '1 hour' / double precision '1.5'`                   |`interval '00:40:00'`
 
   : Date/Time Operators
 

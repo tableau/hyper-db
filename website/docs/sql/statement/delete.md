@@ -18,7 +18,7 @@ DELETE FROM <table_name> [ [AS] <alias> ]
 table. If the `WHERE` clause is absent, the effect is to delete all rows
 in the table. The result is a valid, but empty table.
 
-::: tip
+:::tip
 [???](#sql-truncate) provides a faster mechanism to remove all rows from
 a table.
 :::

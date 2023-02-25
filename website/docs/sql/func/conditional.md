@@ -69,15 +69,9 @@ avoiding a division-by-zero failure:
 
 ## `COALESCE` {#functions-coalesce-nvl-ifnull}
 
-COALESCE
-
-(
-
-value
-
-, \...
-
-)
+```sql_template
+COALESCE (<value>, \...)
+```
 
 The `COALESCE` function returns the first of its arguments that is not
 null. Null is returned only if all arguments are null. It is often used
@@ -95,17 +89,9 @@ first non-null argument are not evaluated.
 
 ## `NULLIF` {#functions-nullif}
 
-NULLIF
-
-(
-
-value1
-
-,
-
-value2
-
-)
+```sql_template
+NULLIF ( <value1>, <value2>)
+```
 
 The `NULLIF` function returns a null value if \<value1\> equals
 \<value2\>; otherwise it returns \<value1\>. This can be used to perform
@@ -118,25 +104,10 @@ value of `value` is returned.
 
 ## `GREATEST` and `LEAST` {#functions-greatest-least}
 
-GREATEST
-
-(
-
-value
-
-, \...
-
-)
-
-LEAST
-
-(
-
-value
-
-, \...
-
-)
+```sql_template
+GREATEST (value, ...)
+LEAST (value, ...)
+```
 
 The `GREATEST` and `LEAST` functions select the largest or smallest
 value from a list of any number of expressions. The expressions must all

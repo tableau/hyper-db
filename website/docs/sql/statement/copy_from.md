@@ -149,7 +149,7 @@ the client.
 
 `COPY` stops operation at the first error.
 
-::: note
+:::note
 Hyper also supports the PostgreSQL syntax of the `COPY` command, which
 is slightly different from the syntax depicted here. This is only
 supported for PostgreSQL compatibility. When writing SQL for Hyper, we

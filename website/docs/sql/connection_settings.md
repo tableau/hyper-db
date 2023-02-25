@@ -28,7 +28,7 @@ separate it from the language code. Some examples are: `en_US` (English:
 United States), `en_GB` (English: Great Britain), `de` (German), `de_AT`
 (German: Austria).
 
-::: note
+:::note
 This setting has no influence on the order of day, month, and year
 inside a date literal. This is controlled by the
 [date_style](#date_style) setting.

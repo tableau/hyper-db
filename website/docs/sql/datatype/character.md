@@ -11,7 +11,7 @@
 [table_title](#datatype-character-table) shows the general-purpose
 character types available in Hyper.
 
-::: tip
+:::tip
 There is no performance difference among the three types described here.
 While `character(n)` has performance advantages in some other database
 systems, there is no such advantage in Hyper. Because of internal

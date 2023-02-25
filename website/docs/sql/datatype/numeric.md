@@ -104,18 +104,18 @@ When used in arithmetic operation together with `NUMERIC`,
 `SMALLINT` behaves the same as `NUMERIC(5,0)`, `INTEGER` as
 `NUMERIC(10,0)` and `BIGINT` as `NUMERIC(19,0)`.
 
-::: note
+:::note
 In the SQL standard, as well as in PostgreSQL and many other database
 systems, the types `decimal` and `numeric` are equivalent and both
 support variable-length precision. This is unlike Hyper, where `numeric`
 has fixed-length precision and `decimal` is not officially supported.
 :::
 
-::: note
+:::note
 Hyper does not support arbitrary-precision decimal numbers.
 :::
 
-::: note
+:::note
 If you create an extract of a relational database in Tableau, the
 extract will always use the Hyper `double precision` type, so you only
 get 15 digits of precision. However, you can create the extract file
@@ -123,13 +123,13 @@ using the Hyper API and specify the `numeric` type to get up to 38
 digits.
 :::
 
-::: note
+:::note
 Once a `numeric` value has a precision of over 18, 128-bit are used for
 internal storage which can impact the performance of all subsequent
 operations.
 :::
 
-::: note
+:::note
 Storing `numeric` columns with precision larger than 18 is not
 available, yet.
 :::
@@ -186,7 +186,7 @@ as constants in an SQL command, you must put quotes around them, for
 example `UPDATE table SET x = '-Infinity'`. On input, these strings are
 recognized in a case-insensitive manner.
 
-::: note
+:::note
 IEEE754 specifies that `NaN` should not compare equal to any other
 floating-point value (including `NaN` itself).
 :::

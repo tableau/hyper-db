@@ -1,6 +1,4 @@
----
-title: Hyper API Examples
----
+# Hyper API Examples
 
 The best way to learn how to use the Hyper API is to look at the sample code.
 The Hyper API provides samples in your programming language of choice that create extract files and then show how you can read, insert, update, and delete data from the files.

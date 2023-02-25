@@ -1,7 +1,4 @@
----
-title: Add Spatial Data to a Hyper File
-sidebar_position: 7
----
+# Add Spatial Data to a Hyper File
 Tableau supports spatial data (geography) in `.hyper` files. However the Hyper API does not directly accept Well-Known-Text for spatial data. Instead you need to provide a `CAST("column_as_text" AS GEOGRAPHY)` expression in the inserter to provide the spatial data as `text` strings. Hyper API's inserter pushes the `CAST("column_as_text" AS GEOGRAPHY)` expression down to Hyper where the `text` strings are converted to spatial data.
 
 :::tip

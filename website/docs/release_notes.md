@@ -1,7 +1,4 @@
----
-title: What's New in the Hyper API
-sidebar_position: 2
----
+# What's New in the Hyper API
 
 ## What's New in the Hyper API (v0.0.16491)
 

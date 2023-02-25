@@ -1,7 +1,4 @@
----
-title: Read Data from Hyper Files
-sidebar_position: 2
----
+# Read Data from Hyper Files
 
 Using the Hyper API, you can read data from tables in an `.hyper` file by sending SQL queries.
 

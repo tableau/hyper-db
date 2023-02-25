@@ -1,4 +1,4 @@
-# COPY
+# COPY FROM
 
 COPY
 

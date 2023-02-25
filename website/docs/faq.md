@@ -1,7 +1,4 @@
----
-title: Frequently asked questions
-sidebar_position: 20
----
+# Frequently asked questions
 
 ## Who is behind Hyper?
 

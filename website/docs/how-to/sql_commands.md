@@ -1,7 +1,4 @@
----
-title: Use SQL Commands with Hyper Files
-sidebar_position: 5
----
+# Use SQL Commands with Hyper Files
 
 Using the Hyper API, you can use SQL statements to interact with tables and data in `.hyper` files. The Hyper SQL language is based on the SQL standard and incorporates many PostgreSQL features and commands, such as the ability to copy from comma-separated value (CSV) files.
 

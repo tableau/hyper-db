@@ -1,7 +1,4 @@
----
-title: Client languages
-sidebar_position: 9
----
+# Client languages
 
 For the documentation of the client-side HyperAPI library for the various languages, see:
 

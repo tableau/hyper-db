@@ -1,6 +1,4 @@
----
-title: Download Hyper
----
+# Download Hyper
 
 import {DownloadPicker} from '@site/src/components/DownloadPicker'
 

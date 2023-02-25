@@ -1,7 +1,4 @@
----
-title: Tableau Hyper API
-sidebar_position: 1
----
+# Tableau Hyper API
 
 The Hyper API contains a set of functions you can use to automate your interactions with Tableau extract (`.hyper`) files. You can use the API to create new extract files, or to open existing files, and then insert, delete, update, or read data from those files. Using the Hyper API developers and administrators can:
 

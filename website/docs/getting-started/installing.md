@@ -1,6 +1,4 @@
----
-title: Install Tableau Hyper API
----
+# Install Tableau Hyper API
 
 
 This topic describes the requirements for installing and using the Hyper API library. You can download the Hyper API library packages from the [Hyper API - Products Release and Download](https://tableau.com/support/releases/hyper-api/latest){:target="_blank"}{:ref="noopener"} page. Select the Hyper API package for your programming language and operating system. Follow the instructions for installing the library for your programming language and operating system as described below.

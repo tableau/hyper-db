@@ -1,7 +1,4 @@
----
-title: Insert Data Directly from CSV Files
-sidebar_position: 3
----
+# Insert Data Directly from CSV Files
 
 The comma-separated values (CSV) file is a popular way to import and export tabular data from programs. The Hyper API provides a fast way of directly inserting CSV data into a `.hyper` extract file. Using the PostgreSQL-like [COPY](../reference/sql/sql-copy.html){:target="_blank"}{:ref="noopener"} command, you can copy the data much faster than you could by iteratively adding the data one row at a time.
 

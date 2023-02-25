@@ -1,7 +1,3 @@
----
-sidebar_position: 5
----
-
 # Process Settings {#processsettings}
 
 Process settings are settings that apply to the Hyper process. They

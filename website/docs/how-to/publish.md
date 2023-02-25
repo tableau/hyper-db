@@ -1,7 +1,4 @@
----
-title: Publish Hyper Files
-sidebar_position: 6
----
+# Publish Hyper Files
 
 When you are ready to make your Hyper file available to other users, you can publish it to Tableau Server or {{site.tol}}. There are multiple options, depending on whether your file contains a single table or more than one table.
 

@@ -4,7 +4,7 @@
 
 ## Synopsis
 
-```
+```sql_template
 TRUNCATE [ TABLE ] <name>
 ```
 

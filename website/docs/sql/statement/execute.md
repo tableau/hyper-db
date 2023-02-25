@@ -4,7 +4,7 @@
 
 ## Synopsis
 
-```
+```sql_template
 EXECUTE <name> [ (<parameter> [, ...]) ]
 ```
 

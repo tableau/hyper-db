@@ -4,9 +4,9 @@
 
 ## Synopsis
 
-```
+```sql_template
 [ WITH [RECURSIVE] <with_query> [, ...] ]
-DELETE FROM <table_name> [ [AS] alias ] alias]
+DELETE FROM <table_name> [ [AS] <alias> ]
 [ USING <using_list> ]
 [ WHERE <condition> ]
 [ RETURNING { * | <output_expression> [AS <output_name>]} [, ...] ]

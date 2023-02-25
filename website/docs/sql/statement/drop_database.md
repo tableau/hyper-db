@@ -4,7 +4,7 @@
 
 ## Synopsis
 
-```
+```sql_template
 DROP DATABASE [IF EXISTS] <name>
 ```
 

@@ -4,7 +4,7 @@
 
 ## Synopsis
 
-```
+```sql_template
 ALTER SCHEMA <name> RENAME TO <new_name>
 ```
 

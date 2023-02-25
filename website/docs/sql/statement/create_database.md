@@ -4,7 +4,7 @@
 
 ## Synopsis
 
-```
+```sql_template
 CREATE DATABASE [IF NOT EXISTS] <name> [FROM <source_database>]
 ```
 

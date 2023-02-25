@@ -4,7 +4,7 @@
 
 ## Synopsis
 
-```
+```sql_template
 DROP SCHEMA [ IF EXISTS ] <name> [, ...] [ CASCADE | RESTRICT ]
 ```
 

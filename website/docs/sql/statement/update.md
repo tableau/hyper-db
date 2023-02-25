@@ -4,9 +4,9 @@
 
 ## Synopsis
 
-```
+```sql_template
 [ WITH [RECURSIVE] <with_query> [, ...] ]
-UPDATE table_name [ [ AS ] alias ]
+UPDATE <table_name> [ [ AS ] alias ]
     SET { <column_name> = { <expression> | DEFAULT } |
           ( <column_name> [, ...] ) = [ ROW ] ( { <expression> | DEFAULT } [, ...] ) |
           ( <column_name> [, ...] ) = ( <sub_select> )

@@ -4,7 +4,7 @@
 
 ## Synopsis
 
-```
+```sql_template
 CREATE [ { TEMPORARY | TEMP } ] TABLE [IF NOT EXISTS] <table_name> (
     {
         <column_name> <data_type> [COLLATE <collation>] [<column_constraint>] |
@@ -15,7 +15,7 @@ CREATE [ { TEMPORARY | TEMP } ] TABLE [IF NOT EXISTS] <table_name> (
 
 where `column_constraint` is:
 
-```
+```sql_template
 { NOT NULL |
   NULL |
   DEFAULT <default_expr> |
@@ -27,7 +27,7 @@ where `column_constraint` is:
 
 and `table_constraint` is:
 
-```
+```sql_template
 { 
     ASSUMED UNIQUE (<column_name> [, ...]) |
     ASSUMED PRIMARY KEY (<column_name> [, ...]) |

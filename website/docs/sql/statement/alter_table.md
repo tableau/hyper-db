@@ -4,23 +4,23 @@
 
 ## Synopsis
 
-```
+```sql_template
 ALTER TABLE [IF EXISTS] <name> RENAME TO <new_name>;
 ALTER TABLE [IF EXISTS] <name> RENAME [COLUMN] <column_name> TO <new_name>;
 
 ALTER TABLE [IF EXISTS] <name> ADD <table_constraint>;
 
-ALTER TABLE [IF EXISTS] name
-  ADD [COLUMN] [IF NOT EXISTS] column_name data_type
+ALTER TABLE [IF EXISTS] <name>
+  ADD [COLUMN] [IF NOT EXISTS] <column_name> <data_type>    
   [COLLATE <collation>]
   [<column_constraint>] [...];
 
 ALTER TABLE [IF EXISTS] DROP [COLUMN] [IF EXISTS] <column_name>
 ```
 
-where `column_constraint`is:
+where `column_constraint` is:
 
-```
+```sql_template
 { NOT NULL | NULL | DEFAULT default_expr }
 ```
 

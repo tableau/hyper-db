@@ -4,7 +4,7 @@
 
 ## Synopsis
 
-```
+```sql_template
 TABLE <table_name>;
 
 [ WITH [ RECURSIVE ] <with_query> [, ...] ]
@@ -30,7 +30,7 @@ VALUES ( <expression> [, ...] ) [, ...]
 
 where `from_item` can be one of:
 
-```
+```sql_template
 table_name [ [ AS ] <alias> [ ( <column_alias> [, ...] ) ] ]
     [ TABLESAMPLE <sampling_method> ( <sample_size> ) [ REPEATABLE ( <seed> ) ] ]
 
@@ -47,15 +47,15 @@ table_name [ [ AS ] <alias> [ ( <column_alias> [, ...] ) ] ]
 
 and `with_query` is:
 
-```
+```sql_template
 <with_query_name> [ ( <column_name> [, ...] ) ] AS ( <select> )
 ```
 
 and `sample_size` can be one of:
 
-```
-size [ ROWS | PERCENT ] |
-size PERCENT [ BETWEEN { count | UNBOUNDED } ROWS AND { count | UNBOUNDED } ROWS }
+```sql_template
+<size> [ ROWS | PERCENT ] |
+<size> PERCENT [ BETWEEN { <count> | UNBOUNDED } ROWS AND { <count> | UNBOUNDED } ROWS }
 ```
 
 ## Description

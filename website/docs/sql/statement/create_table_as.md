@@ -4,7 +4,7 @@
 
 ## Synopsis
 
-```
+```sql_template
 CREATE [ { TEMPORARY | TEMP } ] TABLE [IF NOT EXISTS] <table_name>
     [ (<column_name> [, ...] ) ]
     AS <query>

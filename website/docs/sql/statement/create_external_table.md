@@ -4,16 +4,16 @@
 
 ## Synopsis
 
-```
+```sql_template
 CREATE { TEMPORARY | TEMP } EXTERNAL TABLE [IF NOT EXISTS] <table_name>
-    [ ( column_def [, ...]) ]
+    [ ( <column_def> [, ...]) ]
     FOR <source_location>
-    [ WITH ( option, [...] ) ]
+    [ WITH ( <option>, [...] ) ]
 ```
 
 where `column_def` is:
 
-```
+```sql_template
 <column_name> <data_type> [COLLATE <collation>] [ {NOT NULL | NULL } ]
 ```
 

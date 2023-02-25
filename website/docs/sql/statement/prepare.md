@@ -4,7 +4,7 @@
 
 ## Synopsis
 
-```
+```sql_template
 PREPARE <name> [ ( <data_type> [, ...] ) ] AS <statement>
 ```
 

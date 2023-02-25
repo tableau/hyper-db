@@ -4,7 +4,7 @@
 
 ## Synopsis
 
-```
+```sql_template
 [ WITH [RECURSIVE] <with_query> [, ...] ]
 INSERT INTO <table_name>
     { DEFAULT VALUES |

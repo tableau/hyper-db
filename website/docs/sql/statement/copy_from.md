@@ -4,9 +4,10 @@
 
 ## Synopsis
 
-```
-COPY <table_name> [ (column_name [, ...] ) ] FROM <source_location>
-[ WITH (option [, ...]) ]
+```sql_template
+COPY <table_name> [ (<column_name> [, ...] ) ]
+  FROM <source_location>
+  [ WITH (<option> [, ...]) ]
 ```
 
 where `source_location` can be one of:

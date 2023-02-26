@@ -1,20 +1,24 @@
-# What's New in the Hyper API
+# What's New Hyper
 
-## What's New in the Hyper API (v0.0.16491)
+New versions of Hyper API are released roughly once per month.
+Below you can find the new functionalities and bug fixes which shipped with each version.
 
-*February 8, 2023*
+:::note
+
+In case you are wondering why all our functions start with `0.0`, read [this FAQ entry](faq#why-does-hyperapi-only-have-00-versions).
+
+:::
+
+## v0.0.16491 [February 8, 2023]
+
 * Added support for the [`GROUPING SETS` SQL feature]({{ site.baseurl }}/reference/sql/sql-select.html#QUERIES-GROUPING-SETS), including `ROLLUP` and `CUBE`.
 
 
-## What's New in the Hyper API (v0.0.16377)
-
-*January 18, 2023*
+## v0.0.16377 [January 18, 2023]
 
 * Minor improvements and bug fixes.
 
-## What's New in the Hyper API (v0.0.16123)
-
-*December 7, 2022*
+## v0.0.16123 [December 7, 2022]
 
 * Added support for 128-bit numerics. This allows a precision of up to 38 for the `NUMERIC` SQL type.
 * Added support to read 128-bit `DECIMAL` values from parquet files.
@@ -23,16 +27,12 @@
   equality predicates on Iceberg columns partitioned with bucket partitioning.
 * New `ANY_VALUE` aggregate function: The `ANY_VALUE` aggregate function returns an arbitrary, implementation-defined value from the set of input values within a group.
 
-## What's New in the Hyper API (v0.0.15888)
-
-*November 9, 2022*
+## v0.0.15888 [November 9, 2022]
 * IANA released version `2022d` of the Time Zone Database. Hyper's time zone information is updated accordingly. Noteworthy changes:
     * Palestine daylight savings time (DST) transitions are now Saturdays at 02:00 (24-hour clock).
     * Simplified three Ukrainian zones into one.
 
-## What's New in the Hyper API (v0.0.15735)
-
-*October 5, 2022*
+## v0.0.15735 [October 5, 2022]
 
 * New support for Apache Iceberg as an [external format]({{ site.baseurl }}/reference/sql/external-formats.html).
 * Support for reading external files from S3 is now enabled by default. (The experimental_external_s3 setting has been removed. Specifying it now causes an unknown setting error.)
@@ -51,21 +51,15 @@
     * Renamed Europe/Kiev to Europe/Kyiv.
     * Fixes to support timestamps prior to 1970.
 
-## What's New in the Hyper API (v0.0.15530)
-
-*September 7, 2022*
+## v0.0.15530 [September 7, 2022]
 
 * To read external data from Amazon S3, you must now provide credentials when using the extended syntax `s3_location(...)`. Omitting credentials now causes an error. For anonymous access to S3 provide empty credentials (`""`) instead.
 
-## What's New in the Hyper API (v0.0.15305)
-
-*August 3, 2022*
+## v0.0.15305 [August 3, 2022]
 
 * Minor improvements and bug fixes.
 
-## What's New in the Hyper API (v0.0.15145)
-
-*July 13, 2022*
+## v0.0.15145 [July 13, 2022]
 
 * Added ZSTD and LZ4_RAW compression support for Parquet files.
 * Updated OpenSSL version from 1.1.1n to 1.1.1q.
@@ -76,16 +70,12 @@
 * Updated Hyper's collation tables from CLDR 38.1 to CLDR 41. Besides corrections this also adds new collations to Hyper.
 * Updated Unicode support from Unicode 13.0.0 to 14.0.0.
 
-## What's New in the Hyper API (v0.0.14946)
-
-*June 1, 2022*
+## v0.0.14946 [June 1, 2022]
 
 * Updated OpenSSL version from 1.1.1l to 1.1.1n.
 * New [TRY_CAST]({{ site.baseurl }}/reference/sql/functions-conversion.html#FUNCTIONS-TRY_CAST) function: converts a value to a target type, returns NULL on failure.
 
-## What's New in the Hyper API (v0.0.14751)
-
-*May 4, 2022*
+## v0.0.14751 [May 4, 2022]
 
 * Restriction pushdown for Parquet files: Hyper now exploits min/max values in Parquet RowGroups to skip groups based on the predicates present in SQL queries.
 * Besides many corrections, this update also adds a significant number of new collations to Hyper. Previously, the collations Hyper used were based on CLDR 1.8 from March 2010.
@@ -94,24 +84,18 @@
 * Fixed a defect which could lead to Hyper crashing when using outer joins with Parquet files.
 * Fixed a defect which prevented Hyper from opening external files from Amazon S3 if the S3 URL contained a whitespace character, e.g. "s3://bucket/filename with whitespace.csv"
 
-## What's New in the Hyper API (v0.0.14567)
-
-*March 23, 2022*
+## v0.0.14567 [March 23, 2022]
 
 * Result fetching of large results is up to 5x faster.
 * Fix a potential crash when reading multiple Parquet files with string columns.
 
-## What's New in the Hyper API (v0.0.14401)
-
-*March 2, 2022*
+## v0.0.14401 [March 2, 2022]
 
 * Introduced the new and improved database file format version 2 that can be used via [Hyper Process Settings]({{ site.baseurl }}/reference/sql/processsettings.html). The new format stores data independent of collation versions. File format 1 is deprecated in favor of the new file format 2. Refer to [Hyper Database Settings]({{ site.baseurl }}/reference/sql/databasesettings.html#DEFAULT_DATABASE_VERSION) for more information.
 * Added support for S3 keys containing special characters (such as "=")
 * Implemented support for [external(source_location(...))]({{ site.baseurl }}/reference/sql/functions-srf.html#FUNCTIONS-SRF-EXTERNAL) syntax.
 
-## What's New in the Hyper API (v0.0.14265)
-
-*February 2, 2022*
+## v0.0.14265 [February 2, 2022]
 
 Improved external file format support (CSV & Apache Parquet): Now you can use Hyper as a SQL
 query engine directly on top of open formats and data lakes.
@@ -146,15 +130,11 @@ query engine directly on top of open formats and data lakes.
       [ON_CAST_FAILURE](https://help.tableau.com/current/api/hyper_api/en-us/reference/sql/external-formats.html#EXTERNAL-OPTION-ON-CAST-FAILURE)
       option instructs Hyper to read the value as NULL instead of raising an error.
 
-## What's New in the Hyper API (v0.0.14109)
-
-*January 5, 2022*
+## v0.0.14109 [January 5, 2022]
 
 * Minor improvements and bug fixes.
 
-## What's New in the Hyper API (v0.0.13980)
-
-*December 8, 2021*
+## v0.0.13980 [December 8, 2021]
 * Smaller packages: Thanks to the removal of unused collation data from the Hyper binary, the package size was reduced. For example, the size of an unpacked Windows Python installation went from 157 MB to 145 MB. The download size of a packed Windows Python package was reduced from 47 MB to 42 MB.
 * Java: Improved the read performance of text and geography columns.
 * Fixed a defect that could lead to crashes when reading Parquet files with text columns that contain null values.
@@ -170,9 +150,7 @@ Noteworthy changes in the Time Zone Database:
     * Merge more location-based Zones whose timestamps agree since 1970.
     * Rename Pacific/Enderbury to Pacific/Kanton.
 
-## What's New in the Hyper API (v0.0.13821)
-
-*November 3rd, 2021*
+## v0.0.13821 [November 3rd, 2021]
 * Reading Apache Parquet files is now officially supported and no longer has to be enabled through the use of the process setting ‘experimental_external_format_parquet’.
 * Improved performance for window functions for large data sets on multi-core machines:
     * calls without `PARTITION BY` clause improved by 5% - 20%
@@ -180,16 +158,12 @@ Noteworthy changes in the Time Zone Database:
 * Fixed a defect that could cause crashes when you deleted a tuple multiple times, or could cause wrong query results after single deletion.
 * Updated OpenSSL version from 1.1.1k to 1.1.1l
 
-## What's New in the Hyper API (v0.0.13617)
-
-*October 6, 2021*
+## v0.0.13617 [October 6, 2021]
 
 * Fix a query compilation defect that led to reproducible crashes for a very small number of queries.
 * Upgraded Unicode support from Unicode 9.0.0 to 13.0.0
 
-## What's New in the Hyper API (v0.0.13394)
-
-*September 1, 2021*
+## v0.0.13394 [September 1, 2021]
 
 * Hyper API now runs on AWS lambda.
 * Parquet files with dots in their column names can now be read.
@@ -197,28 +171,20 @@ Noteworthy changes in the Time Zone Database:
 * More actionable error messages for a wide range of invalid SQL queries.
 * Going forward, the Hyper API will only support the three most recent versions of Python. Currently, those versions are 3.7, 3.8, and 3.9. However, the Hyper API will continue to support Python 3.6 for a transition period of three months.
 
-## What's New in the Hyper API (v0.0.13287)
-
-*August 4, 2021*
+## v0.0.13287 [August 4, 2021]
 
 * Java: Dependencies are updated to newer versions. In particular, JNA was updated to 5.6.0.
 
-## What's New in the Hyper API (v0.0.13129)
-
-*July 7, 2021*
+## v0.0.13129 [July 7, 2021]
 
 * Minor improvements and bug fixes.
 
-## What's New in the Hyper API (v0.0.12982)
-
-*June 9, 2021*
+## v0.0.12982 [June 9, 2021]
 
 * Fixed a problem that could corrupt databases in rare cases when the [new file format](https://help.tableau.com/current/api/hyper_api/en-us/reference/sql/databasesettings.html#DEFAULT_DATABASE_VERSION) has explicitly been enabled by the user. This problem did not affect the default file format.
 * Updated OpenSSL dependency from 1.1.1g to 1.1.1k.
 
-## What's New in the Hyper API (v0.0.12805)
-
-*May 19, 2021*
+## v0.0.12805 [May 19, 2021]
 
 * Hyper now has experimental support for reading Apache Parquet files. See [Hyper API SQL documentation](https://help.tableau.com/current/api/hyper_api/en-us/reference/sql/sql-copy.html#SQL-COPY-APACHE_PARQUET_FORMAT) for details.
 * Hyper now adjusts the resulting interval from a timestamp subtraction so that 24-hour time periods are represented as days.
@@ -228,22 +194,16 @@ Noteworthy changes in the Time Zone Database:
     * Parsing GEOGRAPHY values from well-known text (WKT) format automatically adjusts the order of vertices in polygons.
     * During WKT parsing, additional vertices may be added to more closely resemble the original shape specified in the WKT.
 
-## What's New in the Hyper API (v0.0.12514)
-
-*April 7, 2021*
+## v0.0.12514 [April 7, 2021]
 
 * Fixed a rare defect where queries could return incorrect results after tuples at the end of a table were deleted.
 
-## What's New in the Hyper API (v0.0.12366)
-
-*March 10, 2021*
+## v0.0.12366 [March 10, 2021]
 
 * Improved performance for complex queries thanks to improved join ordering.
 * Fixed a defect where Hyper would use too much memory when executing string expressions in certain contexts.
 
-## What's New in the Hyper API (v0.0.12249)
-
-*February 17, 2021*
+## v0.0.12249 [February 17, 2021]
 
 * IANA released version `2021a` of the Time Zone Database. Hyper's time zone information is updated accordingly. Noteworthy changes:
     * Revised predictions for Morocco's changes starting in 2023.
@@ -256,44 +216,32 @@ Noteworthy changes in the Time Zone Database:
     * South Sudan changes from `+03` to `+02` on `2021-02-01` at `00:00`.
 * Added additional information to certain Hyper API exceptions that previously contained only their context id.
 
-## What's New in the Hyper API (v0.0.12005)
-
-*January 20, 2021*
+## v0.0.12005 [January 20, 2021]
 
 * Introduced a new and improved database file format that can be used via [Hyper Process Settings]({{ site.baseurl }}/reference/sql/processsettings.html). Refer to [Hyper Database Settings]({{ site.baseurl }}/reference/sql/databasesettings.html#DEFAULT_DATABASE_VERSION) for more information.
 * Clarified the `Create hyper file from csv` example: We highlight the usage of the `HEADER` COPY option which ignores the first line in a csv file.
 * Java: Fixed the `getShort()` method to return a `short` instead of an `int`.
 
-## What's New in the Hyper API (v0.0.11952)
-
-*December 16, 2020*
+## v0.0.11952 [December 16, 2020]
 
 * When Hyper is running inside a container, such as Docker, Hyper now respects the memory limits that are set for the container.
 
-## What's New in the Hyper API (v0.0.11889)
-
-*December 2, 2020*
+## v0.0.11889 [December 2, 2020]
 
 * Fixed a parsing error that could lead to a failure to connect to a Hyper database. This error could occur with certain operating system configurations if you were using special UTF-8 characters as the database name.
 
-## What's New in the Hyper API (v0.0.11691)
-
-*November 9, 2020*
+## v0.0.11691 [November 9, 2020]
 
 * Faster initialization of `HyperProcess`: Starting Hyper is now 4x faster. For example, on our internal Linux computers, we measured 11 milliseconds startup time instead of previously 44 milliseconds.
 * Python: `TableDefinition.Column.collation` represents the default collation with `None` now. Previously, the results of `catalog.get_table_definition` used `''` for the default collation. This is a breaking change.
 
-## What's New in the Hyper API (v0.0.11556)
-
-*September 30, 2020*
+## v0.0.11556 [September 30, 2020]
 
 * C++: Fixed a bug that could have lead to wrong or missing results when multiple `ResultIterator` or `ChunkIterator` iterators are constructed over the same `hyperapi::Result` object.
 * C++: Interface fix: Removed an incorrect `noexcept` specification from the `ResultIterator()` and `ChunkedIterator()` constructors for begin iterators. These functions may fail by throwing `std::bad_alloc` or `hyperapi::HyperException`. Those were previously flagged as `noexcept` even though they could have thrown.
 * Removed support for the PostgreSQL legacy end-of-data marker `\.`. The marker could be used to mark the end of CSV and TEXT input. Hyper now solely relies on the end-of-file condition to determine the end.
 
-## What's New in the Hyper API (v0.0.11355)
-
-*August 26, 2020*
+## v0.0.11355 [August 26, 2020]
 
 * Removed the following settings for the `HyperProcess` class that were deprecated since version 0.0.10309:
     * `log-dir`: Use `log_dir` instead.
@@ -302,15 +250,11 @@ Noteworthy changes in the Time Zone Database:
     * `:log_file_size_limit`: Use `log_file_size_limit` instead.
     * `:log_file_max_count`: Use `log_file_max_count` instead.
 
-## What's New in the Hyper API (v0.0.11249)
-
-*July 30, 2020*
+## v0.0.11249 [July 30, 2020]
 
 * Hyper now correctly checks for NOT NULL constraints when creating a table from a CSV file with the COPY statement.
 
-## What's New in the Hyper API (v0.0.11074)
-
-*June 24, 2020*
+## v0.0.11074 [June 24, 2020]
 
 * Adds several SQL functions for managing spatial data:
     * For creating geography objects (`geo_make_point` and `geo_make_line`).
@@ -324,9 +268,7 @@ Noteworthy changes in the Time Zone Database:
 * Fixed a hanging query result fetch operation in the Hyper API when rows are consistently larger than 1 MB.
 * New Python sample file that shows how you can use the Hyper API to reduce the fragmentation of `.hyper` files. See [Optimize Hyper File Storage](https://help.tableau.com/current/api/hyper_api/en-us/docs/hyper_api_defrag.html) and the [defragment-data-of-existing-hyper-file](https://github.com/tableau/hyper-api-samples/tree/main/Community-Supported/defragment-hyper-file) sample on GitHub.
 
-## What's New in the Hyper API (v0.0.10899)
-
-*May 27, 2020*
+## v0.0.10899 [May 27, 2020]
 
 * Hyper now fully supports the options `FORCE_NULL` and `FORCE_NOT_NULL` for CSV parsing. By default, only unquoted values are compared to the null string to determine whether they represent a `NULL` value. `FORCE_NULL` toggles the same for quoted values. `FORCE_NOT_NULL` disables comparison of non-quoted values with the null string. See [COPY command](https://help.tableau.com/current/api/hyper_api/en-us/reference/sql/sql-copy.html).
 
@@ -337,9 +279,7 @@ Noteworthy changes in the Time Zone Database:
     * Canada's Yukon advanced to `-07` year-round on `2020-03-08`.
     * `America/Nuuk` was renamed from `America/Godthab`.
 
-## What's New in the Hyper API (v0.0.10622)
-
-*April 22, 2020*
+## v0.0.10622 [April 22, 2020]
 
 * If you use the Hyper API and accidentally open a file that is not a Hyper file, you now see a more informative error message.
 
@@ -347,9 +287,7 @@ Noteworthy changes in the Time Zone Database:
 
 * The Python Hyper API now exposes a `__version__` attribute and thus supports PEP 396.
 
-## What's New in the Hyper API (v0.0.10309)
-
-*March 25, 2020*
+## v0.0.10309 [March 25, 2020]
 
 * The Hyper API `Inserter` class now allows SQL expressions to compute or transform data on the fly during insertion.
 
@@ -382,9 +320,7 @@ Noteworthy changes in the Time Zone Database:
 
 ---
 
-## What's New in the Hyper API (v0.0.10002)
-
-*February 26, 2020*
+## v0.0.10002 [February 26, 2020]
 
 * Reduced memory consumption for `INSERT`: When inserting a large number of tuples using INSERT, Hyper API now uses less RAM. This is particularly important when copying large tables using `INSERT INTO newtable SELECT * FROM oldtable`.
 
@@ -404,9 +340,7 @@ Noteworthy changes in the Time Zone Database:
 
 ---
 
-## What's New in the Hyper API (v0.0.9746)
-
-*January 29, 2020*
+## v0.0.9746 [January 29, 2020]
 
 * Improved time zone support. In particular, the `TIMESTAMP WITH TIME ZONE` (or `TIMESTAMPTZ`) type is now properly supported.
 
@@ -447,9 +381,7 @@ Noteworthy changes in the Time Zone Database:
 
 ---
 
-## What's New in the Hyper API (v0.0.9273)
-
-*December 4, 2019*
+## v0.0.9273 [December 4, 2019]
 
 * NuGet package for the Tableau Hyper API for .NET. You can now reference the Tableau Hyper API library from your project file as you would for other NuGet packages. See [Install the Hyper API for .NET]({{site.baseurl}}/docs/hyper_api_installing.html#install-the-hyper-api-for-net).
 
@@ -471,9 +403,7 @@ Noteworthy changes in the Time Zone Database:
 
 ---
 
-## What's New in the Hyper API (v0.0.8953)
-
-*October 30, 2019*
+## v0.0.8953 [October 30, 2019]
 
 * Various bug fixes. See the **Resolved Issues** on the [Hyper API Product Release and Download](https://tableau.com/support/releases/hyper-api/latest){:target="_blank"}{:ref="noopener"} page.
 
@@ -506,9 +436,7 @@ Noteworthy changes in the Time Zone Database:
 
 ---
 
-## What's New in the Hyper API (v0.0.8707)
-
-*October 2019*
+## v0.0.8707 [October 2019]
 
 The Hyper API replaces the Extract API 2.0 for building applications that create and update Tableau extract files (`.hyper`) for Tableau 10.5 and later. The Hyper API provides more capabilities and improved performance when compared to the previous API.
 

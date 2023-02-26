@@ -12,3 +12,9 @@ systems, in particular PostgreSQL, and in many cases this functionality
 is compatible and consistent between the various database systems. This
 chapter is also not exhaustive; additional functions appear in relevant
 sections of the manual.
+
+```mdx-code-block
+import DocCardList from '@theme/DocCardList';
+
+<DocCardList />
+```

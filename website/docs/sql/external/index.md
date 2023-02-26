@@ -5,3 +5,9 @@ other commonly used data formats (called external formats or external
 data hereinafter). Hyper SQL provides various syntactic options for
 accessing external data, supports various locations from which external
 data can be read, and supports various external formats.
+
+```mdx-code-block
+import DocCardList from '@theme/DocCardList';
+
+<DocCardList />
+```

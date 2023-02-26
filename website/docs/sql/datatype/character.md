@@ -1,4 +1,4 @@
-# Character Types {#datatype-character}
+# Character Types
 
   Name                                   Description
   -------------------------------------- ----------------------------

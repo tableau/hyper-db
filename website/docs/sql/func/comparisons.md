@@ -1,4 +1,4 @@
-# Row Comparisons {#functions-comparisons}
+# Row Comparisons
 
 This section describes several specialized constructs for making
 multiple comparisons between groups of values. These forms are

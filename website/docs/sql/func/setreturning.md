@@ -1,4 +1,4 @@
-# Set Returning Functions {#functions-srf}
+# Set Returning Functions
 
 This section describes functions that possibly return more than one row.
 Set returning functions can be used in SQL queries in places where a

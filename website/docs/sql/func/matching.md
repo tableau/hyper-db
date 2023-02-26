@@ -1,4 +1,4 @@
-# Pattern Matching {#functions-matching}
+# Pattern Matching
 
 There are two separate approaches to pattern matching provided by Hyper:
 the traditional SQL `LIKE` operator and the more recent `SIMILAR TO`

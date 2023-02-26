@@ -1,4 +1,4 @@
-# Boolean Type {#datatype-boolean}
+# Boolean Type
 
 Hyper provides the standard SQL type `boolean`; see
 [table_title](#datatype-boolean-table). The `boolean` type can have

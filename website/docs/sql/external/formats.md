@@ -1,4 +1,4 @@
-# External Formats and Options {#external-formats}
+# External Formats and Options
 
 Hyper supports various external data formats. Depending on the format,
 various format-specific options are available, which alter the way in

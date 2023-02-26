@@ -1,4 +1,4 @@
-# Comparison Functions and Operators {#functions-comparison}
+# Comparison Functions and Operators
 
 The usual comparison operators are available, as shown in
 [table_title](#functions-comparison-op-table).

@@ -1,4 +1,4 @@
-# Logical Operators {#functions-logical}
+# Logical Operators
 
 The usual logical operators are available: `AND`, `OR`, `NOT` SQL uses a
 three-valued logic system with true, false, and `null`, which represents

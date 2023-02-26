@@ -1,4 +1,4 @@
-# Data Types {#datatype}
+# Data Types
 
 Hyper has a rich set of native data types available to users.
 

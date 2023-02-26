@@ -1,4 +1,4 @@
-# Conditional Expressions {#functions-conditional}
+# Conditional Expressions
 
 This section describes the SQL-compliant conditional expressions
 available in Hyper.

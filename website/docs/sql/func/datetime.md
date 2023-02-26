@@ -1,4 +1,4 @@
-# Date/Time Functions and Operators {#functions-datetime}
+# Date/Time Functions and Operators
 
 [table_title](#functions-datetime-table) shows the available functions
 for date/time value processing, with details appearing in the following

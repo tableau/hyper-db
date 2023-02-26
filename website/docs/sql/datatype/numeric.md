@@ -1,4 +1,4 @@
-# Numeric Types {#datatype-numeric}
+# Numeric Types
 
 Numeric types consist of two-, four-, and eight-byte integers, as well
 as eight-byte floating-point numbers and selectable-precision decimals.

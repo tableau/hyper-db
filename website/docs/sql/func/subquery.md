@@ -1,4 +1,4 @@
-# Subquery Expressions {#functions-subquery}
+# Subquery Expressions
 
 This section describes the SQL-compliant subquery expressions available
 in Hyper. All of the expression forms documented in this section return

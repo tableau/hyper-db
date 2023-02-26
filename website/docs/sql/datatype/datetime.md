@@ -1,4 +1,4 @@
-# Date/Time Types {#datatype-datetime}
+# Date/Time Types
 
 Hyper supports the set of SQL date and time types shown in
 [table_title](#datatype-datetime-table). The operations available on

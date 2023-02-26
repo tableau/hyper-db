@@ -1,4 +1,4 @@
-# Reading External Data in SQL {#external-data-in-sql}
+# Reading External Data in SQL
 
 Hyper has three options to read external data in SQL:
 

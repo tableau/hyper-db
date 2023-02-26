@@ -1,4 +1,4 @@
-# Data Type Formatting Functions {#functions-formatting}
+# Data Type Formatting Functions
 
 The Hyper formatting functions provide a powerful set of tools for
 converting various data types to formatted strings and for converting

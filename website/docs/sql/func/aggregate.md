@@ -1,4 +1,4 @@
-# Aggregate Functions {#functions-aggregate}
+# Aggregate Functions
 
 Aggregate functions compute a single result from a set of input values.
 The built-in general-purpose aggregate functions are listed in

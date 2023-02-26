@@ -1,4 +1,4 @@
-# External Formats {#external}
+# External Formats
 
 Besides its own table format, Hyper is able to access data stored in
 other commonly used data formats (called external formats or external

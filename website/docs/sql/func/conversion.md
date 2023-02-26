@@ -1,4 +1,4 @@
-# Data Type Conversion {#functions-conversion}
+# Data Type Conversion
 
 This section describes the functions for converting between data types
 in Hyper.

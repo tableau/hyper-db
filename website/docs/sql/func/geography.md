@@ -1,4 +1,4 @@
-# Geographic Functions {#functions-geography}
+# Geographic Functions
 
 Geographical functions operate on geographic input, like points, lines
 or polygons. The built-in general-purpose geographic functions are

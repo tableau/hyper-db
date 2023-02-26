@@ -1,4 +1,4 @@
-# Connection Settings {#connectionsettings}
+# Connection Settings
 
 Connection settings are settings that apply only on a connection level.
 Other connections to the same Hyper process are not affected. They can

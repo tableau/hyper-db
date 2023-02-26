@@ -1,4 +1,4 @@
-# Window Functions and Queries {#functions-window}
+# Window Functions and Queries
 
 Window functions provide the ability to perform calculations across sets
 of rows that are related to the current query row. This documentation

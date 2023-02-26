@@ -1,4 +1,4 @@
-# String Functions and Operators {#functions-string}
+# String Functions and Operators
 
 This section describes functions and operators for examining and
 manipulating string values. Unless otherwise noted, all of the functions

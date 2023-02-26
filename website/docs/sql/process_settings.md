@@ -1,4 +1,4 @@
-# Process Settings {#processsettings}
+# Process Settings
 
 Process settings are settings that apply to the Hyper process. They
 influence all connections to Hyper. They can be set during startup of

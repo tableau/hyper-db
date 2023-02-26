@@ -1,4 +1,4 @@
-# Mathematical Functions and Operators {#functions-math}
+# Mathematical Functions and Operators
 
 Mathematical operators are provided for many Hyper types. For types
 without standard mathematical conventions (e.g., date/time types) we

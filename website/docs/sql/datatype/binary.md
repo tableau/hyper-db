@@ -1,4 +1,4 @@
-# Binary Data Types {#datatype-binary}
+# Binary Data Types
 
 The `bytes` data type allows storage of binary strings; see
 [table_title](#datatype-binary-table).

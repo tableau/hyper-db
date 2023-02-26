@@ -1,4 +1,4 @@
-# Functions and Operators {#functions}
+# Functions and Operators
 
 Hyper provides a large number of functions and operators for the
 built-in data types.

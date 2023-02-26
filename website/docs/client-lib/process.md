@@ -1,1 +1,0 @@
-# Starting a Hyper process

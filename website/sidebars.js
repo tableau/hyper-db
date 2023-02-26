@@ -4,6 +4,7 @@
 const sidebars = {
   docs: [
     "index",
+    "release_notes",
     {
       type: 'category',
       label: 'Getting Started',
@@ -16,41 +17,17 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Guides',
+      label: 'How-to',
       link: { type: 'generated-index' },
       items: [
-        'guides/create_update',
-        'guides/read_data',
-        'guides/insert_csv',
-        'guides/insert_delete',
-        'guides/sql_commands',
-        'guides/publish',
-        'guides/geodata',
-        'guides/defrag',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'The client library',
-      link: { type: 'doc', id: 'client-lib/index' },
-      items: [
-        {
-          type: 'category',
-          label: 'Starting a Hyper process',
-          link: { type: 'doc', id: 'client-lib/process' },
-          items: [ 'client-lib/process_settings' ],
-        },
-        {
-          type: 'category',
-          label: 'Connecting with a Hyper database',
-          link: { type: 'doc', id: 'client-lib/connection' },
-          items: [ 'client-lib/connection_settings' ],
-        },
-        'client-lib/sql-execution',
-        'client-lib/sql-formatting',
-        'client-lib/meta-queries',
-        'client-lib/ddl-utils',
-        'client-lib/inserter',
+        'how-to/create_update',
+        'how-to/read_data',
+        'how-to/insert_csv',
+        'how-to/insert_delete',
+        'how-to/sql_commands',
+        'how-to/publish',
+        'how-to/geodata',
+        'how-to/defrag',
       ],
     },
     {
@@ -107,10 +84,12 @@ const sidebars = {
             "sql/external/formats",
             "sql/external/fragment_sourcelocation",
           ],
-        }
+        },
+        "sql/process_settings",
+        "sql/connection_settings",
       ],
     },
-    "release_notes",
+    "client_languages",
     "faq",
   ],
 };

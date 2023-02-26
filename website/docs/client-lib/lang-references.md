@@ -1,4 +1,4 @@
-# Client languages
+# Language references
 
 For the documentation of the client-side HyperAPI library for the various languages, see:
 

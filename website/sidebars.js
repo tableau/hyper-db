@@ -45,6 +45,18 @@ const sidebars = {
         },
         {
           type: 'category',
+          label: 'Data Types',
+          link: { type: 'doc', id: 'sql/datatype/index' },
+          items: [
+            "sql/datatype/binary",
+            "sql/datatype/boolean",
+            "sql/datatype/character",
+            "sql/datatype/datetime",
+            "sql/datatype/numeric",
+          ],
+        },
+        {
+          type: 'category',
           label: 'Functions and Operators',
           link: { type: 'doc', id: 'sql/func/index' },
           items: [
@@ -60,20 +72,7 @@ const sidebars = {
             "sql/func/aggregate",
             "sql/func/window",
             "sql/func/subquery",
-            "sql/func/comparisons",
             "sql/func/setreturning",
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Data Types',
-          link: { type: 'doc', id: 'sql/datatype/index' },
-          items: [
-            "sql/datatype/binary",
-            "sql/datatype/boolean",
-            "sql/datatype/character",
-            "sql/datatype/datetime",
-            "sql/datatype/numeric",
           ],
         },
         {

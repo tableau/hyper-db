@@ -584,7 +584,7 @@ The following are valid field names:
 
 `second`
 
-:   The seconds field, including fractional parts (0 - 59[^1])
+:   The seconds field, including fractional parts (0 - 59; can be 60 on leap seconds)
 
         SELECT EXTRACT(SECOND FROM TIMESTAMP '2001-02-16 20:38:40');
         Result: 40
@@ -732,4 +732,3 @@ tuple will be used, and not the timestamp of table creation. This works
 differently in PostgreSQL, where the table creation timestamp is used in
 every insertion that uses the default value.
 
-[^1]: can be 60 on leap seconds

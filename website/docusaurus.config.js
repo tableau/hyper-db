@@ -9,7 +9,7 @@ const getConfig = async () => {
   /** @type {import('@docusaurus/types').Config} */
   return {
     title: 'HyperDB',
-    tagline: 'Hyper Hyper!',
+    tagline: 'Hyper is the blazingly fast data engine powering Tableau and the Salesforce Data Cloud.',
     favicon: 'img/favicon.ico',
 
     /* XXX
@@ -104,15 +104,15 @@ const getConfig = async () => {
               title: 'Use cases',
               items: [
                 {
-                  label: 'Hyper for Tableau users',
+                  label: 'Hyper for Tableau Users',
                   href: '/docs/usescases/tableau',
                 },
                 {
-                  label: 'Hyper for data scientists',
+                  label: 'Hyper for Data Scientists',
                   href: '/docs/usescases/datascience',
                 },
                 {
-                  label: 'Hyper for researchers',
+                  label: 'Hyper for Researchers',
                   href: '/docs/usescases/research',
                 },
               ],

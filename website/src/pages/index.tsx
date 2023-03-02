@@ -12,7 +12,7 @@ function HomepageHeader() {
     const { siteConfig } = useDocusaurusContext();
     const logoSrc = useBaseUrl('/img/hyper-logo.svg');
     return (
-        <header className={clsx('hero hero--primary', styles.heroBanner)}>
+        <header className={clsx('hero', styles.heroBanner)}>
             <div className="container">
                 <img src={logoSrc} className={styles.heroLogo} />
                 <h1 className="hero__title">{siteConfig.title}</h1>

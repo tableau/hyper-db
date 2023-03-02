@@ -2,7 +2,6 @@
 // Note: type annotations allow type checking and IDEs autocompletion
 
 const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 const getConfig = async () => {
   const remarkDefList = (await import("remark-deflist")).default;
@@ -81,6 +80,10 @@ const getConfig = async () => {
             { to: '/blog', label: 'Blog', position: 'left' },
           ],
         },
+        colorMode: {
+          defaultMode: 'light',
+          disableSwitch: true,
+        },
         footer: {
           style: 'dark',
           links: [
@@ -140,7 +143,6 @@ const getConfig = async () => {
         },
         prism: {
           theme: lightCodeTheme,
-          darkTheme: darkCodeTheme,
         },
       }),
   };

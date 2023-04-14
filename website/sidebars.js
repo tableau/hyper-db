@@ -54,6 +54,7 @@ const sidebars = {
             'sql/command/delete',
             'sql/command/truncate',
             'sql/command/copy_from',
+            'sql/command/copy_to',
             'sql/command/create_database',
             'sql/command/create_schema',
             'sql/command/create_table',

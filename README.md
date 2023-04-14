@@ -2,8 +2,8 @@
 
 You found the source code backing Hyper's website hosted at https://tableau.github.io/hyper-db 🙂
 
-If you want to read our documentation or any other content from our webpage, I highly recommend you do so on https://tableau.github.io/hyper-db instead of browsing the source code here.
-If, however, you want to contribute to our documentation, e.g. by documenting new use cases, fixing typos, writing a blog post, then you found exactly the right spot.
+If you want to read our documentation, blog posts or any other content from our webpage, I highly recommend you do so on https://tableau.github.io/hyper-db instead of browsing the source code here.
+If, however, you want to contribute to our documentation, e.g. by documenting new use cases, e.g. by fixing typos, writing a blog post, then you found exactly the right spot.
 Contributions are very welcome, you don't need to be a Salesforce employee.
 Just open a pull request on this Github repository.
 For larger contributions, however, you might want to create a [Github issue](https://github.com/tableau/hyper-db/issues) first, to discuss your idea.

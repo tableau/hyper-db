@@ -40,6 +40,13 @@ const getConfig = async () => {
               'https://github.dev/tableau/hyper-db/blob/main/website/',
             remarkPlugins: [remarkDefList],
           },
+          blog: {
+            showReadingTime: true,
+            // Please change this to your repo.
+            // Remove this to remove the "edit this page" links.
+            editUrl:
+              'https://github.dev/tableau/hyper-db/blob/main/website/',
+          },
           theme: {
             customCss: require.resolve('./src/css/custom.css'),
           },
@@ -69,6 +76,7 @@ const getConfig = async () => {
               position: 'left',
               label: 'Documentation',
             },
+            { to: '/blog', label: 'Blog', position: 'left' },
           ],
         },
         colorMode: {
@@ -102,6 +110,10 @@ const getConfig = async () => {
             {
               title: 'More',
               items: [
+                {
+                  label: 'Blog',
+                  to: '/blog',
+                },
                 {
                   label: 'GitHub',
                   href: 'https://github.com/tableau/hyper-db',

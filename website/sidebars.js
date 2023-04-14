@@ -8,6 +8,16 @@ const sidebars = {
     'installation',
     {
       type: 'category',
+      label: 'Use cases',
+      link: { type: 'generated-index' },
+      items: [
+        'usecases/tableau',
+        'usecases/datascience',
+        'usecases/research',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Guides',
       link: { type: 'doc', id: 'guides/index' },
       items: [

@@ -50,3 +50,10 @@
 .vertical-timeline-custom .vertical-timeline-element-icon img {
     border-radius: 50%;
 }
+
+.usecase-icon {
+    float: right;
+    width: 200px;
+    margin: 20px;
+    height: 200px;
+}

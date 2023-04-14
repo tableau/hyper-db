@@ -100,6 +100,23 @@ const getConfig = async () => {
               ],
             },
             {
+              title: 'Use Cases',
+              items: [
+                {
+                  label: 'Hyper for Tableau Users',
+                  href: '/docs/usecases/tableau',
+                },
+                {
+                  label: 'Hyper for Data Scientists',
+                  href: '/docs/usecases/datascience',
+                },
+                {
+                  label: 'Hyper for Researchers',
+                  href: '/docs/usecases/research',
+                },
+              ],
+            },
+            {
               title: 'More',
               items: [
                 {

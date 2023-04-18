@@ -49,9 +49,11 @@ SELECT * FROM external('products.csv',
     COLUMNS => DESCRIPTOR(name text, price int));
 ```
 
-Depending on the format, various format-specific options are available, which alter the way
-in which the external format will be processed.
-Format-specific options are described in detail in the section of the respective format below.
+Depending on the format, various format-specific options are available, which alter the way in which the external format will be processed.
+The available options are described in detail below.
+
+## Common Format Options
+
 The following options are available for all or multiple external formats:
 
 `FORMAT => 'format_name'`

@@ -29,7 +29,7 @@ const sidebars = {
         'hyper-api/hyper_process',
         'hyper-api/connection',
         { type: 'link', label: "Examples", href: "https://github.com/tableau/hyper-api-samples" },
-        { type: 'link', label: "Python Referemce", href: "https://help.tableau.com/current/api/hyper_api/en-us/reference/py/index.html" },
+        { type: 'link', label: "Python Reference", href: "https://help.tableau.com/current/api/hyper_api/en-us/reference/py/index.html" },
         { type: 'link', label: "C++ Reference", href: "https://help.tableau.com/current/api/hyper_api/en-us/reference/cxx/index.html" },
         { type: 'link', label: ".NET Reference", href: "https://help.tableau.com/current/api/hyper_api/en-us/reference/dotnet/api/index.html" },
         { type: 'link', label: "Java Reference", href: "https://help.tableau.com/current/api/hyper_api/en-us/reference/java/overview-summary.html" },

@@ -69,7 +69,7 @@ on the command they are used in. Therefore they are sometimes simply
 called “names”.
 
 There are two types of identifiers: "unquoted" identifiers such as
-`Customers` and "quoted" or "delimitied" identifiers such as `"Discount"`.
+`Customers` and "quoted" or "delimited" identifiers such as `"Discount"`.
 
 Unquoted identifiers must start with a letter (non-Latin letters are
 also accepted) or an underscore. Subsequent characters in an identifier
@@ -79,10 +79,10 @@ Quoted identifiers are enclosed in double-quotes (`"`) and can contain
 arbitrary characters. Quoted identifiers can contain any character.
 To include a double quote, write two double quotes. Except for that,
 no escaping is required or supported. Special characters like tabs,
-protected whitespaces or even newline characters can be directly included
+protected whitespace or even newline characters can be directly included
 between the quotes.
 
-Unquoted indentifiers are always folded to lower case. For example, the identifiers
+Unquoted identifiers are always folded to lower case. For example, the identifiers
 `MyCustomers`, `myCustomers` and `"mycustomers"` all represent the lower-case
 name "mycustomers".
 In contrast, quoted not lower-cased and are case sensitive.
@@ -187,7 +187,7 @@ readable queries in such situations, Hyper provides another way, called “dolla
 to write string constants.
 
 A dollar-quoted string constant consists of a dollar sign (`$`), an optional “tag”
-of zeroor more characters, another dollar sign, an arbitrary sequence of characters
+of zero more characters, another dollar sign, an arbitrary sequence of characters
 that makes up the string content, a dollar sign, the same tag that began this dollar
 quote, and a dollar sign. For example, here are two different ways to specify the
 string “Dianne's horse” using dollar quoting:

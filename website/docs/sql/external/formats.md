@@ -13,7 +13,7 @@ The format of an external source is set through the
 `FORMAT` option. If the `FORMAT` option is not
 specified, Hyper will try to infer the format from the file extension.
 If multiple files are read, all have to possess the same extension for
-the inferral to succeed.
+the inference to succeed.
 
 The following formats are supported:
 
@@ -334,7 +334,7 @@ when using the Iceberg format:
 - Schema changes like added, dropped and renamed columns are supported
 
 :::note
-Hypers support for the Iceberg format is still in an early state and
+Hyper's support for the Iceberg format is still in an early state and
 should be considered experimental. We recommend to not use it in
 production workloads yet.
 :::

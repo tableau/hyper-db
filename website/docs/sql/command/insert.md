@@ -132,7 +132,7 @@ To insert a row consisting entirely of default values:
 
     INSERT INTO films DEFAULT VALUES;
 
-To insert multiple rows using the multirow `VALUES` syntax:
+To insert multiple rows using the multi-row `VALUES` syntax:
 
     INSERT INTO films (code, title, did, date_prod, kind)
     VALUES

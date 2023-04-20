@@ -13,7 +13,7 @@ with HyperProcess(telemetry=Telemetry.SEND_USAGE_DATA_TO_TABLEAU) as hyper:
                 ('dog', 4),
                 ('cat', 4),
                 ('bird', 2),
-                ('cangaroo', 2),
+                ('kangaroo', 2),
                 ('centipede', 100)
             """)
 
@@ -127,7 +127,7 @@ Escaping for identifiers and strings is documented in [General Syntax](../sql/sy
 Instead of reimplementing those escaping rules by yourself, you can use the `escape_name`
 and `escape_string_literal` functions to correctly format identifiers and strings in
 your SQL statements.
-Use `escape_name` for identifers, such as column or table names.
+Use `escape_name` for identifiers, such as column or table names.
 Use `escape_string_literal` when you need to use quoted string values.
 Furthermore, the utility classes `TableName` etc. are automatically escaped correctly when
 formatted as a string.

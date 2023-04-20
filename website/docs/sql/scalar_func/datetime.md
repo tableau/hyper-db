@@ -20,7 +20,7 @@ date); we show only one of each such pair.
 The examples in this section that show `interval` values use a
 human-readable style similar to
 [PostgreSQL](https://www.postgresql.org/docs/current/datatype-datetime.html#INTERVAL-OUTPUT)
-to represent them as strings. However, when outputing interval data as a
+to represent them as strings. However, when outputting interval data as a
 string, Hyper uses the [ISO-8601
 style](https://en.wikipedia.org/wiki/ISO_8601#Time_intervals). An
 example of interval in this format is `P1DT2H3M4S`, which corresponds to
@@ -33,7 +33,7 @@ format than what is shown in this page.
 
 ## Operators
 
-Basic arithemtic operatos (`+`, `-`, `*`, `/`) are also available for dates, times and intervals.
+Basic arithmetic operators (`+`, `-`, `*`, `/`) are also available for dates, times and intervals.
 
 Operator|Example
 ---|---

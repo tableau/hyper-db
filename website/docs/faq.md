@@ -7,7 +7,7 @@ Our team has a strong research background because Hyper originally started as a 
 
 ## How is Hyper related to HyPer?
 
-Hyper started as a research project at [Technical University of Munich](https://db.in.tum.de/). Back then, the project was still called "HyPer", the "P" was lower-cased soon after the aquisition in 2016.
+Hyper started as a research project at [Technical University of Munich](https://db.in.tum.de/). Back then, the project was still called "HyPer", the "P" was lower-cased soon after the acquisition in 2016.
 You can still find find links to all the research paper on [HyPer's website](https://hyper-db.de/).
 The code base of Hyper is an evolution of the research project HyPer and many of the foundational papers of HyPer are still applicable.
 For more information on Hyper's journey, see [Our Journey](/journey)

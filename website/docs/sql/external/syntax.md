@@ -64,7 +64,7 @@ fill a products table:
 CREATE TABLE products AS (SELECT * FROM external('products.parquet'))
 ```
 
-## Creating External Tables vs. Using Ad-hoc Queryies
+## Creating External Tables vs. Using Ad-hoc Queries
 
 The set returning function `external` and the
 `CREATE TEMPORARY EXTERNAL TABLE` statement can both be used to query

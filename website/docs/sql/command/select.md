@@ -323,7 +323,7 @@ The `FROM` clause can contain the following elements:
     In Hyper, sub-queries can always access the attributes of preceding
     `FROM` items, even if the `LATERAL` keyword is not specified. As such,
     this keyword has no effect in Hyper and it is kept just for
-    compatibiliy reasons.
+    compatibility reasons.
 
 ### `WHERE` Clause {#where}
 

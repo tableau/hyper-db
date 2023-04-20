@@ -10,7 +10,7 @@ TRY_CAST (<expression> AS <type>)
 
 The SQL `CAST` function converts a value from one type to another. If the
 type conversion fails, an error will be thrown.
-In constrast, the `TRY_CAST` function returns NULL if the conversion fails.
+In contrast, the `TRY_CAST` function returns NULL if the conversion fails.
 The syntax `::` is equivalent `CAST`.
 
 

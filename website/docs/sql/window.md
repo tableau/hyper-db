@@ -170,7 +170,7 @@ The above query only shows the rows from the inner query having `rank`
 less than 3.
 
 When a query involves multiple window functions, it is possible to write
-out each one with a separate `OVER` clause, but this is duplicative and
+out each one with a separate `OVER` clause, but this is redundant and
 error-prone if the same windowing behavior is wanted for several
 functions. Instead, each windowing behavior can be named in a `WINDOW`
 clause and then referenced in `OVER`. For example:

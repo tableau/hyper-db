@@ -176,7 +176,7 @@ database versions with the latest Hyper API and newer product versions
 but you cannot open them in older product versions. For example, the new
 database file format version `2` can be opened in Tableau Desktop
 2020.4.15 but it cannot be opened in Tableau Desktop 2020.3. The
-complete compatiblility matrix is documented in the version sections
+complete compatibility matrix is documented in the version sections
 below.
 :::
 

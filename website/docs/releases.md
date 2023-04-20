@@ -17,7 +17,7 @@ import {config} from '@site/src/config';
 
 :::note
 
-In case you are wondering why all our functions start with `0.0`, read [this FAQ entry](/docs/faq#why-does-hyperapi-only-have-00-versions).
+In case you are wondering why all our releases start with `0.0`, read [this FAQ entry](/docs/faq#why-does-hyperapi-only-have-00-versions).
 
 :::
 

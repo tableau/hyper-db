@@ -39,7 +39,7 @@ To visualize a JSON query plan and interactively explore it, copy-paste the plan
 
 ## Examples
 
-The following will give us the query plan of TPC-H query 6, formatted as an ASCII art.
+The following will give us the query plan of TPC-H query 6, formatted as ASCII art.
 
 ```
 EXPLAIN

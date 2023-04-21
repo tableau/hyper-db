@@ -12,7 +12,7 @@ EXPLAIN [VERBOSE] [ANALYZE] <query>;
 ## Description
 
 :::warning Unstable Interface
-The returned query plans map directly to Hyper's internal represenation of query plans.
+The returned query plans map directly to Hyper's internal representation of query plans.
 As Hyper evolves, the query plans might change considerably.
 Don't expect query plans (neither their formatting nor their semantics) to be stable across Hyper versions.
 :::

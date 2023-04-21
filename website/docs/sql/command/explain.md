@@ -34,7 +34,7 @@ There are three types of plans which can be queried:
 By default, plans are formatted as ASCII art.
 The ASCII art is useful for quickly grasping the overall query structure, but is lacking details, such as the exact join conditions.
 Those details are present in the JSON output format, which can be requested using the `VERBOSE` option. 
-The `VERBOSE` option can be combined with any other choice
+The `VERBOSE` option can be combined with any other choice.
 To visualize a JSON query plan and interactively explore it, copy-paste the plan into [Hyper's Plan Viewer](https://tableau.github.io/query-graphs/).
 
 ## Examples

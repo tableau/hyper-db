@@ -66,6 +66,7 @@ WHERE l_shipdate >= date '1994-01-01'
 If we want to view the plan in a graphical plan viewer, or want to see additional details in the plan, we can use the `VERBOSE` option and then copy-paste the resulting JSON into [Hyper's Plan Viewer](https://tableau.github.io/query-graphs/).
 
 ```
+EXPLAIN (VERBOSE, OPTIMIZERSTEPS)
 SELECT sum(l_extendedprice * l_discount) as revenue
 FROM lineitem
 WHERE l_shipdate >= date '1994-01-01'

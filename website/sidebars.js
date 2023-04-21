@@ -64,6 +64,7 @@ const sidebars = {
             'sql/command/drop_table',
             'sql/command/drop_schema',
             'sql/command/drop_database',
+            'sql/command/explain',
             'sql/command/prepare',
             'sql/command/execute',
             'sql/command/deallocate',

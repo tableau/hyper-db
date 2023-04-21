@@ -9,6 +9,14 @@ EXPLAIN (<option>, ...) <query>;
 EXPLAIN [VERBOSE] [ANALYZE] <query>;
 ```
 
+where the available `<option>`s are
+
+```sql_template
+VERBOSE
+ANALYZE
+OPTIMIZERSTEPS
+```
+
 ## Description
 
 :::warning Unstable Interface

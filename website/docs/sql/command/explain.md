@@ -21,7 +21,7 @@ Don't expect query plans (neither their formatting nor their semantics) to be st
 This command retrieves the query plan which Hyper uses to execute the given query.
 The query plan describes which tables are accessed in which order, how they are joined together, which expressions are evaluated and all other details of query execution.
 
-One or more `<option>`s can provided to change which information is displayed and how it is displayed.
+One or more `<option>`s can be provided to change which information is displayed and how it is displayed.
 In general, options are provided within parentheses after the `EXPLAIN` keyword.
 In addition, `VERBOSE` and `ANALYZE` can also be provided without parentheses.
 

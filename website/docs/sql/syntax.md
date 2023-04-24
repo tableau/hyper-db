@@ -85,7 +85,8 @@ between the quotes.
 Unquoted identifiers are always folded to lower case. For example, the identifiers
 `MyCustomers`, `myCustomers` and `"mycustomers"` all represent the lower-case
 name "mycustomers".
-In contrast, quoted not lower-cased and are case sensitive.
+In contrast, quoted identifiers are not lower-cased and use the exact casing
+as given in the SQL query.
 
 A couple of examples on the case sensitivity of identifiers: 
 

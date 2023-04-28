@@ -37,4 +37,4 @@ The Hyper API libraries are available for the most commonly used languages, i.e.
 and is available for Windows, macOS and Linux.
 It can be used both in the cloud as well as on small consumer-grade laptops.
 
-More details on the supported platforms and hardware requirements can be found in the [Installation instructions](installation)
+More details on the supported platforms and hardware requirements can be found in the [Installation instructions](installation).

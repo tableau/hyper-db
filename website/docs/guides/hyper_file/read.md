@@ -12,7 +12,7 @@ with HyperProcess(Telemetry.SEND_USAGE_DATA_TO_TABLEAU) as hyper:
         # But be careful with this! It might be a lot of data and Python
         # might not be able to cope with that much data...
         my_data = connection.execute_list_query("""
-            SELECT * FROM "Extract.Extract"
+            SELECT * FROM "Extract"."Extract"
         """)
         print(my_data)
 

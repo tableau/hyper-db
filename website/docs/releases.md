@@ -21,6 +21,19 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+### What's New in the Hyper API (v0.0.17002) [May 3, 2023]
+
+* Improved [documentation](https://tableau.github.io/hyper-db/docs/)
+* IANA released version 2023c of the Time Zone Database. Hyper’s time zone information is updated accordingly. Noteworthy changes:
+  * Egypt now uses DST again, from April through October.
+  * This year Morocco springs forward April 23, not April 30.
+  * Palestine delays the start of DST this year.
+  * Much of Greenland still uses DST from 2024 on.
+  * America/Yellowknife now links to America/Edmonton.
+  * When observing Moscow time, Europe/Kirov and Europe/Volgograd now
+    use the abbreviations MSK/MSD instead of numeric abbreviations,
+    for consistency with other timezones observing Moscow time.
+
 ### v0.0.16868 [April 5, 2023]
 
 * Introduced `approx_count_distinct` aggregate

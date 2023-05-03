@@ -21,7 +21,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-### What's New in the Hyper API (v0.0.17002) [May 3, 2023]
+### v0.0.17002 [May 3, 2023]
 
 * Improved [documentation](https://tableau.github.io/hyper-db/docs/)
 * IANA released version 2023c of the Time Zone Database. Hyper’s time zone information is updated accordingly. Noteworthy changes:

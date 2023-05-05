@@ -21,6 +21,10 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+### Upcoming release
+
+* Support for multiple concurrent connections to the same Hyper file was added
+
 ### v0.0.17002 [May 3, 2023]
 
 * Improved [documentation](https://tableau.github.io/hyper-db/docs/)

@@ -17,7 +17,7 @@ SELECT [ ALL | DISTINCT [ ON ( <expression> [, ...] ) ] ]
     [ ORDER BY <expression> [ ASC | DESC ] [ NULLS { FIRST | LAST } ] [, ...] ]
     [ LIMIT { <count> | ALL } ]
     [ OFFSET <start> [ ROW | ROWS ] ]
-    [ FETCH { <FIRST> | <NEXT> } [ <count> ] { ROW | ROWS } ONLY ];
+    [ FETCH { <FIRST> | <NEXT> } [ <count> ] { ROW | ROWS } { ONLY | WITH TIES } ];
 ```
 
 where `with_query` is:
@@ -769,12 +769,14 @@ Hyper also supports. It is:
 
 ```sql_template
 OFFSET <start> { ROW \| ROWS }
-FETCH { FIRST | NEXT } [ <count> ] { ROW | ROWS } ONLY
+FETCH { FIRST | NEXT } [ <count> ] { ROW | ROWS } { ONLY | WITH TIES }
 ```
 
 In this syntax, the `<start>` or `<count>` value is required by the
 standard to be a literal constant, a parameter, or a variable name.
 If `<count>` is omitted in a `FETCH` clause, it defaults to 1.
+The WITH TIES option is used to return any additional rows that tie
+for the last place in the result set according to the ORDER BY clause.
 `ROW` and `ROWS` as well as `FIRST` and `NEXT` are noise words that don't
 influence the effects of these clauses. According to the standard, the
 `OFFSET` clause must come before the `FETCH` clause if both are present;

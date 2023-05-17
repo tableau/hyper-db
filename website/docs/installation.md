@@ -44,10 +44,6 @@ It has the following minimum hardware requirements:
   - Install the 64-bit version (for example, for Windows, the download is listed as `Windows x86-64`).
   - On Windows, we recommend to select the option **Add Python 3.x to PATH** during installation.
 
-:::info
-Hyper API runs on Apple Silicon only with [Rosetta 2](https://support.apple.com/en-us/HT211861) instead of natively. In particular for Python, this means that the host Python needs to run with Rosetta, too.
-:::
-
 ```mdx-code-block
   </TabItem>
   <TabItem value="cxx" label="C++">
@@ -85,6 +81,11 @@ Using at least C++17 is recommended, as the API uses C++17 classes, such as `std
 </Tabs>
 ```
 
+:::info
+Hyper API runs on Apple Silicon only with [Rosetta 2](https://support.apple.com/en-us/HT211861) instead of natively.
+This means, that Hyper API can only be used from within other x86 programs, running under Rosetta.
+In particular for Python and Java, this means that the Python interpreter/Java runtime needs to run with Rosetta, too.
+:::
 
 ## Instructions
 

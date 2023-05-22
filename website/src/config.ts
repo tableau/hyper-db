@@ -15,7 +15,7 @@ export const config = {
         macos_java: `${downloadBaseUrl}/tableauhyperapi-java-macos-x86_64-release-main.${version_long}.zip`,
         macos_dotnet: `${downloadBaseUrl}/tableauhyperapi-dotnet-macos-x86_64-main.${version_long}.zip`,
 
-        linux_py: `${downloadBaseUrl}/tableauhyperapi-${version_short}-none-manylinux2014_x86_64.whl`,
+        linux_py: `${downloadBaseUrl}/tableauhyperapi-${version_short}-py3-none-manylinux2014_x86_64.whl`,
         linux_cxx: `${downloadBaseUrl}/tableauhyperapi-cxx-linux-x86_64-release-main.${version_long}.zip`,
         linux_java: `${downloadBaseUrl}/tableauhyperapi-java-linux-x86_64-release-main.${version_long}.zip`,
         linux_dotnet: `${downloadBaseUrl}/tableauhyperapi-dotnet-linux-x86_64-main.${version_long}.zip`,

@@ -1,0 +1,86 @@
+name: Build and deploy webpage
+
+# We combine both `main` and `upcoming` into a single webpage
+on:
+  push:
+    branches:
+      - 'main'
+      - 'upcoming'
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v3
+        id: setup-pages
+
+      - name: Checkout main
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main
+
+      - name: Checkout upcoming
+        uses: actions/checkout@v3
+        with:
+          ref: upcoming
+          path: upcoming
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'latest'
+          cache: yarn
+          cache-dependency-path: |
+            main/website/yarn.lock
+            upcoming/website/yarn.lock
+
+      - name: Install dependencies (main)
+        working-directory: main/website
+        run: yarn install --frozen-lockfile
+
+      - name: Build webpage for `main` branch
+        working-directory: main/website
+        run: yarn build
+        env:
+          GITHUB_ORIGIN: ${{ steps.setup-pages.outputs.origin }}
+          GITHUB_BASE_PATH: ${{ steps.setup-pages.outputs.base_path }}
+
+      - name: Install dependencies (upcoming)
+        working-directory: upcoming/website
+        run: yarn install --frozen-lockfile
+
+      - name: Build webpage for `upcoming` branch
+        working-directory: upcoming/website
+        run: yarn build
+        env:
+          GITHUB_ORIGIN: ${{ steps.setup-pages.outputs.origin }}
+          GITHUB_BASE_PATH: ${{ steps.setup-pages.outputs.base_path }}/upcoming
+          IS_UPCOMING: '1'
+
+      - name: Combine `main` and `upcoming
+        run: |
+          mv main/website/build combined
+          mv upcoming/website/build combined/upcoming
+
+      - name: Upload webpage artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'combined'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

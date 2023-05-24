@@ -6,6 +6,8 @@ const lightCodeTheme = require('prism-react-renderer/themes/github');
 const getConfig = async () => {
   const remarkDefList = (await import("remark-deflist")).default;
 
+  const isUpcomingVersion =  !!process.env.IS_UPCOMING
+
   /** @type {import('@docusaurus/types').Config} */
   return {
     title: 'Hyper',
@@ -16,6 +18,11 @@ const getConfig = async () => {
     url: process.env.GITHUB_ORIGIN ?? 'http://localhost/',
     baseUrl: (process.env.GITHUB_BASE_PATH ?? '') + '/',
 
+    // We don't want to have the preview version indexed
+    // by search engines
+    noIndex: isUpcomingVersion,
+
+    // We want all issues to be reported as build errors
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'throw',
 
@@ -136,6 +143,13 @@ const getConfig = async () => {
         prism: {
           theme: lightCodeTheme,
         },
+        announcementBar: isUpcomingVersion ? {
+          content:
+            'You are browsing a preview of the documentation for the upcoming Hyper version.',
+          backgroundColor: '#a00',
+          textColor: '#fff',
+          isCloseable: false,
+        } : undefined,
       }),
 
       plugins: [

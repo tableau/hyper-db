@@ -23,6 +23,8 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ### Upcoming release
 
+### v0.0.17231 [June 7, 2023]
+
 * Support for multiple concurrent connections to the same Hyper file was added
 * Support for `FETCH [...] WITH TIES` was added. See [documentation of FETCH](sql/command/select#limit)
 

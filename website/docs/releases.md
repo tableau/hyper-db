@@ -24,7 +24,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 ### v0.0.17231 [June 7, 2023]
 
 * Support for multiple concurrent connections to the same Hyper file was added
-* Support for `FETCH [...] WITH TIES` was added. See [documentation of FETCH](sql/command/select#limit)
+* Support for `FETCH [...] WITH TIES` was added. See [documentation of FETCH](/docs/sql/command/select#limit)
 * Improved query planning for external formats (e.g., Parquet, CSV, ...)
    * Samples are used for selectivity estimation on external formats
    * Distinct counts, statistics, and samples are no longer computed eagerly when issuing a `CREATE TEMP EXTERNAL TABLE` but in the first query that uses the external table

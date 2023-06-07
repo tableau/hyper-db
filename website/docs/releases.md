@@ -27,7 +27,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 * Support for `FETCH [...] WITH TIES` was added. See [documentation of FETCH](/docs/sql/command/select#limit)
 * Improved query planning for external formats (e.g., Parquet, CSV, ...)
    * Samples are used for selectivity estimation on external formats
-   * Distinct counts, statistics, and samples are no longer computed eagerly when issuing a `CREATE TEMP EXTERNAL TABLE` but in the first query that uses the external table
+   * Distinct counts, statistics, and samples are no longer computed eagerly when issuing a `CREATE TEMP EXTERNAL TABLE`. Instead, the first query that uses the external table updates them.
 
 ### v0.0.17002 [May 3, 2023]
 

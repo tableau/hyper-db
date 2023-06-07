@@ -51,13 +51,12 @@ Mode  | Behavior
 `CREATE_AND_REPLACE` | Create an empty database. If the database file already exists, replace it by a new, empty database.
 `CREATE_IF_NOT_EXISTS` | If the database file already exists, connect to it. Otherwise create a new, empty database and connect to it.
 
-:::caution Single connection per file
+:::caution Single HyperProcess per file
 
 A `.hyper` file can only be opened by one process at a time.
 That is, while your application is connected to the `.hyper` file, it has exclusive access: no other instance of Hyper can connect to the file.
 For example, you can't have a `.hyper` file opened in Tableau and at the same time use the Hyper API to read from or write to the same file.
-
-You cannot open multiple connections to the same `.hyper` file at the same time. However, you can connect to different `.hyper` files from a single instance of the `HyperProcess`. For example, you could read from one `.hyper` file and insert or copy data to another `.hyper` file.
+You can, however, open multiple connections to the same `.hyper` file at the same time by reusing the same `HyperProcess` instance.
 
 :::
 

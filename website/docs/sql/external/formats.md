@@ -413,9 +413,7 @@ production workloads yet.
 :::
 
 :::note
-If an Arrow file contains columns with unsupported data types or
-encodings, Hyper can still read the other columns in the file, as long
-as you do not select any unsupported columns.
+If an Arrow file contains columns with unsupported data types, Hyper can still read the other columns in the file, as long as you do not select any unsupported columns. This is not the case for unsupported encodings, i.e. Dictionary encodings, we cannot read Arrow files that contain any dictionaries.
 :::
 
 :::note

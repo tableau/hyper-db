@@ -1,12 +1,12 @@
 # Date/Time Functions and Operators
 
-[table_title](#datetime-table) shows the available functions
+[Functions](#functions) show the available functions
 for date/time value processing, with details appearing in the following
-subsections. [table_title](#operators-datetime-table) illustrates the
+subsections. [Operators](#operators) illustrate the
 behaviors of the basic arithmetic operators (`+`, `*`, etc.). For
-formatting functions, refer to [???](#formatting). You should
+formatting functions, refer to [Data Type Formatting Functions](/docs/sql/scalar_func/formatting). You should
 be familiar with the background information on date/time data types from
-[???](#datetime).
+[Date/Time Types](/docs/sql/datatype/datetime).
 
 Most of the functions and operators described below that take `time` or
 `timestamp` inputs actually come in two variants: one that takes
@@ -31,7 +31,7 @@ converting intervals to strings for output, you might see a different
 format than what is shown in this page.
 :::
 
-## Operators
+## Operators {#operators}
 
 Basic arithmetic operators (`+`, `-`, `*`, `/`) are also available for dates, times and intervals.
 
@@ -57,7 +57,7 @@ Operator|Example
 `*`|`double precision '3.5' * interval '1 hour'` → `interval '03:30:00'`
 `/`|`interval '1 hour' / double precision '1.5'` → `interval '00:40:00'`
 
-## Functions
+## Functions {#functions}
 
 Function|Description|Example
 ---|---|---
@@ -244,6 +244,7 @@ Result: 7
 ```
 SELECT EXTRACT(ISOYEAR FROM DATE '2006-01-01');
 Result: 2005
+
 SELECT EXTRACT(ISOYEAR FROM DATE '2006-01-02');
 Result: 2006
 ```

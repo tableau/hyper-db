@@ -6,7 +6,7 @@ To specify the location where external data should be read use one of
 'file_system_path'
 'amazon_s3_uri'
 s3_location('amazon_s3_uri'
-    [, access_key_id => 'text', secret_access_key => 'text' [, session_token => 'text'] ]
+    [, access_key_id => 'text', secret_access_key => 'text', session_token => 'text']
     [, region => 'text']
 )
 ARRAY[ <source_location> [, ...] ]
@@ -35,6 +35,7 @@ SELECT * FROM external(
         's3://mybucket/mydirectory/products.parquet',
         access_key_id => 'ACCESSKEYID12EXAMPLE',
         secret_access_key => 'sWfssWSmnME5X/36dsf3G/cbyDzErEXAMPLE123',
+        session_token => 'SESSIONTOKEN123EXAMPLE',
         region => 'us-east-1'
     )
 )

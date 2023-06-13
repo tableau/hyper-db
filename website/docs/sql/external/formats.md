@@ -357,7 +357,7 @@ with `FORMAT => 'arrowstream'` and [IPC file format](https://arrow.apache.org/do
 
 The only options supported by Arrow are the 
 [common format options](#common-format-options). The `COLUMNS` option 
-is required because we do not support schema inference.
+is required because we do not support schema inference, yet.
 We provide a 1-to-1 mapping from Arrow types to SQL types (table below) and expect the user
 to choose these SQL types exactly. We do not perform any implicit casts.
 The `COMPRESSION` option is not supported.
@@ -396,7 +396,7 @@ Hyper supports version 1.3. The following Arrow features are not supported:
 
 - Arrow with zero columns
 
-:::note
+:::note Experimental Feature
 Hyper's support for the Arrow format is still in an early state and
 should be considered experimental. We recommend to not use it in
 production workloads yet. Set the `experimental_external_format_arrow` [setting](/docs/hyper-api/hyper_process#process-settings)

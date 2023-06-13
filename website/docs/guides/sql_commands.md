@@ -18,7 +18,7 @@ with HyperProcess(telemetry=Telemetry.SEND_USAGE_DATA_TO_TABLEAU) as hyper:
             """)
 
         with connection.execute_query("SELECT name FROM animals") as results:
-            for row in results
+            for row in results:
                 print(row)
 
         bipeds = connection.execute_list_query(

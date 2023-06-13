@@ -14,7 +14,7 @@ Hyper's website is built using [Docusaurus 2](https://docusaurus.io/), a modern 
 
 ### Installation
 
-After installing [yarn](https://yarnpkg.com/), run
+After installing [yarn](https://yarnpkg.com/) and [nodejs](https://nodejs.org/en/download/package-manager), run
 
 ```
 $ yarn

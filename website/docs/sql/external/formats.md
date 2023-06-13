@@ -342,6 +342,13 @@ production workloads yet.
 
 ## Apache Arrow Format {#external-format-arrow}
 
+:::warning Experimental Feature
+Hyper's support for the Arrow format is still in an early state and
+should be considered experimental. We recommend to not use it in
+production workloads yet. Set the `experimental_external_format_arrow` [setting](/docs/hyper-api/hyper_process#experimentalsettings)
+to `true` to activate it.
+:::
+
 The `FORMAT => 'arrowfile'` or `FORMAT => 'arrowstream'` option enable reading the columnar, binary format [Apache Arrow format](https://arrow.apache.org/).
 Thus, data stored in Arrow is usually smaller than in text
 format. As data is stored in columnar format, Hyper does not need to
@@ -352,8 +359,8 @@ having a lot of columns. Opposing to [Parquet](#external-format-parquet),
 we do not support loading partial Arrow files from S3 - if reading a 
 subset of all columns from S3, Parquet is the better option.
 
-We support [IPC streaming format](https://arrow.apache.org/docs/format/Columnar.html#ipc-streaming-format) / `.arrows`
-with `FORMAT => 'arrowstream'` and [IPC file format](https://arrow.apache.org/docs/format/Columnar.html#ipc-file-format) / Feather V2 / `.feather` / `arrow` file format with `FORMAT => 'arrowfile'`.
+We support the [IPC streaming format](https://arrow.apache.org/docs/format/Columnar.html#ipc-streaming-format) / `.arrows`
+with `FORMAT => 'arrowstream'` and the [IPC file format](https://arrow.apache.org/docs/format/Columnar.html#ipc-file-format) / Feather V2 / `.feather` / `arrow` file format with `FORMAT => 'arrowfile'`.
 
 The only options supported by Arrow are the 
 [common format options](#common-format-options). The `COLUMNS` option 
@@ -388,20 +395,13 @@ Hyper supports version 1.3. The following Arrow features are not supported:
 
 - Run end or dictionary encoding
 
-- Arrow internal compression
+- Arrow internal compression, i.e. no LZ4 compression on `RecordBatches` (see `RecordBatch::compression` in the [arrow messages schema](https://github.com/apache/arrow/blob/main/format/Message.fbs))
 
 - Big Endian Arrow
 
 - Arrow types with repeated / non unique column names
 
 - Arrow with zero columns
-
-:::note Experimental Feature
-Hyper's support for the Arrow format is still in an early state and
-should be considered experimental. We recommend to not use it in
-production workloads yet. Set the `experimental_external_format_arrow` [setting](/docs/hyper-api/hyper_process#process-settings)
-to `true` to activate it.
-:::
 
 :::note
 If an Arrow file contains columns with unsupported data types, Hyper can still read the other columns in the file, as long as you do not select any unsupported columns. This is not the case for unsupported encodings, i.e. Dictionary encodings, we cannot read Arrow files that contain any dictionaries.

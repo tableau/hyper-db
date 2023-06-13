@@ -248,8 +248,6 @@ unsupported version 2 (max supported version: 1). To open this database,
 please update your product. (error code 0AS01)"
 :::
 
-<!--
-
 ### Experimental Settings {#experimentalsettings}
 
 These settings control experimental features of Hyper.
@@ -260,7 +258,7 @@ should not be used in production code. Their interfaces, semantics, and
 performance characteristics are subject to change or they could be
 *removed at any time without prior notice.* There may also be bugs. If
 you encounter an issue, please [report
-it](https://github.com/tableau/hyper-api-samples/issues).
+it](https://github.com/tableau/hyper-db/issues).
 
 If you use an experimental feature in your test environment, we
 encourage you to enable telemetry in the Hyper API to help us improve
@@ -270,4 +268,7 @@ Tableau" flag to the `HyperProcess` constructor.
 We also encourage you to share your feedback about experimental
 features in our [slack space](https://join.slack.com/t/tableau-datadev/shared_invite/zt-1q4rrimsh-lHHKzrhid1MR4aMOkrnAFQ).
 :::
--->
+
+#### experimental_external_format_arrow
+
+Enables scanning of [Arrow files and streams](/docs/sql/external/formats#external-format-arrow).

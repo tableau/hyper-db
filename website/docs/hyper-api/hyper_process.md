@@ -64,7 +64,7 @@ new feature or performance improvement
 
 :::
 
-## Process Settings
+## Process Settings {#process-settings}
 
 The behavior of the Hyper process can be customized using a couple of settings.
 They influence all connections to Hyper.

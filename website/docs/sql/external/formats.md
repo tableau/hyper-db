@@ -409,7 +409,8 @@ compressions are not supported. The following Arrow features are not supported:
 :::note
 Hyper's support for the Arrow format is still in an early state and
 should be considered experimental. We recommend to not use it in
-production workloads yet.
+production workloads yet. Set the `experimental_external_format_arrow` [setting](/docs/hyper-api/hyper_process#process-settings)
+to `true` to activate it.
 :::
 
 :::note

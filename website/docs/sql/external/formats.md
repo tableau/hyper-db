@@ -392,7 +392,7 @@ Hyper supports version 1.3 of the Arrow specification. The following Arrow featu
 
 - Data types: Interval, LargeUtf8, Struct, lists, union, map types, Binary, LargeBinary, FixedSizeBinary, HalfFloat
 
-- Run end or dictionary encoding
+- Run-end or dictionary encoding
 
 - Arrow internal compression, i.e., LZ4 compression, on record batches (see `RecordBatch::compression` in the [Arrow messages schema](https://github.com/apache/arrow/blob/main/format/Message.fbs))
 
@@ -403,7 +403,7 @@ Hyper supports version 1.3 of the Arrow specification. The following Arrow featu
 - Schemas with zero columns
 
 :::note
-If an Arrow file contains columns with unsupported data types, Hyper can still read the other columns in the file, as long as you do not select any unsupported columns. This is not the case for unsupported encodings, e.g. dictionary encodings. Hyper cannot read Arrow files that contain any dictionaries.
+If an Arrow file contains columns with unsupported data types, Hyper can still read the other columns in the file, as long as you do not select any unsupported columns. This is not the case for unsupported encodings, e.g., dictionary encoding, since Hyper cannot read dictionary-encoded Arrow data.
 :::
 
 :::note

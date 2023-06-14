@@ -349,18 +349,17 @@ production workloads yet. Set the `experimental_external_format_arrow` [setting]
 to `true` to activate it.
 :::
 
-The `FORMAT => 'arrowfile'` or `FORMAT => 'arrowstream'` option enable reading the columnar, binary format [Apache Arrow format](https://arrow.apache.org/).
-Thus, data stored in Arrow is usually smaller than in text
-format. As data is stored in columnar format, Hyper does not need to
+The `FORMAT => 'arrowfile'` or `FORMAT => 'arrowstream'` option enables reading the columnar binary format [Apache Arrow](https://arrow.apache.org/).
+As data is stored in a columnar format, Hyper does not need to
 read the whole file if only a subset of columns is selected. Hyper can read only
 the parts of the file in which selected columns are
 stored. This will speed up queries selecting only few columns of a file
-having a lot of columns. Opposing to [Parquet](#external-format-parquet),
+having a lot of columns. In contrast to [Parquet](#external-format-parquet),
 we do not support loading partial Arrow files from S3 - if reading a 
 subset of all columns from S3, Parquet is the better option.
 
-We support the [IPC streaming format](https://arrow.apache.org/docs/format/Columnar.html#ipc-streaming-format) / `.arrows`
-with `FORMAT => 'arrowstream'` and the [IPC file format](https://arrow.apache.org/docs/format/Columnar.html#ipc-file-format) / Feather V2 / `.feather` / `arrow` file format with `FORMAT => 'arrowfile'`.
+We support the [IPC streaming format](https://arrow.apache.org/docs/format/Columnar.html#ipc-streaming-format) (file extension `.arrows`)
+with `FORMAT => 'arrowstream'` and the [IPC file format](https://arrow.apache.org/docs/format/Columnar.html#ipc-file-format) (sometimes referred to as Feather V2; file extensions `.arrow` or `.feather`) with `FORMAT => 'arrowfile'`.
 
 The only options supported by Arrow are the 
 [common format options](#common-format-options). The `COLUMNS` option 
@@ -381,33 +380,33 @@ Arrow Type | Hyper Type | Notes
 `Int` unsigned, 32 bit | `BigInt` |
 `Int` unsigned, 64 bit | `Numeric(20,0)` | Not recommended - processing is slower than other Int types.
 `FloatingPoint` with any precision | `DOUBLE PRECISION` | Half floats are not supported.
-`Decimal(precision, scale)` | `NUMERIC(precision, scale)` | We do not support precision > 38. For better performance, we recommend using precision <= 18.
+`Decimal(precision, scale)` | `NUMERIC(precision, scale)` | Hyper does not support precision > 38. For better performance, we recommend using precision <= 18.
 `Date` | `Date` |
-`Time` | `Time` | Hyper does not support nano second precision and truncates it to micro seconds.
-`Timestamp` without timezone | `TIMESTAMP` | Hyper does not support nano second precision.
-`Timestamp` with timezone | `TIMESTAMPTZ` | Hyper does not support nano second precision.
+`Time` | `Time` | Hyper does not support nano second precision and truncates it to microseconds.
+`Timestamp` without timezone | `TIMESTAMP` | Hyper does not support nanosecond precision.
+`Timestamp` with timezone | `TIMESTAMPTZ` | Hyper does not support nanosecond precision.
 `UTF8` | `Text`
 
 
-Hyper supports version 1.3. The following Arrow features are not supported:
+Hyper supports version 1.3 of the Arrow specification. The following Arrow features are not supported:
 
-- Data types: Interval, LargeUtf8, Struct, lists, union, map types, Binary, LargeBinary, FixedSizeBinary, Half Float
+- Data types: Interval, LargeUtf8, Struct, lists, union, map types, Binary, LargeBinary, FixedSizeBinary, HalfFloat
 
 - Run end or dictionary encoding
 
-- Arrow internal compression, i.e. no LZ4 compression on `RecordBatches` (see `RecordBatch::compression` in the [arrow messages schema](https://github.com/apache/arrow/blob/main/format/Message.fbs))
+- Arrow internal compression, i.e., LZ4 compression, on record batches (see `RecordBatch::compression` in the [Arrow messages schema](https://github.com/apache/arrow/blob/main/format/Message.fbs))
 
-- Big Endian Arrow
+- Big-Endian encoding
 
-- duplicated / non unique column names
+- Duplicated, i.e., non-unique, column names
 
-- Arrow with zero columns
+- Schemas with zero columns
 
 :::note
 If an Arrow file contains columns with unsupported data types, Hyper can still read the other columns in the file, as long as you do not select any unsupported columns. This is not the case for unsupported encodings, e.g. dictionary encodings. Hyper cannot read Arrow files that contain any dictionaries.
 :::
 
 :::note
-Hyper parallelizes the processing on the granularity of `RecordBatches`,
-we recommend batch sizes of a few thousands rows.
+Since Hyper parallelizes queries on the granularity of record batches,
+we recommend batch sizes of a few thousand rows.
 :::

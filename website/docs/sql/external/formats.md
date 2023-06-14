@@ -399,12 +399,12 @@ Hyper supports version 1.3. The following Arrow features are not supported:
 
 - Big Endian Arrow
 
-- Arrow types with repeated / non unique column names
+- duplicated / non unique column names
 
 - Arrow with zero columns
 
 :::note
-If an Arrow file contains columns with unsupported data types, Hyper can still read the other columns in the file, as long as you do not select any unsupported columns. This is not the case for unsupported encodings, i.e. Dictionary encodings, we cannot read Arrow files that contain any dictionaries.
+If an Arrow file contains columns with unsupported data types, Hyper can still read the other columns in the file, as long as you do not select any unsupported columns. This is not the case for unsupported encodings, e.g. dictionary encodings. Hyper cannot read Arrow files that contain any dictionaries.
 :::
 
 :::note

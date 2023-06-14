@@ -21,6 +21,10 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+# Upcoming release
+
+* Support for `AT TIME ZONE` was added. See [documentation of Date/Time Functions](/docs/sql/scalar_func/datetime.md#functions)
+
 ### v0.0.17231 [June 7, 2023]
 
 * Support for multiple concurrent connections to the same Hyper file was added

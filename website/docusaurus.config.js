@@ -7,10 +7,15 @@ const getConfig = async () => {
   const remarkDefList = (await import("remark-deflist")).default;
 
   const isUpcomingVersion =  !!process.env.IS_UPCOMING
+  const isInofficial = process.env.GITHUB_ORIGIN !== 'https://tableau.github.io';
+
+  var title = 'Hyper';
+  if (isInofficial) title = 'Inofficial Hyper';
+  else if (isUpcomingVersion) title = 'Pre-Release Hyper';
 
   /** @type {import('@docusaurus/types').Config} */
   return {
-    title: 'Hyper',
+    title: title,
     tagline: 'The SQL Database for Interactive Analytics of the Freshest State of Data.',
     favicon: 'img/favicon.ico',
 
@@ -18,9 +23,9 @@ const getConfig = async () => {
     url: process.env.GITHUB_ORIGIN ?? 'http://localhost/',
     baseUrl: (process.env.GITHUB_BASE_PATH ?? '') + '/',
 
-    // We don't want to have the preview version indexed
-    // by search engines
-    noIndex: isUpcomingVersion,
+    // We don't want to have the preview version or clones of the Github repository
+    // indexed by search engines
+    noIndex: isUpcomingVersion || isInofficial,
 
     // We want all issues to be reported as build errors
     onBrokenLinks: 'throw',

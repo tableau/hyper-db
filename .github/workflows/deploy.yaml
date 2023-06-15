@@ -1,4 +1,4 @@
-name: Build and deploy webpage
+name: Deploy webpage
 
 # We combine both `main` and `upcoming` into a single webpage
 on:
@@ -52,6 +52,10 @@ jobs:
         working-directory: main/website
         run: yarn install --frozen-lockfile
 
+      - name: Download language docs
+        working-directory: main/website
+        run: yarn ts-node download_links.ts docs_py docs_cxx docs_java docs_dotnet
+
       - name: Build webpage for `main` branch
         working-directory: main/website
         run: yarn build
@@ -71,10 +75,19 @@ jobs:
           GITHUB_BASE_PATH: ${{ steps.setup-pages.outputs.base_path }}/upcoming
           IS_UPCOMING: '1'
 
-      - name: Combine `main` and `upcoming
+      - name: Combine `main`, `upcoming` and language docs
         run: |
           mv main/website/build combined
           mv upcoming/website/build combined/upcoming
+          mkdir combined/lang_docs
+          unzip main/website/docs_py.zip -d combined/lang_docs
+          mv combined/lang_docs/tableauhyperapi-py-docs-* combined/lang_docs/py
+          unzip main/website/docs_cxx.zip -d combined/lang_docs
+          mv combined/lang_docs/tableauhyperapi-cxx-docs-* combined/lang_docs/cxx
+          unzip main/website/docs_java.zip -d combined/lang_docs
+          mv combined/lang_docs/tableauhyperapi-java-docs-* combined/lang_docs/java
+          unzip main/website/docs_dotnet.zip -d combined/lang_docs
+          mv combined/lang_docs/tableauhyperapi-dotnet-docs-* combined/lang_docs/dotnet
 
       - name: Upload webpage artifact
         uses: actions/upload-pages-artifact@v1

@@ -69,38 +69,3 @@ with HyperProcess(Telemetry.DO_NOT_SEND_USAGE_DATA_TO_TABLEAU) as hyper:
 pantab currently does not yet support reading `NUMERIC` types.
 The query shown above works around this issue by using a `CAST`.
 :::
-
-
-## Communicate via Arrow files
-
-You can use the [Apache Arrow format](https://arrow.apache.org/) to communicate between Hyper and Arrow.
-
-* [Hyper's Arrow documentation](../sql/external/syntax)
-* [Panda's Arrow documentation](https://arrow.apache.org/docs/python/pandas.html)
-
-```python
-import pandas as pd
-import pyarrow as pa
-from tableauhyperapi import HyperProcess, Telemetry, Connection
-
-with HyperProcess(Telemetry.DO_NOT_SEND_USAGE_DATA_TO_TABLEAU) as hyper:
-    with Connection(hyper.endpoint) as connection:
-      # Write an Arrow file from Hyper
-      connection.execute_command("SET global.experimental_external_format_arrow=1")
-      connection.execute_command("COPY (SELECT 1) TO './out.arrow'")
-
-      # Read an Arrow file with Pandas
-      with pa.ipc.open_file('out.arrow') as reader:
-         df = reader.read_pandas()
-         print("DataFrame\n", df)
-      
-      # Write an Arrow file with Pandas
-      df = pd.DataFrame({"a": [1, 2, 3]})
-      table = pa.Table.from_pandas(df)
-      with pa.ipc.new_file('in.arrow', table.schema) as writer:
-         writer.write_table(table)
-
-      # Read an Arrow file with Hyper
-      results = connection.execute_list_query("SELECT * FROM external('in.arrow', columns => descriptor(a bigint))")
-      print("Query results:\n", results)
-```

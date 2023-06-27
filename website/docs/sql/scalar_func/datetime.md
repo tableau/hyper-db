@@ -90,6 +90,8 @@ Function|Description|Example
 `second (interval)` → `numeric`|Get second (equivalent to `EXTRACT(SECOND FROM ...)`)|`second(interval '21 seconds')` → `21.0`
 `timestamp at time zone 'timezone'` → `timestamptz` |Convert the timestamp in specified time zone into timestamptz with default time zone|`timestamp '2001-08-16 20:38:40' at time zone 'Europe/Berlin'`  → `2001-08-16 18:38:40+00` (assume the default time zone is UTC)
 `timestamptz at time zone 'timezone'` → `timestamp` |Convert the timestamptz into the timestamp in specified time zone|`timestamptz '2001-08-16 18:38:40+00' at time zone 'Europe/Berlin'`  → `2001-08-16 20:38:40`
+`timestamp at time zone interval 'interval'` → `timestamptz` |Convert the timestamp in UTC offset defined by `interval` into timestamptz with default time zone|`timestamp '2001-08-16 20:38:40' at time zone interval '+2:00'`  → `2001-08-16 18:38:40+00` (assume the default time zone is UTC)
+`timestamptz at time zone interval 'interval'` → `timestamp` |Convert the timestamptz into the timestamp in UTC offset defined by `interval`|`timestamptz '2001-08-16 18:38:40+00' at time zone interval '+2:00'`  → `2001-08-16 20:38:40`
 `to_timestamp(double precision)` → `timestamp with time zone`|Convert Unix epoch (seconds since 1970-01-01 00:00:00+00) to timestamp|`to_timestamp(1284352323)` → `2010-09-13 04:32:03+00`
 `week(timestamp)` → `integer`|Get week (equivalent to `EXTRACT(DAY FROM ...)`)|`week(timestamp '2001-02-16 20:38:40')` → `7`
 `year(timestamp)` → `integer`|Get year (equivalent to `EXTRACT(YEAR FROM ...)`)|`year(timestamp '2001-02-16 20:38:40')` → `2001`

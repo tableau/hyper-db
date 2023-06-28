@@ -26,8 +26,8 @@ If a column list is specified, only those specified columns will
 be written, in the order they appear in the column list.
 
 Depending on the target location, Hyper will write data, e.g., to a
-local file, an AWS S3 bucket or standard output. More information
-on the available locations can be found in [External Locations](/docs/sql/external/location).
+local file or an AWS S3 bucket. More information on the available
+locations can be found in [External Locations](/docs/sql/external/location).
 
 ## Parameters
 

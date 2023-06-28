@@ -71,9 +71,9 @@ The query shown above works around this issue by using a `CAST`.
 :::
 
 
-## Communicate via Arrow files
+## Importing and exporting Arrow data with Pandas
 
-You can use the [Apache Arrow format](https://arrow.apache.org/) to communicate between Hyper and Arrow.
+You can use the [Apache Arrow format](https://arrow.apache.org/) to import or export data between Hyper and Pandas.
 
 * [Hyper's Arrow documentation](../sql/external/syntax)
 * [Panda's Arrow documentation](https://arrow.apache.org/docs/python/pandas.html)

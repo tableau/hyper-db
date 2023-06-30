@@ -267,7 +267,7 @@ abbreviations or plurals of them; `<direction>` can be `ago` or empty.
 The amounts of the different quantities and units are added with taking
 the signs into consideration. The default value for `<unit>` is
 `second`, and it can only be omitted for the last `<quantity>` in the
-expression. `ago` negates the all the fields.
+expression. `ago` negates all the fields.
 
 Some examples of valid `interval` input:
 

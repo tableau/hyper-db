@@ -253,6 +253,22 @@ the same sign, so a leading negative sign applies to all fields; for
 example the negative sign in the interval literal `'-1 2:03:04'` applies
 to both the days and hour/minute/second parts.
 
+The interval can also be written in the following verbose form:
+
+```
+<quantity> <unit> [<quantity> <unit> ...] [<direction>]
+```
+
+where `<quantity>` is a signed number; the available values for `<unit>`
+are: `microsecond`, `millisecond`, `second`, `minute`, `hour`, `day`,
+`week`, `month`, `year`, `decade`, `century`, `millennium`, or
+abbreviations or plurals of them; `<direction>` can be `ago` or empty.
+
+The amounts of the different quantities and units are added with taking
+the signs into consideration. The default value for `<unit>` is
+`second`, and it can only be omitted for the last `<quantity>` in the
+expression. `ago` negates all the fields.
+
 Some examples of valid `interval` input:
 
 Example               |Description
@@ -261,6 +277,7 @@ Example               |Description
 3 4:05:06             |SQL standard format: 3 days 4 hours 5 minutes 6 seconds
 P1Y2M3DT4H5M6S        |ISO 8601 "format with designators": 1 year 2 months 3 days 4 hours 5 minutes 6 seconds
 P0001-02-03T04:05:06  |ISO 8601 "alternative format": same meaning as above
+1 year 2 hours        |Verbose format: 1 year 2 hours
 
 Functions `justify_days` and `justify_hours` (see
 [Date/Time Functions](/docs/sql/scalar_func/datetime)) are available for adjusting days and hours

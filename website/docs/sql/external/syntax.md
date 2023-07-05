@@ -32,6 +32,7 @@ has the same columns as the existing table `products`:
 
 ```
 COPY products FROM 'products.parquet';
+
 INSERT INTO products (SELECT * FROM external('products.parquet'))
 ```
 

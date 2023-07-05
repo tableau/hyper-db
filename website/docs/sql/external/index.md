@@ -1,8 +1,8 @@
 # External Formats
 
-Besides its own table format, Hyper is able to access data stored in
-other commonly used data formats (called external formats or external
-data hereinafter).
+Besides its own table format, Hyper is able to read and write data
+stored in other commonly used data formats (called external formats or
+external data hereinafter).
 
 There are three orthogonal concepts when it comes to external formats:
 
@@ -13,7 +13,7 @@ There are three orthogonal concepts when it comes to external formats:
   corresponding options, such as the credentials to use when connecting to
   S3. See [External Locations](location) for more details.
 * What to do with the external data. E.g., there are multiple syntactic
-  options to [read external data](syntax).
+  options to [read external data](syntax) or [write data](../command/copy_to)
 
 ```mdx-code-block
 import DocCardList from '@theme/DocCardList';

@@ -24,7 +24,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 ### v0.0.17360 [July 5, 2023]
 
 * Support for `AT TIME ZONE` was added. See [documentation of Date/Time Functions](/docs/sql/scalar_func/datetime.md#functions)
-* Experimental support for reading [Arrow](/docs/sql/external/formats#external-format-arrow) files (`.arrow`) and streams (`.arrows`)
+* Experimental support for reading and writing [Arrow](/docs/sql/external/formats#external-format-arrow) files (`.arrow`) and streams (`.arrows`)
 * Support for the `COPY TO` statement was added. See [documentation of COPY TO](/docs/sql/command/copy_to)
 
 ### v0.0.17231 [June 7, 2023]

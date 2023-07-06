@@ -1,4 +1,4 @@
-name: Proof pull request
+name: Proof commit
 
 on: [push, pull_request]
 

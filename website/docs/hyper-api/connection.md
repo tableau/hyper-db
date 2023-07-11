@@ -42,6 +42,14 @@ with HyperProcess(telemetry=Telemetry.SEND_USAGE_DATA_TO_TABLEAU) as hyper:
         print(connection.execute_scalar_query('SELECT COUNT(*) FROM "my_table"'))
 ```
 
+:::tip Hyper file extension
+
+While Hyper itself allows database files with arbitrary file extensions, we highly
+recommend using the `.hyper` file extension. This is also the only file extension
+under which Hyper files are supported in Tableau products.
+
+:::
+
 In addition, the `CreateMode` specifies how Hyper should react if the given Hyper file does not exist:
 
 Mode  | Behavior

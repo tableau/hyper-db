@@ -23,7 +23,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ### Upcoming
 
-
+* Updated OpenSSL version from 1.1.1t to 1.1.1u.
 
 ### v0.0.17360 [July 5, 2023]
 

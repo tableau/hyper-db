@@ -26,7 +26,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 * Support for fiscal calendar was added
   * The functions `EXTRACT`, `date_part` and `date_trunc` have the following fiscal calendar fields: `fiscal_week`, `fiscal_month`, `fiscal_quarter`, and `fiscal_year`.
   * Fiscal calendar options for the newly-added fields were added. See [Fiscal Calendar Options](/docs/sql/scalar_func/datetime#fiscal-calendar-options).
-
+* Updated OpenSSL version from 1.1.1t to 1.1.1u.
 
 ### v0.0.17360 [July 5, 2023]
 

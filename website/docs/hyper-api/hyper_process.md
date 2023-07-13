@@ -31,7 +31,7 @@ Futhermore, you should only have one instance of Hyper running at any given time
 Hyper internally monitors its memory assumption, and makes sure that it only uses up to 80% of your system's RAM memory, such that your overall system stays responsive.
 If multiple Hyper processes are running at the same time, they might overload the system, and Hyper's internal resource management mechanisms will not be able to counteract this.
 
-## Telemetry Data {telemetry}
+## Telemetry Data {#telemetry}
 
 The `HyperProcess` can be instructed to send telemetry on Hyper API usage to Tableau.
 To send usage data, set `telemetry` to `Telemetry.SEND_USAGE_DATA_TO_TABLEAU` when you start the process.

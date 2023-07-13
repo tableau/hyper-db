@@ -41,7 +41,7 @@ with HyperProcess(Telemetry.SEND_USAGE_DATA_TO_TABLEAU,
 The script consist of 3 high-level steps:
 
 1. Start a Hyper process. The [`HyperProcess`](../../hyper-api/hyper_process)
-2. Create a connection to the `.hyper` file. Since we create the [`Connection` class](../../hyper-api/connection) class with the `CreateMode.CREATE_AND_REPLACE`, the `.hyper` will be automatically created if doesn't exist yet, and will be overwritten if a file with that name already exists.
+2. Create a connection to the `.hyper` file. Since we create the [`Connection`](../../hyper-api/connection) class with the `CreateMode.CREATE_AND_REPLACE`, the `.hyper` file will be automatically created if it does not exist yet, and will be overwritten if a file with that name already exists.
 3. Defining the table. In this case, we are using the Python utilities `TableDefinition` and `catalog.create_table`. We could have also used a [CREATE TABLE](../../sql/command/create_table) SQL command.
 4. Insert the data. In the example, we use the `Inserter` utility to provide the data from Python. You can also use [INSERT](../../sql/command/insert) or [COPY](../../sql/command/copy_from) statements or any other means to load data into the table. E.g., you can thereby directly load your table from a CSV file.
 

@@ -125,15 +125,20 @@ there is a daylight saving time change between the two dates used:
 ## `EXTRACT` {#datetime-extract}
 
 ```sql_template
-EXTRACT(<field> FROM <source>)
+EXTRACT(<field> FROM <source> [, <fiscal_option> [, ...] ])
 ```
 
 The `extract` function retrieves subfields such as year or hour from
 date/time values. `<source>` must be a value expression of type
-`timestamp`, `time`, or `interval`. (Expressions of type `date` are cast
+`timestamp`, `timestamptz`, `time`, or `interval`. (Expressions of type `date` are cast
 to `timestamp` and can therefore be used as well.) `<field>` is an
 identifier or string that selects what field to extract from the source
 value.
+
+The `<fiscal_option>` can only be used when `<source>` is of type
+`date`, `timestamp` or `timestamptz`, and `<field>` is one of the
+following: `fiscal_week`, `fiscal_month`, `fiscal_quarter`,
+`fiscal_year`; see [Fiscal Calendar Options](#fiscal-calendar-options).
 
 The result type of `extract` depends on the given `<field>`:
 `numeric(8,6)` for field `second`, `numeric(18,6)` for field `epoch`, and
@@ -225,6 +230,35 @@ Result: 2001-02-17 04:38:40.12+00
 ```
 SELECT EXTRACT(HOUR FROM TIMESTAMP '2001-02-16 20:38:40');
 Result: 20
+```
+
+`fiscal_month`
+:   The month within the fiscal year (1 - 12)
+
+```
+SELECT EXTRACT(FISCAL_MONTH FROM TIMESTAMP '2001-02-16 20:38:40');
+Result: 2
+```
+
+`fiscal_quarter`
+:   The quarter within the fiscal year (1 - 4)
+```
+SELECT EXTRACT(FISCAL_QUARTER FROM TIMESTAMPTZ '2001-02-16 20:38:40');
+Result: 1
+```
+
+`fiscal_week`
+:   The week within the fiscal year (1 - 54)
+```
+SELECT EXTRACT(FISCAL_WEEK FROM TIMESTAMP '2001-12-16 20:38:40');
+Result: 50
+```
+
+`fiscal_year`
+:   The fiscal year
+```
+SELECT EXTRACT(FISCAL_YEAR FROM TIMESTAMP '2001-12-16 20:38:40');
+Result: 2001
 ```
 
 `isodow`
@@ -376,8 +410,13 @@ The `date_part` function is modeled on the traditional Ingres/PostgresQL
 equivalent to the SQL-standard function `extract`:
 
 ```sql_template
-date_part(<field>, <source>)
+date_part(<field>, <source> [, <fiscal_option> [, ...] ])
 ```
+
+The `<fiscal_option>` can only be used when `<source>` is of type
+`date`, `timestamp` or `timestamptz`, and `<field>` is one of the
+following: `fiscal_week`, `fiscal_month`, `fiscal_quarter`,
+`fiscal_year`; see [Fiscal Calendar Options](#fiscal-calendar-options).
 
 Note that here the `<field>` parameter needs to be a string
 value, not a name. The valid field names for `date_part` are the same as
@@ -398,7 +437,7 @@ The function `date_trunc` is conceptually similar to the `trunc`
 function for numbers.
 
 ```sql_template
-date_trunc(<field>, <source> [, <time_zone>])
+date_trunc(<field>, <source> [, <time_zone>] [, <fiscal_option> [, ...] ])
 ```
 
 `<source>` is a value expression of type `timestamp`,
@@ -409,9 +448,15 @@ return value is likewise of type `timestamp`, `timestamp with time zone`,
 or `interval`, and it has all fields that are less significant than the
 selected one set to zero (or one, for day and month).
 
+The `<fiscal_option>` can only be used when `<source>` is of type
+`date`, `timestamp` or `timestamptz`, and `<field>` is one of the
+following: `fiscal_week`, `fiscal_month`, `fiscal_quarter`,
+`fiscal_year`; see [Fiscal Calendar Options](#fiscal-calendar-options).
+
 Valid values for `<field>` are: `microseconds`, `milliseconds`,
-`second`, `minute`, `hour`, `day`, `week`, `month`, `quarter`, `year`,
-`decade`, `century`, `millennium`
+`second`, `minute`, `hour`, `day`, `week`, `fiscal_week`, `month`,
+`fiscal_month`, `quarter`, `fiscal_quarter`, `year`, `fiscal_year`,
+`decade`, `century`, `millennium`.
 
 If `<source>` is of type `interval`, then `<field>` may not be `week`.
 This is because a month may contain a fractional number of weeks, and
@@ -440,6 +485,9 @@ Examples (assuming the local time zone is `America/New_York`):
 
     SELECT date_trunc('day', TIMESTAMP WITH TIME ZONE '2001-02-16 20:38:40+00');
     Result: 2001-02-16 00:00:00-05
+
+    SELECT date_trunc('fiscal_year', TIMESTAMP '2001-02-16 20:38:40', start_month => 2, use_start_date_as_fiscal_year_name => false);
+    Result: 2001-02-01 00:00:00
 
 ## Current Date/Time {#datetime-current}
 
@@ -481,3 +529,53 @@ tuple will be used, and not the timestamp of table creation. This works
 differently in PostgreSQL, where the table creation timestamp is used in
 every insertion that uses the default value.
 
+## Fiscal Calendar Options {#fiscal-calendar-options}
+
+The fiscal calendar options define the start date of the fiscal
+calendar. A fiscal year could differ from a calendar year, and the first
+fiscal week, fiscal month or fiscal quarter could also differ from their
+calendar counterparts. See
+[Define Your Fiscal Year](https://help.salesforce.com/s/articleView?id=sf.admin_about_cfy.htm&type=5)
+for more details. The fiscal calendar options are used for such
+cases.
+
+The fiscal calendar options can be used in [EXTRACT](#datetime-extract),
+[date_trunc](#datetime-trunc) and [date_part](#datetime-datepart) functions,
+when the field for those functions is one of the fiscal fields:
+
+```
+fiscal_week
+fiscal_month
+fiscal_quarter
+fiscal_year
+```
+
+The following fiscal calendar options are available:
+
+`start_month => <value>`
+:   The month in which the fiscal year starts. If the fiscal year starts
+    in February, `<value>` should be `2`. The default value is `1` (January).
+
+`first_day_of_week => <value>`
+:   The first day of the fiscal week. If the fiscal year starts with
+    January, and `<value>` is `1` (Monday), `fiscal_week` on date
+    (timestamp) `2023-01-02` will return `2`, since `2023-01-01` is a
+    Sunday. The default value is `1` (Monday).
+
+`use_start_date_as_fiscal_year_name => <value>`
+:   Whether to use the year of the start date of a fiscal year as its
+    fiscal year name. For example, the fiscal year starting at
+    `2020-04-01` would be 2020 if `value` is `true`, as the start date
+    `2020-04-01` is in year 2020. If `value` is `false`, 2021 would be
+    the result. The default value is `true`.
+
+Some examples:
+
+    SELECT EXTRACT(fiscal_week FROM timestamp '2000-01-02 20:38:40', first_day_of_week => 7);
+    Result: 2
+
+    SELECT EXTRACT(fiscal_year FROM timestamp '2000-02-16 20:38:40', start_month => 3);
+    Result: 1999
+
+    SELECT EXTRACT(fiscal_year FROM timestamp '2000-02-16 20:38:40', use_start_date_as_fiscal_year_name => false);
+    Result: 2001

@@ -167,9 +167,8 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 Improved external file format support (CSV & Apache Parquet): Now you can use Hyper as a SQL
 query engine directly on top of open formats and data lakes.
-  * Hyper now has experimental support for reading external data directly from Amazon S3. You need to enable the
-    [experimental_external_s3](/docs/hyper-api/hyper_process#experimentalsettings)
-    setting to use this feature and be aware that it can **change or be removed at any time without prior notice**.
+  * Hyper now has experimental support for reading external data directly from Amazon S3. ~~You need to enable the experimental_external_s3
+    setting to use this feature and be aware that it can **change or be removed at any time without prior notice**.~~ The feature is considered stable as of v0.0.15735. The experimental flag is not necessary anymore.
 
     Hyper's S3 capabilities are highly optimized
     (using techniques such as concurrent requests, request hedging and prefetching). For maximum performance,

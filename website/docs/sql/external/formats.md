@@ -371,13 +371,6 @@ production workloads yet.
 
 ## Apache Arrow Format {#external-format-arrow}
 
-:::warning Experimental Feature
-Hyper's support for the Arrow format is still in an early state and
-should be considered experimental. We recommend to not use it in
-production workloads yet. Set the `experimental_external_format_arrow` [setting](/docs/hyper-api/hyper_process#experimentalsettings)
-to `true` to activate it.
-:::
-
 The `FORMAT => 'arrowfile'` or `FORMAT => 'arrowstream'` option enables reading the columnar binary format [Apache Arrow](https://arrow.apache.org/).
 As data is stored in a columnar format, Hyper does not need to
 read the whole file if only a subset of columns is selected. Hyper can read only

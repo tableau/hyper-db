@@ -21,7 +21,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-### 0.0.17537.reae78b91 [August 2nd, 2023]
+### 0.0.17537 [August 2nd, 2023]
 
 * Support for fiscal calendar was added
   * The functions `EXTRACT`, `date_part` and `date_trunc` have the following fiscal calendar fields: `fiscal_week`, `fiscal_month`, `fiscal_quarter`, and `fiscal_year`.

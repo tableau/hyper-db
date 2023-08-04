@@ -21,6 +21,8 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+### Upcoming Release
+
 ### 0.0.17537 [August 2nd, 2023]
 
 * Support for fiscal calendar was added

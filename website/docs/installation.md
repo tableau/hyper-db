@@ -121,13 +121,12 @@ The following instructions assume that you have set up a virtual environment for
       * On Linux/macOS: `bin/pip install [*path_to_whl_file*]`
 
 1. Try out the examples:
-    - [Download](/docs/releases#download) and unzip the Python `.zip` package for your operating system.
-    - Open a terminal and navigate into the `examples` directory.
+    - Download the [samples from Github](https://github.com/tableau/hyper-api-samples).
     - Run the Python examples (for example, try `insert_data_into_single_table.py`).
         - On Windows:
-        `[venv_directory]\Scripts\python insert_data_into_single_table.py`
+        `[venv_directory]\Scripts\python hyper-api-samples\Tableau-Supported\Python\insert_data_into_single_table.py`
         - On Linux/macOS:
-        `[venv_directory]/bin/python insert_data_into_single_table.py`
+        `[venv_directory]/bin/python hyper-api-samples/Tableau-Supported/Python/insert_data_into_single_table.py`
 
 ```mdx-code-block
   </TabItem>

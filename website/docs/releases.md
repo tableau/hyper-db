@@ -24,11 +24,9 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 ### 0.0.17782 [September 6nd, 2023]
 
 * Sharing a Hyper process between multiple programs is now supported. This allows for better resource management and performance if multiple programs that interact with Hyper run at the same time. See [HyperProcess: Performance Best Practices](/docs/hyper-api/hyper_process#performance).
-* The HyperAPI Python zip package is now removed since we have the package available on the Python Package Index (PyPI). You can install the Tableau Hyper API using the package installer `pip`.
+* The HyperAPI Python zip package was removed from our download page. The package is available on the Python Package Index (PyPI) and we recommend installation through `pip install tableauhyperapi` instead.
+* .Net Deprecation: The .NET version of Hyper API is deprecated. This release will be the last update for .NET. In the future, .NET will not receive any new features or updates. The old packages will stay available on NuGET indefinitely, so you can keep using older versions in .NET. The other languages (Python, Java, C++) are not impacted by this in any way. In case this is causing issues for you, please reach out via [Slack](https://join.slack.com/t/tableau-datadev/shared_invite/zt-1q4rrimsh-lHHKzrhid1MR4aMOkrnAFQ).
 
-    ```
-    pip install tableauhyperapi
-    ```
 
 ### 0.0.17537 [August 2nd, 2023]
 

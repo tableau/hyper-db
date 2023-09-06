@@ -72,6 +72,13 @@ Using at least C++17 is recommended, as the API uses C++17 classes, such as `std
   <TabItem value="dotnet" label=".NET">
 ```
 
+:::warning Deprecation Warning
+
+The .NET version of Hyper API is deprecated.
+Older versions of Hyper API will still be available via NuGET. In the future, .Net will not receive any new features or updates. The old packages will stay available on NuGET indefinitely, so you can keep using older versions in .Net. The other languages (Python, Java, C++) are not impacted by this in any way. In case this is causing issues for you, please reach out via [Slack](https://join.slack.com/t/tableau-datadev/shared_invite/zt-1q4rrimsh-lHHKzrhid1MR4aMOkrnAFQ).
+
+:::
+
 * The Hyper API supports `x86-64` platforms.
 * **[.NET Core 2.2 SDK](https://dotnet.microsoft.com/download)** (or newer) or **[.NET Framework 4.6.1](https://dotnet.microsoft.com/en-us/download/dotnet-framework)** (or newer) is required.
   * The examples use the .NET Core SDK.
@@ -211,6 +218,13 @@ If your security requirements require you to run Java applications with the syst
   </TabItem>
   <TabItem value="dotnet" label=".NET">
 ```
+
+:::warning Deprecation Warning
+
+The .NET version of Hyper API is deprecated.
+Older versions of Hyper API will still be available via NuGET. In the future, .Net will not receive any new features or updates. The old packages will stay available on NuGET indefinitely, so you can keep using older versions in .Net. The other languages (Python, Java, C++) are not impacted by this in any way. In case this is causing issues for you, please reach out via [Slack](https://join.slack.com/t/tableau-datadev/shared_invite/zt-1q4rrimsh-lHHKzrhid1MR4aMOkrnAFQ).
+
+:::
 
 You can install the Hyper API for .NET in two ways. You can either download the `.zip` file that contains the library and example code, or you can install the NuGet package for the library, either directly, or by adding a reference to your project.
 

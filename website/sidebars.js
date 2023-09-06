@@ -31,7 +31,6 @@ const sidebars = {
         { type: 'link', label: "Examples", href: "https://github.com/tableau/hyper-api-samples" },
         { type: 'link', label: "Python Reference", href: "pathname:///lang_docs/py/index.html" },
         { type: 'link', label: "C++ Reference", href: "pathname:///lang_docs/cxx/index.html" },
-        { type: 'link', label: ".NET Reference", href: "pathname:///lang_docs/dotnet/api/index.html" },
         { type: 'link', label: "Java Reference", href: "pathname:///lang_docs/java/overview-summary.html" },
       ],
     },

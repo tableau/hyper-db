@@ -32,7 +32,6 @@ The Hyper API libraries are available for the most commonly used languages, i.e.
 - Python
 - C++
 - Java
-- C#/.NET
 
 and is available for Windows, macOS and Linux.
 It can be used both in the cloud as well as on small consumer-grade laptops.

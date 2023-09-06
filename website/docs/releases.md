@@ -26,6 +26,9 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+### Upcoming Release
+
+
 ### 0.0.17782 [September 6nd, 2023]
 
 * Sharing a Hyper process between multiple programs is now supported. This allows for better resource management and performance if multiple programs that interact with Hyper run at the same time. See [HyperProcess: Performance Best Practices](/docs/hyper-api/hyper_process#performance).

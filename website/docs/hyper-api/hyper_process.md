@@ -20,7 +20,7 @@ While the `HyperProcess` is running,, you can create and connect to as many `.hy
 After you no longer need a Hyper database server, you should shutdown the `HyperProcess`.
 If you call the `HyperProcess` in a `with` statement (Python), `using` statement (C#), scope (C++), or `try-with-resources` statement (Java), the `hyperd` process will safely shutdown automatically at the end of the `with` statement.
 
-## Performance best practices
+## Performance best practices {#performance}
 
 Compared to other database systems, Hyper starts up very fast (in the order of 100 milliseconds).
 Still, starting up and shutting down the server takes time

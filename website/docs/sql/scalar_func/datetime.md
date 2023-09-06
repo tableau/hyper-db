@@ -539,7 +539,7 @@ calendar counterparts. See
 for more details. The fiscal calendar options are used for such
 cases.
 
-The fiscal calendar options can be used in [EXTRACT](#datetime-extract),
+The fiscal calendar options are required in [EXTRACT](#datetime-extract),
 [date_trunc](#datetime-trunc) and [date_part](#datetime-datepart) functions,
 when the field for those functions is one of the fiscal fields:
 
@@ -550,32 +550,32 @@ fiscal_quarter
 fiscal_year
 ```
 
-The following fiscal calendar options are available:
+The following fiscal calendar options need to be set:
 
-`start_month => <value>`
-:   The month in which the fiscal year starts. If the fiscal year starts
-    in February, `<value>` should be `2`. The default value is `1` (January).
+`fiscal_year_start_month => <value>`
+:   The month in which the fiscal year starts (1 - 12). If the fiscal year starts
+    in February, `<value>` should be `2`.
 
 `first_day_of_week => <value>`
-:   The first day of the fiscal week. If the fiscal year starts with
+:   The first day of the fiscal week (1 - 7). If the fiscal year starts with
     January, and `<value>` is `1` (Monday), `fiscal_week` on date
     (timestamp) `2023-01-02` will return `2`, since `2023-01-01` is a
-    Sunday. The default value is `1` (Monday).
+    Sunday. This option is only required for `fiscal_week` field.
 
 `use_start_date_as_fiscal_year_name => <value>`
 :   Whether to use the year of the start date of a fiscal year as its
     fiscal year name. For example, the fiscal year starting at
     `2020-04-01` would be 2020 if `value` is `true`, as the start date
     `2020-04-01` is in year 2020. If `value` is `false`, 2021 would be
-    the result. The default value is `true`.
+    the result.
 
 Some examples:
 
-    SELECT EXTRACT(fiscal_week FROM timestamp '2000-01-02 20:38:40', first_day_of_week => 7);
+    SELECT EXTRACT(fiscal_week FROM timestamp '2000-01-02 20:38:40', fiscal_year_start_month => 1, first_day_of_week => 7, use_start_date_as_fiscal_year_name => true);
     Result: 2
 
-    SELECT EXTRACT(fiscal_year FROM timestamp '2000-02-16 20:38:40', start_month => 3);
+    SELECT EXTRACT(fiscal_year FROM timestamp '2000-02-16 20:38:40', fiscal_year_start_month => 3, first_day_of_week => 1, use_start_date_as_fiscal_year_name => true);
     Result: 1999
 
-    SELECT EXTRACT(fiscal_year FROM timestamp '2000-02-16 20:38:40', use_start_date_as_fiscal_year_name => false);
+    SELECT EXTRACT(fiscal_year FROM timestamp '2000-02-16 20:38:40', fiscal_year_start_month => 1, first_day_of_week => 1, use_start_date_as_fiscal_year_name => false);
     Result: 2001

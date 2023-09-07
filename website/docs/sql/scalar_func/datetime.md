@@ -560,7 +560,7 @@ The following fiscal calendar options need to be set:
 :   The first day of the fiscal week (1 - 7). If the fiscal year starts with
     January, and `<value>` is `1` (Monday), `fiscal_week` on date
     (timestamp) `2023-01-02` will return `2`, since `2023-01-01` is a
-    Sunday. This option is only required for `fiscal_week` field.
+    Sunday. This option is only required for the `fiscal_week` field.
 
 `use_start_date_as_fiscal_year_name => <value>`
 :   Whether to use the year of the start date of a fiscal year as its

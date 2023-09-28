@@ -15,14 +15,6 @@ Hyper API is available for Python, C++, Java and .NET supporting Windows, Mac an
 Depending on the language, the installation can be complex.
 This page contains the detailed requirements and installation instructions for all languages.
 
-## Supported platforms
-
-- Microsoft Windows 8 or newer (64-bit)
-- macOS 10.13 or newer
-- Microsoft Windows Server 2016, 2012, 2012 R2, 2008 R2, 2019
-- Ubuntu 18.04 LTS, 20.04 LTS and 22.04 LTS
-- Amazon Linux 2, Red Hat Enterprise Linux (RHEL) 7.3+ and 8.3+, CentOS 7.9+, Oracle Linux 7.3+
-
 ## Hardware requirements
 
 The Hyper API only supports 64-bit platforms. 
@@ -32,6 +24,20 @@ It has the following minimum hardware requirements:
 - 2 GB memory
 - 1.5 GB minimum free disk space
 
+```mdx-code-block
+import { AppleSiliconWorkarounds } from "@site/src/components/AppleSiliconWorkarounds.tsx";
+
+<AppleSiliconWorkarounds />
+```
+
+## Supported platforms
+
+- macOS 10.13 or newer
+- Microsoft Windows 8 or newer (64-bit)
+- Microsoft Windows Server 2016, 2012, 2012 R2, 2008 R2, 2019
+- Ubuntu 18.04 LTS, 20.04 LTS and 22.04 LTS
+- Amazon Linux 2, Red Hat Enterprise Linux (RHEL) 7.3+ and 8.3+, CentOS 7.9+, Oracle Linux 7.3+
+
 ## Language-specific Requirements
 
 ```mdx-code-block
@@ -39,7 +45,6 @@ It has the following minimum hardware requirements:
   <TabItem value="python" label="Python" default>
 ```
 
-* The Hyper API supports `x86-64` platforms.
 * **[Python 3.8](https://www.python.org/downloads/)** (or newer) is required.
   - Install the 64-bit version (for example, for Windows, the download is listed as `Windows x86-64`).
   - On Windows, we recommend to select the option **Add Python 3.x to PATH** during installation.
@@ -49,7 +54,6 @@ It has the following minimum hardware requirements:
   <TabItem value="cxx" label="C++">
 ```
 
-* The Hyper API supports `x86-64` platforms.
 * The C++ headers use C++11, so a **standard-compliant compiler with thorough C++11 support** is required. Our internal testing is done with the newest Clang.
 
 :::tip
@@ -64,7 +68,6 @@ Using at least C++17 is recommended, as the API uses C++17 classes, such as `std
   <TabItem value="java" label="Java">
 ```
 
-* The Hyper API supports `x86-64` platforms.
 * **[JDK 8](https://www.oracle.com/java/technologies/downloads/)** (or newer) is required.
 
 ```mdx-code-block
@@ -79,7 +82,6 @@ Older versions of Hyper API will still be available via NuGET. In the future, .N
 
 :::
 
-* The Hyper API supports `x86-64` platforms.
 * **[.NET Core 2.2 SDK](https://dotnet.microsoft.com/download)** (or newer) or **[.NET Framework 4.6.1](https://dotnet.microsoft.com/en-us/download/dotnet-framework)** (or newer) is required.
   * The examples use the .NET Core SDK.
 
@@ -87,12 +89,6 @@ Older versions of Hyper API will still be available via NuGET. In the future, .N
   </TabItem>
 </Tabs>
 ```
-
-:::info
-Hyper API runs on Apple Silicon only with [Rosetta 2](https://support.apple.com/en-us/HT211861) instead of natively.
-This means, that Hyper API can only be used from within other x86 programs, running under Rosetta.
-In particular for Python and Java, this means that the Python interpreter/Java runtime needs to run with Rosetta, too.
-:::
 
 ## Instructions
 

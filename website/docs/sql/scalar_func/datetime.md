@@ -486,7 +486,7 @@ Examples (assuming the local time zone is `America/New_York`):
     SELECT date_trunc('day', TIMESTAMP WITH TIME ZONE '2001-02-16 20:38:40+00');
     Result: 2001-02-16 00:00:00-05
 
-    SELECT date_trunc('fiscal_year', TIMESTAMP '2001-02-16 20:38:40', start_month => 2, use_start_date_as_fiscal_year_name => false);
+    SELECT date_trunc('fiscal_year', TIMESTAMP '2001-02-16 20:38:40', fiscal_year_start_month => 2);
     Result: 2001-02-01 00:00:00
 
 ## Current Date/Time {#datetime-current}
@@ -552,11 +552,11 @@ fiscal_year
 
 The following fiscal calendar options are available:
 
-`start_month => <value>`
+`fiscal_year_start_month => <value>`
 :   The month in which the fiscal year starts. If the fiscal year starts
     in February, `<value>` should be `2`. The default value is `1` (January).
 
-`first_day_of_week => <value>`
+`first_day_of_fiscal_week => <value>`
 :   The first day of the fiscal week. If the fiscal year starts with
     January, and `<value>` is `1` (Monday), `fiscal_week` on date
     (timestamp) `2023-01-02` will return `2`, since `2023-01-01` is a
@@ -571,10 +571,10 @@ The following fiscal calendar options are available:
 
 Some examples:
 
-    SELECT EXTRACT(fiscal_week FROM timestamp '2000-01-02 20:38:40', first_day_of_week => 7);
+    SELECT EXTRACT(fiscal_week FROM timestamp '2000-01-02 20:38:40', first_day_of_fiscal_week => 7);
     Result: 2
 
-    SELECT EXTRACT(fiscal_year FROM timestamp '2000-02-16 20:38:40', start_month => 3);
+    SELECT EXTRACT(fiscal_year FROM timestamp '2000-02-16 20:38:40', fiscal_year_start_month => 3);
     Result: 1999
 
     SELECT EXTRACT(fiscal_year FROM timestamp '2000-02-16 20:38:40', use_start_date_as_fiscal_year_name => false);

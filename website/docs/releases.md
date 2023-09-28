@@ -4,13 +4,18 @@ Below you can find the latest downloads and the new functionalities and bug fixe
 
 ## Download {#download}
 
+```mdx-code-block
+import {config} from '@site/src/config';
+```
+
 <p>The latest available version is <b>v{config.version_short}</b>.</p>
 
 ```mdx-code-block
 import {DownloadPicker} from '@site/src/components/DownloadPicker'
-import {config} from '@site/src/config';
+import { AppleSiliconWorkarounds } from "@site/src/components/AppleSiliconWorkarounds.tsx";
 
 <DownloadPicker />
+<AppleSiliconWorkarounds />
 ```
 
 ## Release Notes

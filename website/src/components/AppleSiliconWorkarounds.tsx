@@ -20,7 +20,7 @@ export function AppleSiliconWorkarounds() {
                     </p>
                     <p>
                         To do so, either install the Intel-only version of the Python/Java interpreter, or prefix your
-                        call <code>arch -x86_64</code>. E.g., for Python, you can use:
+                        call with <code>arch -x86_64</code>. E.g., for Python, you can use:
                     </p>
                     <pre>
                         arch -x86_64 /usr/bin/python3 -m pip install tableauhyperapi

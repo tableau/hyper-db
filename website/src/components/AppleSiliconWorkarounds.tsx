@@ -3,12 +3,12 @@ import Admonition from '@theme/Admonition';
 
 export function AppleSiliconWorkarounds() {
     return (
-            <Admonition type="info" title="Apple Silicon Support">
-                If you are on Apple Silicon (Apple M1, Apple M2, ...), you will currently need workarounds, as described below.
-
-                <details>
-                    <summary style={{fontWeight: "bold", margin: ".8em .5em"}}>Apple Silicon Workarounds</summary>
-                    <div style={{marginLeft: "1.4em"}}>
+        <Admonition type="info" title="Apple Silicon Support">
+            If you are on Apple Silicon (Apple M1, Apple M2, ...), you will currently need workarounds, as described
+            below.
+            <details>
+                <summary style={{ fontWeight: 'bold', margin: '.8em .5em' }}>Apple Silicon Workarounds</summary>
+                <div style={{ marginLeft: '1.4em' }}>
                     <p>
                         Hyper API runs on Apple Silicon only with [Rosetta 2](https://support.apple.com/en-us/HT211861)
                         instead of natively. You will have to install Rosetta 2 before installing Hyper API.
@@ -27,8 +27,8 @@ export function AppleSiliconWorkarounds() {
                         <br />
                         arch -x86_64 /usr/bin/python3 your_script.py
                     </pre>
-                    </div>
-                </details>
-            </Admonition>
+                </div>
+            </details>
+        </Admonition>
     );
 }

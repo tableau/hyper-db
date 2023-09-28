@@ -4,7 +4,7 @@ import Admonition from '@theme/Admonition';
 export function AppleSiliconWorkarounds() {
     return (
             <Admonition type="info" title="Apple Silicon Support">
-                If you are on Apple Silicon (Apple M1, Apple M2, ...), you will currently need workarounds, as desribed below.
+                If you are on Apple Silicon (Apple M1, Apple M2, ...), you will currently need workarounds, as described below.
 
                 <details>
                     <summary style={{fontWeight: "bold", margin: ".8em .5em"}}>Apple Silicon Workarounds</summary>

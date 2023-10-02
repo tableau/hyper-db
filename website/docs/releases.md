@@ -28,11 +28,13 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ### Upcoming Release
 
+### 0.0.17950 [October 4th, 2023]
+
 * .Net Deprecation: As announced last release, we are deprecating the .NET version of Hyper API. We decided to [open-source its source code](https://github.com/tableau/hyper-api-dotnet), so whoever might be interested in maintaining it can pick up where we left.
 * Some of the [Fiscal Calendar Options](/docs/sql/scalar_func/datetime#fiscal-calendar-options) are renamed:
   * `start_month` is renamed to `fiscal_year_start_month`.
   * `first_day_of_week` is renamed to `first_day_of_fiscal_week`.
-* The [EXTRACT](/docs/sql/scalar_func/datetime#datetime-extract) function was accepting (and ignoring) named arguments which were not required. Now it only accepts [Fiscal Calendar Options](/docs/sql/scalar_func/datetime#fiscal-calendar-options) when fiscal function fields are used. A named argument which is not required by the [EXTRACT](/docs/sql/scalar_func/datetime#datetime-extract) function will be rejected.
+* The [EXTRACT](/docs/sql/scalar_func/datetime#datetime-extract) function was accepting (and ignoring) named arguments that were not required. Now it only accepts [Fiscal Calendar Options](/docs/sql/scalar_func/datetime#fiscal-calendar-options) when fiscal function fields are used. A named argument that is not required by the [EXTRACT](/docs/sql/scalar_func/datetime#datetime-extract) function will be rejected.
 
 ### 0.0.17782 [September 6nd, 2023]
 

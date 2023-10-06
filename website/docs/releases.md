@@ -28,7 +28,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ### Upcoming Release
 
-### 0.0.17952 [October 4th, 2023]
+### 0.0.17971 [October 9th, 2023]
 
 * .Net Deprecation: As announced last release, we are deprecating the .NET version of Hyper API. We decided to [open-source its source code](https://github.com/tableau/hyper-api-dotnet), so whoever might be interested in maintaining it can pick up where we left.
 * Some of the [Fiscal Calendar Options](/docs/sql/scalar_func/datetime#fiscal-calendar-options) are renamed:

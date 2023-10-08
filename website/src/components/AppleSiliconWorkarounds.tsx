@@ -10,8 +10,9 @@ export function AppleSiliconWorkarounds() {
                 <summary style={{ fontWeight: 'bold', margin: '.8em .5em' }}>Apple Silicon Workarounds</summary>
                 <div style={{ marginLeft: '1.4em' }}>
                     <p>
-                        Hyper API runs on Apple Silicon only with [Rosetta 2](https://support.apple.com/en-us/HT211861)
-                        instead of natively. You will have to install Rosetta 2 before installing Hyper API.
+                        Hyper API runs on Apple Silicon only with{' '}
+                        <a href="https://support.apple.com/en-us/HT211861">Rosetta 2</a> instead of natively. You will
+                        have to install Rosetta 2 before installing Hyper API.
                     </p>
                     <p>
                         Furthermore, this means that Hyper API can only be used from within other x86 programs, running

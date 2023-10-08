@@ -43,7 +43,10 @@
 }
 
 .vertical-timeline-custom .vertical-timeline-element-icon {
-    box-shadow: 0 0 0 3px var(--ifm-color-primary), inset 0 2px 0 #00000014, 0 3px 0 4px #0000000d;
+    box-shadow:
+        0 0 0 3px var(--ifm-color-primary),
+        inset 0 2px 0 #00000014,
+        0 3px 0 4px #0000000d;
     background-color: #ffffff;
 }
 

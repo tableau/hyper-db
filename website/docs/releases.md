@@ -28,8 +28,8 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ### 0.0.18161 [November 8th, 2023]
 
-* Reduced memory consumption for `WITH RECURSIVE`: Up to 20,000x less memory usage in microbenchmarks
-* Improved performance for `WITH RECURSIVE`: Roughly 2x improvement in microbenchmarks
+* Reduced memory consumption for `WITH RECURSIVE`: Up to 20,000x less memory usage in microbenchmarks.
+* Improved performance for `WITH RECURSIVE`: Roughly 2x improvement in microbenchmarks.
 * Updated OpenSSL version from 1.1.1u to 3.0.10.
 
 ### 0.0.17971 [October 9th, 2023]

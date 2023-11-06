@@ -26,7 +26,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-### Upcoming
+### 0.0.18161 [November 8th, 2023]
 
 * Reduced memory consumption for `WITH RECURSIVE`: Up to 20,000x less memory usage in microbenchmarks
 * Improved performance for `WITH RECURSIVE`: Roughly 2x improvement in microbenchmarks

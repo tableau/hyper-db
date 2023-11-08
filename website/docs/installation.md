@@ -72,21 +72,6 @@ Using at least C++17 is recommended, as the API uses C++17 classes, such as `std
 
 ```mdx-code-block
   </TabItem>
-  <TabItem value="dotnet" label=".NET">
-```
-
-:::warning Deprecation Warning
-
-The .NET version of Hyper API is deprecated.
-Older versions of Hyper API will still be available via NuGET. In the future, .Net will not receive any new features or updates. The old packages will stay available on NuGET indefinitely, so you can keep using older versions in .Net. The other languages (Python, Java, C++) are not impacted by this in any way. In case this is causing issues for you, please reach out via [Slack](https://join.slack.com/t/tableau-datadev/shared_invite/zt-1q4rrimsh-lHHKzrhid1MR4aMOkrnAFQ).
-
-:::
-
-* **[.NET Core 2.2 SDK](https://dotnet.microsoft.com/download)** (or newer) or **[.NET Framework 4.6.1](https://dotnet.microsoft.com/en-us/download/dotnet-framework)** (or newer) is required.
-  * The examples use the .NET Core SDK.
-
-```mdx-code-block
-  </TabItem>
 </Tabs>
 ```
 
@@ -209,60 +194,6 @@ If your security requirements require you to run Java applications with the syst
     * For Linux, the library (`libtableauhyperapi.so`) is in the `lib` directory of the `.zip` file.
     * For macOS, the library (`libtableauhyperapi.dylib`) is in the `lib` folder of the `.zip` file.
 1. Set system property `jna.library.path` with value set to the absolute path of the folder or directory that contains the native library file for your platform (from step 2).
-
-```mdx-code-block
-  </TabItem>
-  <TabItem value="dotnet" label=".NET">
-```
-
-:::warning Deprecation Warning
-
-The .NET version of Hyper API is deprecated.
-Older versions of Hyper API will still be available via NuGET. In the future, .Net will not receive any new features or updates. The old packages will stay available on NuGET indefinitely, so you can keep using older versions in .Net. The other languages (Python, Java, C++) are not impacted by this in any way. In case this is causing issues for you, please reach out via [Slack](https://join.slack.com/t/tableau-datadev/shared_invite/zt-1q4rrimsh-lHHKzrhid1MR4aMOkrnAFQ).
-
-:::
-
-You can install the Hyper API for .NET in two ways. You can either download the `.zip` file that contains the library and example code, or you can install the NuGet package for the library, either directly, or by adding a reference to your project.
-
-### Using the Hyper API NuGet package {#using-the-hyper-api-nuget-package}
-
-The Hyper API library is available as a NuGet package. To use the library, you need to add a reference to the `Tableau.HyperAPI.NET` package in your project. Use the NuGet Package Manager in Visual Studio, or for other installation options, see **[Tableau.HyperAPI.NET in the NuGet Gallery](https://www.nuget.org/packages/Tableau.HyperAPI.NET/)**.
-
-### Hyper API for .NET installation from the download (.zip) package
-
-In addition to using the NuGet package, you can also download the Hyper API library for .NET. The download package includes the .NET examples for the Hyper API.
-
-1. [Download](/docs/releases#download) the .NET Hyper API package file (`.zip` file) for your operating system. The files are identified as `tableauhyperapi-dotnet-`
-1. Unzip the Hyper API package file to a convenient location.
-1. Build and run the examples.
-    * To run the examples, you need to install .Net Core 2.2 SDK or newer. You can install it from the [official .NET download page](https://dotnet.microsoft.com/download).
-    * To build the example project, open a terminal, navigate into the example directory and run:
-        * On Windows: `build.bat`
-        * On Linux/macOS: `./build.sh`
-    * Then run the examples with `dotnet run`. For example, `dotnet run -- insert-data-into-single-table`
-
-    :::note
-    The examples assume that you have .NET Core 2.2 installed. Depending upon the version of the .NET Core Framework you are using (2.2 or later), you might need to change the `<TargetFramework>` version in the project file (`Example.csproj`). You might also need to change the `xcopy` path in the `build.bat` or `build.sh` file.
-    :::
-
-### Use Visual Studio to create new .NET project
-
- You can create a new project with the Hyper API in Visual Studio.
-
-* In Visual Studio, create or initialize a new .NET project.
-* In the project file (`.csproj`), add a reference to the managed library (`Tableau.HyperAPI.NET.dll`). The library is located in the `lib` directory where you extracted the Hyper API package.
-
-  ```xml
-        <ItemGroup>
-          <Reference Include="Tableau.HyperAPI.NET">
-              <HintPath>../lib/Tableau.HyperAPI.NET.dll</HintPath>
-          </Reference>
-        </ItemGroup>
-  ```
-
-* Or if you want to use the NuGet package, and a reference to the package as described [Using the Hyper API NuGet package](#using-the-hyper-api-nuget-package).
-* Change the platform to **x64** in the Configuration manager.
-* Make sure to deploy the native tableauhyperapi library (`tableauhyperapi.dll` on Windows and `libtableauhyperapi.so` on Linux) and the `hyper` folder next to the managed `Tableau.HyperAPI.NET.dll` assembly. Both are located in the `lib` folder where you installed the Hyper API package.
 
 ```mdx-code-block
   </TabItem>

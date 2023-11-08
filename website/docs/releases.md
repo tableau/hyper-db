@@ -26,6 +26,14 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+### 0.0.18161 [November 8th, 2023]
+
+* Reduced memory consumption for `WITH RECURSIVE`: Up to 20,000x less memory usage in microbenchmarks.
+* Improved performance for `WITH RECURSIVE`: Roughly 2x improvement in microbenchmarks.
+* Improved heuristic rewrites for joins:
+  * Remove semi/anti-joins with a constant FALSE conditions.
+  * Apply the exact same "constant FALSE condition" rewrites also in cases where the join has an empty input on one of both sides.
+* Updated OpenSSL version from 1.1.1u to 3.0.10.
 
 ### 0.0.17971 [October 9th, 2023]
 

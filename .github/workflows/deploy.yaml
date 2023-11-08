@@ -54,7 +54,7 @@ jobs:
 
       - name: Download language docs
         working-directory: main/website
-        run: yarn ts-node download_links.ts docs_py docs_cxx docs_java docs_dotnet
+        run: yarn ts-node download_links.ts docs_py docs_cxx docs_java
 
       - name: Build webpage for `main` branch
         working-directory: main/website
@@ -86,8 +86,6 @@ jobs:
           mv combined/lang_docs/tableauhyperapi-cxx-docs-* combined/lang_docs/cxx
           unzip main/website/docs_java.zip -d combined/lang_docs
           mv combined/lang_docs/tableauhyperapi-java-docs-* combined/lang_docs/java
-          unzip main/website/docs_dotnet.zip -d combined/lang_docs
-          mv combined/lang_docs/tableauhyperapi-dotnet-docs-* combined/lang_docs/dotnet
 
       - name: Upload webpage artifact
         uses: actions/upload-pages-artifact@v1

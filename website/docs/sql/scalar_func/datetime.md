@@ -125,7 +125,7 @@ there is a daylight saving time change between the two dates used:
 ## `EXTRACT` {#datetime-extract}
 
 ```sql_template
-EXTRACT(<field> FROM <source> [, <fiscal_option> [, ...] ])
+EXTRACT(<field> FROM <source> [, <fiscal_option> [, ...] ] [, <localized_week_option> [, ...] ])
 ```
 
 The `extract` function retrieves subfields such as year or hour from
@@ -139,6 +139,10 @@ The `<fiscal_option>` can only be used when `<source>` is of type
 `date`, `timestamp` or `timestamptz`, and `<field>` is one of the
 following: `fiscal_week`, `fiscal_month`, `fiscal_quarter`,
 `fiscal_year`; see [Fiscal Calendar Options](#fiscal-calendar-options).
+
+The `<localized_week_option>` can only be used when `<source>` is of
+type `date`, `timestamp` or `timestamptz`, and `<field>` is
+`localized_week`; see [Localized Week Options](#localized-week-options).
 
 The result type of `extract` depends on the given `<field>`:
 `numeric(8,6)` for field `second`, `numeric(18,6)` for field `epoch`, and
@@ -287,6 +291,13 @@ SELECT EXTRACT(ISOYEAR FROM DATE '2006-01-02');
 Result: 2006
 ```
 
+`localized_week`
+:   The week within the year with regard to a custom start date, which
+    is determined by the parameters `first_day_of_localized_week` and
+    `minimal_days_in_localized_first_week`; see
+    [Localized Week Options](#localized-week-options) for detailed
+    explanation and examples.
+
 `microseconds`
 :   The seconds field, including fractional parts, multiplied by 1 000
     000; note that this includes full seconds
@@ -410,13 +421,17 @@ The `date_part` function is modeled on the traditional Ingres/PostgresQL
 equivalent to the SQL-standard function `extract`:
 
 ```sql_template
-date_part(<field>, <source> [, <fiscal_option> [, ...] ])
+date_part(<field>, <source> [, <fiscal_option> [, ...] ] [, <localized_week_option> [, ...] ])
 ```
 
 The `<fiscal_option>` can only be used when `<source>` is of type
 `date`, `timestamp` or `timestamptz`, and `<field>` is one of the
 following: `fiscal_week`, `fiscal_month`, `fiscal_quarter`,
 `fiscal_year`; see [Fiscal Calendar Options](#fiscal-calendar-options).
+
+The `<localized_week_option>` can only be used when `<source>` is of type
+`date`, `timestamp` or `timestamptz`, and `<field>` is `localized_week`;
+see [Localized Week Options](#localized-week-options).
 
 Note that here the `<field>` parameter needs to be a string
 value, not a name. The valid field names for `date_part` are the same as
@@ -437,7 +452,7 @@ The function `date_trunc` is conceptually similar to the `trunc`
 function for numbers.
 
 ```sql_template
-date_trunc(<field>, <source> [, <time_zone>] [, <fiscal_option> [, ...] ])
+date_trunc(<field>, <source> [, <time_zone>] [, <fiscal_option> [, ...] ] [, first_day_of_localized_week => <value> ])
 ```
 
 `<source>` is a value expression of type `timestamp`,
@@ -453,8 +468,14 @@ The `<fiscal_option>` can only be used when `<source>` is of type
 following: `fiscal_week`, `fiscal_month`, `fiscal_quarter`,
 `fiscal_year`; see [Fiscal Calendar Options](#fiscal-calendar-options).
 
+The parameter `first_day_of_localized_week` can only be used when
+`<source>` is of type `date`, `timestamp` or `timestamptz`, and
+`<field>` is `localized_week`; see
+[Localized Week Options](#localized-week-options).
+
 Valid values for `<field>` are: `microseconds`, `milliseconds`,
-`second`, `minute`, `hour`, `day`, `week`, `fiscal_week`, `month`,
+`second`, `minute`, `hour`, `day`, `week`, `localized_week`,
+`fiscal_week`, `month`,
 `fiscal_month`, `quarter`, `fiscal_quarter`, `year`, `fiscal_year`,
 `decade`, `century`, `millennium`.
 
@@ -579,3 +600,64 @@ Some examples:
 
     SELECT EXTRACT(fiscal_year FROM timestamp '2000-02-16 20:38:40', use_start_date_as_fiscal_year_name => false);
     Result: 2001
+
+## Localized Week Options {#localized-week-options}
+
+The localized week options can be used to define the start of a week and
+a year in [EXTRACT](#datetime-extract), [date_trunc](#datetime-trunc)
+and [date_part](#datetime-datepart) functions, when the field is
+`localized_week`. The following localized week options are available:
+
+`first_day_of_localized_week => <value>`
+:   The first day of the localized week. If `<value>` is 1, every week,
+    and every year, will start with a Monday. If `<value>` is 7, the
+    week and year will start with a Sunday.
+
+`minimal_days_in_localized_first_week => <value>`
+:   This option defines a minimum of how many days in the localized
+    first week should be in the new year (according to the Gregorian
+    calendar) for it to be qualified as the first week. The start of
+    the first week of a year is the first weekday defined by
+    `first_day_of_localized_week`, starting with which, at least
+    `minimal_days_in_localized_first_week` days of the week are in
+    that year.
+
+For the examples, consider the following calendar (the date format is
+`yyyy-mm-dd`):
+
+Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday
+---|---|---|---|---|---|---
+2021-12-27|2021-12-28|2021-12-29|2021-12-30|2021-12-31|2022-01-01|2022-01-02
+2022-01-03|2022-01-04|2022-01-05|2022-01-06|2022-01-07|2022-01-08|2022-01-09
+...|...|...|...|...|...|...
+2022-12-26|2022-12-27|2022-12-28|2022-12-29|2022-12-30|2022-12-31|2023-01-01
+2023-01-02|2023-01-03|2023-01-04|2023-01-05|2023-01-06|2023-01-07|2023-01-08
+
+The `EXTRACT` function for `localized_week` will have the following results:
+
+    SELECT EXTRACT(localized_week FROM timestamp '2023-01-01', first_day_of_localized_week => 1, minimal_days_in_localized_first_week => 1);
+    Result: 1
+
+The first day of a week is set to Monday. The first day of the year 2023
+is `2022-12-26`, since this is the first Monday, starting with which,
+the week has at least 1 day in year 2023.
+
+    SELECT EXTRACT(localized_week FROM timestamp '2023-01-01', first_day_of_localized_week => 1, minimal_days_in_localized_first_week => 2);
+    Result: 53
+
+The first day of a week is set to Monday. The first day of the year 2023
+is `2023-01-02`, since this is the first Monday, starting with which,
+the week has at least 2 days in year 2023. For the example above, the
+date `2023-01-01` still belongs to year 2022, which starts with
+`2021-12-27`, since this is the first Monday, starting with which, the
+week has at least 2 days in year 2022.
+
+    SELECT EXTRACT(localized_week FROM timestamp '2023-01-01', first_day_of_localized_week => 1, minimal_days_in_localized_first_week => 3);
+    Result: 52
+
+The first day of a week is set to Monday. The first day of the year 2023
+is `2023-01-02`, since this is the first Monday, starting with which,
+the week has at least 3 days in year 2023. For the example above, the
+date `2023-01-01` still belongs to year 2022, which starts with
+`2022-01-03`, since this is the first Monday, starting with which, the
+week has at least 3 days in year 2022.

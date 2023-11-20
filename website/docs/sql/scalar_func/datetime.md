@@ -639,7 +639,7 @@ The `EXTRACT` function for `localized_week` will have the following results:
     Result: 1
 
 The first day of a week is set to Monday. The first day of the year 2023
-is `2022-12-26`, since this is the first Monday, starting with which,
+is `2022-12-26`, since this is the first Monday, starting with which
 the week has at least 1 day in year 2023.
 
     SELECT EXTRACT(localized_week FROM timestamp '2023-01-01', first_day_of_localized_week => 1, minimal_days_in_localized_first_week => 2);

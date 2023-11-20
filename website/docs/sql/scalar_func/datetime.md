@@ -618,7 +618,7 @@ and [date_part](#datetime-datepart) functions, when the field is
     first week should be in the new year (according to the Gregorian
     calendar) for it to be qualified as the first week. The start of
     the first week of a year is the first weekday defined by
-    `first_day_of_localized_week`, starting with which, at least
+    `first_day_of_localized_week`, starting with which at least
     `minimal_days_in_localized_first_week` days of the week are in
     that year.
 
@@ -646,18 +646,18 @@ the week has at least 1 day in year 2023.
     Result: 53
 
 The first day of a week is set to Monday. The first day of the year 2023
-is `2023-01-02`, since this is the first Monday, starting with which,
+is `2023-01-02`, since this is the first Monday, starting with which
 the week has at least 2 days in year 2023. For the example above, the
 date `2023-01-01` still belongs to year 2022, which starts with
-`2021-12-27`, since this is the first Monday, starting with which, the
+`2021-12-27`, since this is the first Monday, starting with which the
 week has at least 2 days in year 2022.
 
     SELECT EXTRACT(localized_week FROM timestamp '2023-01-01', first_day_of_localized_week => 1, minimal_days_in_localized_first_week => 3);
     Result: 52
 
 The first day of a week is set to Monday. The first day of the year 2023
-is `2023-01-02`, since this is the first Monday, starting with which,
+is `2023-01-02`, since this is the first Monday, starting with which
 the week has at least 3 days in year 2023. For the example above, the
 date `2023-01-01` still belongs to year 2022, which starts with
-`2022-01-03`, since this is the first Monday, starting with which, the
+`2022-01-03`, since this is the first Monday, starting with which the
 week has at least 3 days in year 2022.

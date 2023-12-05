@@ -26,7 +26,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-### Upcoming Release
+### 0.0.18354 [December 6th, 2023]
 
 * Support for `localized_week` is added
   * The functions `EXTRACT`, `date_part` and `date_trunc` have a new field `localized_week`.

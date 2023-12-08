@@ -26,6 +26,12 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+### 0.0.18369 [December 8th, 2023]
+
+* Added support for `localized_week`
+  * The functions `EXTRACT`, `date_part` and `date_trunc` have a new field `localized_week`.
+  * Localized week options for the new field are added. See [Localized Week Options](/docs/sql/scalar_func/datetime#localized-week-options).
+
 ### 0.0.18161 [November 8th, 2023]
 
 * Reduced memory consumption for `WITH RECURSIVE`: Up to 20,000x less memory usage in microbenchmarks.

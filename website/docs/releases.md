@@ -26,6 +26,8 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+### Upcoming Release
+
 ### 0.0.18369 [December 8th, 2023]
 
 * Added support for `localized_week`

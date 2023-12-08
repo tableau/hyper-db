@@ -26,9 +26,9 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-### 0.0.18369 [December 7th, 2023]
+### 0.0.18369 [December 8th, 2023]
 
-* Support for `localized_week` is added
+* Added support for `localized_week`
   * The functions `EXTRACT`, `date_part` and `date_trunc` have a new field `localized_week`.
   * Localized week options for the new field are added. See [Localized Week Options](/docs/sql/scalar_func/datetime#localized-week-options).
 

@@ -26,7 +26,9 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-### Upcoming Release
+### 0.0.18441 [January 10th, 2024]
+
+* Various performance and stability improvements
 
 ### 0.0.18369 [December 8th, 2023]
 

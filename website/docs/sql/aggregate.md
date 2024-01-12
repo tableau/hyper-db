@@ -17,7 +17,7 @@ Function|Argument Type(s)|Return Type|Description|
 ---|---|---|---|
 `any_value(expression)`|any type|same as argument data type|an arbitrary, implementation-defined value from the set of input values. The result is non-deterministic.
 `approx_count_distinct(expression, e)`|any, `double precision`|`bigint`|Computes approximation of `count(distinct expression)`, with expected relative error `e`. Supported values of `e` are in range (0.002, 1]. The `e` argument is optional, if omitted, the value 0.023 is used (2.3% expected relative error to real distinct count).
-`avg(expression)`|any numerical type|`numeric` with a scale of 4 for any integer-type argument, `double precision` for a floating-point argument, otherwise the same as the argument data type|the average (arithmetic mean) of all input values
+`avg(expression)`|any numerical type|`numeric` with a scale of 6 for any integer-type argument and numeric arguments with a scale less than 6, `double precision` for a floating-point argument, otherwise the same as the argument data type|the average (arithmetic mean) of all input values
 `bit_and(expression)`|integral types|same as argument data type|the bitwise AND of all non-null input values, or null if none
 `bit_or(expression)`|integral types|same as argument data type|the bitwise OR of all non-null input values, or null if none
 `bool_and(expression)`|`bool`|`bool`|true if all input values are true, otherwise false
@@ -48,12 +48,16 @@ Function|Argument Type|Return Type|Description
 `corr(Y, X)`|`double precision`|`double precision`|correlation coefficient
 `covar_pop(Y, X)`|`double precision`|`double precision`|population covariance
 `covar_samp(Y, X)`|`double precision`|`double precision`|sample covariance
-`stddev(expression)`|any numerical type|`NUMERIC(38,4)` for any integer-type argument, `double precision` for a floating-point argument, `NUMERIC(38,s)` for any `NUMERIC(p,s)`|alias for `stddev_samp`
-`stddev_pop(expression)`|any numerical type|`NUMERIC(38,4)` for any integer-type argument, `double precision` for a floating-point argument, `NUMERIC(38,s)` for any `NUMERIC(p,s)`|population standard deviation of the input values
-`stddev_samp(expression)`|any numerical type|`NUMERIC(38,4)` for any integer-type argument, `double precision` for a floating-point argument, `NUMERIC(38,s)` for any `NUMERIC(p,s)`|sample standard deviation of the input values
-`variance`(`<expression>`)|any numerical type|`NUMERIC(38,4)` for any integer-type argument, `double precision` for a floating-point argument, `NUMERIC(38,s)` for any `NUMERIC(p,s)`|alias for `var_samp`
-`var_pop`(`<expression>`)|any numerical type|`NUMERIC(38,4)` for any integer-type argument, `double precision` for a floating-point argument, `NUMERIC(38,s)` for any `NUMERIC(p,s)`|population variance of the input values (square of the population standard deviation)
-`var_samp`(`<expression>`)|any numerical type|`NUMERIC(38,4)` for any integer-type argument, `double precision` for a floating-point argument, `NUMERIC(38,s)` for any `NUMERIC(p,s)`|sample variance of the input values (square of the sample standard deviation)
+`stddev(expression)`|any numerical type|`NUMERIC(38,6)` for any integer-type or numeric argument, `double precision` for a floating-point argument|alias for `stddev_samp`
+`stddev_pop(expression)`|any numerical type|`NUMERIC(38,6)` for any integer-type or numeric argument, `double precision` for a floating-point argument|population standard deviation of the input values
+`stddev_samp(expression)`|any numerical type|`NUMERIC(38,6)` for any integer-type or numeric argument, `double precision` for a floating-point argument|sample standard deviation of the input values
+`variance`(`<expression>`)|any numerical type|`NUMERIC(38,6)` for any integer-type or numeric argument, `double precision` for a floating-point argument|alias for `var_samp`
+`var_pop`(`<expression>`)|any numerical type|`NUMERIC(38,6)` for any integer-type or numeric argument, `double precision` for a floating-point argument|population variance of the input values (square of the population standard deviation)
+`var_samp`(`<expression>`)|any numerical type|`NUMERIC(38,6)` for any integer-type or numeric argument, `double precision` for a floating-point argument|sample variance of the input values (square of the sample standard deviation)
+
+:::tip
+Casting the input of an aggregate function can be used to force a different output type. E.g., `VAR_POP(CAST(A AS DOUBLE PRECISION))` can be used to get a `double precision` result independent of the type of the column `A`. 
+:::
 
 ## Ordered set aggregates {#ordered-set}
 

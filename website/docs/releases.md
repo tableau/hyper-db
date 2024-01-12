@@ -28,6 +28,11 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ### Upcoming release
 
+* Overhauled the [SQL type propagation rules for the `NUMERIC` data type](/docs/sql/datatype/numeric). This can lead to differences in the precision and number of decimal digits of `NUMERIC` calculations in existing queries and their results. The changes are:
+    * Multiplication and division of `NUMERIC` with integer and numeric types now follows different rules to determine the result's precision and scale.
+    * The `AVG` aggregate function now adds 6 instead of 4 decimal digits.
+    * The statistical aggregate functions (like `STDDEV_SAMP`) now always return `NUMERIC(38,6)` for integer and numeric inputs. If a scale of 6 is too low for your purposes consider casting the input to `double precision`.
+    * Integer literals are now treated as if they were of type numeric with the minimal required precision when in arithmetic operations with `NUMERIC` values.
 * IANA released version 2023d of the Time Zone Database. Hyper’s time zone information is updated accordingly. Noteworthy changes:
   * Ittoqqortoormiit, Greenland changes time zones on 2024-03-31.
   * Vostok, Antarctica changed time zones on 2023-12-18.

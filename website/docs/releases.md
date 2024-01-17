@@ -28,6 +28,13 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ### Upcoming release
 
+* IANA released version 2023d of the Time Zone Database. Hyper’s time zone information is updated accordingly. Noteworthy changes:
+  * Ittoqqortoormiit, Greenland changes time zones on 2024-03-31.
+  * Vostok, Antarctica changed time zones on 2023-12-18.
+  * Casey, Antarctica changed time zones five times since 2020.
+  * Code and data fixes for Palestine timestamps starting in 2072.
+  * A new data file zonenow.tab for timestamps starting now.
+
 ### 0.0.18441 [January 10, 2024]
 
 * Various performance and stability improvements

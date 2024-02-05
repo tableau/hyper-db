@@ -26,7 +26,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-### Upcoming release
+### 0.0.18618 [February 7, 2024]
 
 * Overhauled the [SQL type propagation rules for the `NUMERIC` data type](/docs/sql/datatype/numeric). This can lead to differences in the precision and number of decimal digits of `NUMERIC` calculations in existing queries and their results. The changes are:
     * Multiplication and division of `NUMERIC` with integer and numeric types now follows different rules to determine the result's precision and scale.

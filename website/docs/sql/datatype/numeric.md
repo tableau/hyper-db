@@ -45,31 +45,39 @@ can be configured. To declare a column of type `numeric` use the syntax
 Alternatively, `NUMERIC(precision)` selects a scale of 0.
 Specifying `NUMERIC` selects the maximum precision of 38 and a scale of 0.
 
-The type propagation rules for arithmetic operations with numerics never
-decrease the scale and set the precision such that the biggest possible
-result will fit into the result type. This may lead to undesired growth
-of both scale and precision, especially when chaining multiple
-arithmetic operations. Large scale might be undesirable because it takes
-away from the digits in front of the decimal point, potentially leading
-to overflow errors. Large precision might also be undesirable because
-`numeric` values with precision over 18 internally use 128-bit which may
-slow down processing. To avoid this, explicit casts to the desired scale
-and precision can be added throughout a query.
+The type propagation rules for arithmetic operations with numerics often
+lead to larger precision and scale in the result type. This may lead to
+undesired growth of both scale and precision, especially when chaining
+multiple arithmetic operations. Large scale might be undesirable because 
+it takes away from the digits in front of the decimal point, potentially 
+leading to overflow errors. Large precision might also be undesirable
+because `numeric` values with precision over 18 internally use 128-bit
+which may slow down processing. To avoid this, explicit casts to the
+desired scale and precision can be added throughout a query. The resulting
+precision is always capped at the maximum of 38.
 
 Arithmetic operations between a `NUMERIC(p1,s1)` and a `NUMERIC(p2,s2)`
 have the following results:
 
 |Operator|Result Type|
 |---|---|
-| + or - |NUMERIC(precision, scale) with:<br/>scale = max(s1,s2)<br/>precision = min(38, max((p1-s1),(p2-s2)) + 1 + scale)|
-|*|NUMERIC(precision, scale) with:<br/> scale = max(max(s1,s2), min(s1+s2, 38 - (p1-s1) - (p2-s2)))<br/> precision = min(p1+p2, 38)|
-|/|NUMERIC(precision, scale) with:<br/> scale = max(s1,s2)<br/>precision = min(38, ((p1-s1) + s2 + scale)) |
-|%|NUMERIC(precision, scale) with:<br/> scale = max(s1,s2)<br/>precision = min((p1-s1), (p2-s2)) + scale  |
+| + or - |NUMERIC(precision, scale) with:<br/>scale = max(s1,s2)<br/>precision = max((p1-s1),(p2-s2)) + 1 + scale|
+|*|NUMERIC(precision, scale) with:<br/> scale* = s1 + s2<br/> precision = p1+p2|
+|/|NUMERIC(precision, scale) with:<br/> scale* = max(6, s1 + p2 + 1)<br/>precision = p1 - s1 + s2 + max(6, s1 + p2 + 1)|
+|%|NUMERIC(precision, scale) with:<br/> scale = max(s1,s2)<br/>precision = min((p1-s1), (p2-s2)) + scale|
+
+*) An additional rule applies for multiplication and division: If the resulting precision
+from the above rules exceeds 38, the scale is reduced by the exceeding amount.
+During this step, the scale is never reduced below 6.
 
 When used in arithmetic operation together with `NUMERIC`,
 `DOUBLE PRECISION` operands will always give `DOUBLE PRECISION` results,
 `SMALLINT` behaves the same as `NUMERIC(5,0)`, `INTEGER` as
 `NUMERIC(10,0)` and `BIGINT` as `NUMERIC(19,0)`.
+
+When used in arithmetic operation together with number literals, the literal will be treated
+as the smallest fitting `NUMERIC` type. E.g., `100` will be treated as
+`NUMERIC(3,0)`, `10.0` as `NUMERIC(3,1)`. This rule only applies to literals, not to expressions containing literals. E.g., `(1+1)` will be treated as `NUMERIC(10,0)` not `NUMERIC(1,0)`.
 
 :::note
 In the SQL standard, as well as in PostgreSQL and many other database

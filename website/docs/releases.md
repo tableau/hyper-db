@@ -26,6 +26,15 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+### Upcoming Release
+
+* IANA released version 2024a of the Time Zone Database. Hyper’s time zone information is updated accordingly. Noteworthy changes:
+  * Kazakhstan unifies on UTC+5 beginning 2024-03-01.
+  * Palestine springs forward a week later after Ramadan.
+  * zic no longer pretends to support indefinite-past DST.
+  * localtime no longer mishandles Ciudad Juárez in 2422.
+
+
 ### 0.0.18618 [February 7, 2024]
 
 * Overhauled the [SQL type propagation rules for the `NUMERIC` data type](/docs/sql/datatype/numeric). This can lead to differences in the precision and number of decimal digits of `NUMERIC` calculations in existing queries and their results. The changes are:

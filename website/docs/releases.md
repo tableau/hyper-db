@@ -26,8 +26,9 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-### Upcoming Release
+### Upcoming release
 
+* Updated OpenSSL version from 3.1.4 to 3.2.1
 * IANA released version 2024a of the Time Zone Database. Hyper’s time zone information is updated accordingly. Noteworthy changes:
   * Kazakhstan unifies on UTC+5 beginning 2024-03-01.
   * Palestine springs forward a week later after Ramadan.

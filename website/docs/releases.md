@@ -46,7 +46,6 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
   * Vostok, Antarctica changed time zones on 2023-12-18.
   * Casey, Antarctica changed time zones five times since 2020.
   * Code and data fixes for Palestine timestamps starting in 2072.
-  * A new data file zonenow.tab for timestamps starting now.
 
 ### 0.0.18441 [January 10, 2024]
 

@@ -26,7 +26,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-### 0.0.18823 [March 6, 2024]
+### 0.0.18825 [March 6, 2024]
 
 * Updated OpenSSL version from 3.1.4 to 3.2.1
 * IANA released version 2024a of the Time Zone Database. Hyper’s time zone information is updated accordingly. Noteworthy changes:

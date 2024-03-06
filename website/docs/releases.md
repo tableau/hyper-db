@@ -26,6 +26,14 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+### 0.0.18825 [March 6, 2024]
+
+* Updated OpenSSL version from 3.1.4 to 3.2.1
+* IANA released version 2024a of the Time Zone Database. Hyper’s time zone information is updated accordingly. Noteworthy changes:
+  * Kazakhstan unifies on UTC+5 beginning 2024-03-01.
+  * Palestine springs forward a week later after Ramadan.
+
+
 ### 0.0.18618 [February 7, 2024]
 
 * Overhauled the [SQL type propagation rules for the `NUMERIC` data type](/docs/sql/datatype/numeric). This can lead to differences in the precision and number of decimal digits of `NUMERIC` calculations in existing queries and their results. The changes are:
@@ -38,7 +46,6 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
   * Vostok, Antarctica changed time zones on 2023-12-18.
   * Casey, Antarctica changed time zones five times since 2020.
   * Code and data fixes for Palestine timestamps starting in 2072.
-  * A new data file zonenow.tab for timestamps starting now.
 
 ### 0.0.18441 [January 10, 2024]
 

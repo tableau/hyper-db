@@ -248,6 +248,45 @@ unsupported version 2 (max supported version: 1). To open this database,
 please update your product. (error code 0AS01)"
 :::
 
+##### version 3
+
+Database file format version `3` includes the improvements of file
+format version `2`. Additionally, it supports bigger numerics with a
+precision up to 38.
+Previously, Hyper only supported numerics up to 18 digits.
+The newly added bigger numerics are internally stored as 128-bit values,
+while the smaller ones still use 64-bit values.
+
+To create a new Hyper database file with this version, set
+`default_database_version=3`.
+
+
+:::note
+The database file format version `2` is supported by Tableau
+#TODO add supported Tableau versions
+:::
+
+#### version 4
+Database file format version `4` includes the improvements of file
+format version `3`. Additionally, it supports 32-bit floating points as new SQL type.
+Previously, Hyper mapped all SQL floating points to 64-bit doubles internally.
+Now, Hyper uses 32-bit floats for the SQL types `real` and `float(p)` with
+`p` lower than 25.
+The types `double precision`, `float` without a `p`, or a p `>= 25`
+still use 64-bit doubles.
+
+Old queries using the affected types might yield different results when switching
+to the new version due to the different underlying rounding behavior and arithmetics
+of 32-bit floats.
+To preserve the old behavior, the used data types must be explicitly changed
+to `double precision`.
+
+:::note
+The database file format version `4` will be supported
+in a not-yet-determined future version of Tableau.
+:::
+
+
 <!-- ### Experimental Settings {#experimentalsettings}
 
 :::warning
@@ -255,9 +294,7 @@ This section describes pre-release features that are not supported and
 should not be used in production code. Their interfaces, semantics, and
 performance characteristics are subject to change or they could be
 *removed at any time without prior notice.* There may also be bugs. If
-you encounter an issue, please [report
-it](https://github.com/tableau/hyper-db/issues).
-
+you encounter an issue, please [report it](https://github.com/tableau/hyper-db/issues).
 If you use an experimental feature in your test environment, we
 encourage you to enable telemetry in the Hyper API to help us improve
 these features. You can do so by passing the "send usage data to

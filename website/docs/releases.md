@@ -28,6 +28,10 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ### Upcoming Release
 
+* We have introduced a new 32-bit floating point data type.
+  * Persisting it is only supported in the new file format 4.
+  * A `CAST(… AS double precision)` is needed to store such columns in older file formats.
+* We announced file format 3 (bigger 128-bit numerics) and file format 4 (32-bit floating points)
 
 
 ### 0.0.18825 [March 6, 2024]

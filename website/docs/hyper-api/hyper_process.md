@@ -262,8 +262,14 @@ To create a new Hyper database file with this version, set
 
 
 :::note
-The database file format version `2` is supported by Tableau
-#TODO add supported Tableau versions
+The database file format version `3` is supported by Tableau
+Desktop/Server 2022.4 and newer versions.
+Opening a database file with an unsupported
+Tableau product version will produce an error message similar to:
+
+"There was an error during loading database '[...]/file.hyper':
+unsupported version 3 (max supported version: 2). To open this database,
+please update your product. (error code 0AS01)"
 :::
 
 #### version 4

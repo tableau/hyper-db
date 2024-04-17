@@ -40,6 +40,10 @@ Precisions over 18 require 128-bit for internal storage. Processing
 so it is advisable to use a sensible precision for the use case at hand
 instead of always using the maximum precision by default.
 
+:::note
+128-bit numerics can only be stored using [database version 3](../../hyper-api/hyper_process#version 3) or newer.
+:::
+
 Both the maximum precision and the maximum scale of a `numeric` column
 can be configured. To declare a column of type `numeric` use the syntax
 `NUMERIC(precision, scale)`. The precision must be positive, the scale zero or positive.
@@ -140,6 +144,11 @@ Values that are too large or too small will cause an error. Rounding
 might take place if the precision of an input number is too high.
 Numbers too close to zero that are not representable as distinct from
 zero will cause an underflow error.
+
+:::note
+32-bit floating points are only used with [database version 4](../../hyper-api/hyper_process#version 4)
+or newer.
+:::
 
 By default, floating point values are output in text form in their
 shortest precise decimal representation; the decimal value produced is

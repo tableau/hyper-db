@@ -186,7 +186,7 @@ create new database files.
 Default value: `0`
 
 Accepted values: `0`, `1` (writing this version is deprecated in favor
-of version 2 and will be removed in a future Hyper API release), `2`
+of version 2 and will be removed in a future Hyper API release), `2`, `3`, and `4`.
 
 ##### version 0
 
@@ -278,7 +278,7 @@ format version `3`. Additionally, it supports 32-bit floating points as new SQL 
 Previously, Hyper mapped all SQL floating points to 64-bit doubles internally.
 Now, Hyper uses 32-bit floats for the SQL types `real` and `float(p)` with
 `p` lower than 25.
-The types `double precision`, `float` without a `p`, or a p `>= 25`
+The types `double precision`, `float`, or `float(p)` with p `>= 25`
 still use 64-bit doubles.
 
 Old queries using the affected types might yield different results when switching

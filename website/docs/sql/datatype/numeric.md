@@ -9,6 +9,7 @@ Name | Description
 `integer`|typical choice for integer: -2147483648 to +2147483647 (4 bytes)
 `bigint`|large-range integer: -9223372036854775808 to +9223372036854775807 (8 bytes)
 `numeric`|exact, fixed-length representation of numbers with decimal point: up to decimal 38 digits
+`real`|variable-precision, inexact: 6 decimal digits precision
 `double precision`|variable-precision, inexact: 15 decimal digits precision
 
 ## Integer Types {#int}
@@ -107,8 +108,8 @@ is not supported, yet.
 
 ## Floating-Point Type {#float}
 
-The data type `double precision` is an inexact, variable-precision
-numeric type. On all currently supported platforms, these types are
+The data type `real` and `double precision` are inexact, variable-precision
+numeric types. On all currently supported platforms, these types are
 implementations of IEEE Standard 754 for Binary Floating-Point
 Arithmetic.
 
@@ -131,7 +132,9 @@ into account when using floating-point types:
     work as expected. Using difference to a small epsilon value is
     recommended instead.
 
-On all currently supported platforms, the `double precision` type has a
+On all currently supported platforms, the `real` type has a range of around
+1E-37 and 1E+37 with a precision of at least 6 digits.
+The `double precision` type has a
 range of around 1E-307 to 1E+308 with a precision of at least 15 digits.
 Values that are too large or too small will cause an error. Rounding
 might take place if the precision of an input number is too high.
@@ -166,7 +169,7 @@ with PostgresQL and many other database systems.
 
 Hyper also supports the SQL-standard notations `float` and `float(p)`
 for specifying inexact numeric types. Here, `p` specifies the minimum
-acceptable precision in *binary* digits. However, the `p` argument is
-currently ignored and all `float(p)` types are simply mapped to
-`double precision`. `float` with no precision specified is also mapped
-to `double precision`.
+acceptable precision in *binary* digits.  Here, `p` specifies the minimum
+acceptable precision in binary digits. Hyper accepts `float(1)` to `float(24)`
+as selecting the `real` type, while `float(25)` to `float(53)` select `double precision`.
+`float` with no precision specified is also mapped to `double precision`.

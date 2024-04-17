@@ -14,6 +14,7 @@ Name|Aliases|Description
 `CHARACTER [ (n) ]`|`CHAR [ (n) ]`|fixed-length character string
 `CHARACTER VARYING (n)`|`VARCHAR (n)`|variable-length character string with limit
 `DATE`||calendar date (year, month, day)
+`REAL`|`FLOAT4`|single precision floating-point number (4 bytes)
 `DOUBLE PRECISION`|`FLOAT8`|double precision floating-point number (8 bytes)
 `INTEGER`|`INT`, `INT4`|signed four-byte integer
 `INTERVAL`||time span; not supported in Tableau

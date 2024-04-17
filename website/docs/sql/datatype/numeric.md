@@ -41,7 +41,7 @@ so it is advisable to use a sensible precision for the use case at hand
 instead of always using the maximum precision by default.
 
 :::note
-128-bit numerics can only be stored using [database version 3](../../hyper-api/hyper_process#version 3) or newer.
+128-bit numerics can only be stored using [database version 3](../../hyper-api/hyper_process#version-3) or newer.
 :::
 
 Both the maximum precision and the maximum scale of a `numeric` column
@@ -146,8 +146,8 @@ Numbers too close to zero that are not representable as distinct from
 zero will cause an underflow error.
 
 :::note
-32-bit floating points are only used with [database version 4](../../hyper-api/hyper_process#version 4)
-or newer.
+32-bit floating points were only introduced with [database version 4](../../hyper-api/hyper_process#version-4).
+Previously, all floating points used the 64-bit `double precision`.
 :::
 
 By default, floating point values are output in text form in their

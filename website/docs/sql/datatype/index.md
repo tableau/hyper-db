@@ -26,6 +26,15 @@ Name|Aliases|Description
 `TIMESTAMP WITH TIME ZONE`|`TIMESTAMPTZ`|date and time, including time zone
 `GEOGRAPHY`||a geography object
 
+:::note
+`Numerics` with a precision greater than 18 are only supported with a [database version 3](../../hyper-api/hyper_process#version-3) or newer.
+:::
+:::note
+The 32-bit floating point type `real` was introduced with [database version 4](../../hyper-api/hyper_process#version-4).
+Previously, all floating points were mapped to 64-bit `double precision`.
+:::
+
+
 Links to detailed documentation:
 
 ```mdx-code-block

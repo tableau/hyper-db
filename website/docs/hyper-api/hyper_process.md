@@ -277,8 +277,8 @@ Database file format version `4` includes the improvements of file
 format version `3`. Additionally, it supports 32-bit floating points as new SQL type.
 Previously, Hyper mapped all SQL floating points to 64-bit doubles internally.
 Now, Hyper uses 32-bit floats for the SQL types `real` and `float(p)` with
-`p` lower than 25.
-The types `double precision`, `float`, or `float(p)` with p `>= 25`
+`p <= 24`.
+The types `double precision`, `float`, or `float(p)` with `p >= 25`
 still use 64-bit doubles.
 
 Old queries using the affected types might yield different results when switching
@@ -286,6 +286,9 @@ to the new version due to the different underlying rounding behavior and arithme
 of 32-bit floats.
 To preserve the old behavior, the used data types must be explicitly changed
 to `double precision`.
+
+To create a new Hyper database file with this version, set
+`default_database_version=4`.
 
 :::note
 The database file format version `4` will be supported

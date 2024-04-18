@@ -15,7 +15,7 @@ Name|Aliases|Description
 `CHARACTER VARYING (n)`|`VARCHAR (n)`|variable-length character string with limit
 `DATE`||calendar date (year, month, day)
 `REAL`|`FLOAT4`|single precision floating-point number (4 bytes)
-`DOUBLE PRECISION`|`FLOAT8`|double precision floating-point number (8 bytes)
+`DOUBLE PRECISION`|`FLOAT`, `FLOAT8`|double precision floating-point number (8 bytes)
 `INTEGER`|`INT`, `INT4`|signed four-byte integer
 `INTERVAL`||time span; not supported in Tableau
 `NUMERIC [ (p, s) ]`|`DECIMAL [ (p, s) ]`|exact numeric of selectable precision
@@ -27,11 +27,11 @@ Name|Aliases|Description
 `GEOGRAPHY`||a geography object
 
 :::note
-Persisting `NUMERICs` with a precision greater than 18 requires at least [database version 3](/docs/hyper-api/hyper_process#version-3).
+Persisting `NUMERIC`s with a precision greater than 18 requires at least [database version 3](/docs/hyper-api/hyper_process#version-3).
 :::
 :::note
-Persisting 32-bit `REALs` requires at least [database version 4](/docs/hyper-api/hyper_process#version-4).
-Up until Hyper API release [0.0.18825](/docs/releases#0.0.18825) Hyper mapped all floating points internally to 64-bit `DOUBLE PRECISIONs`.
+Persisting 32-bit floating point values (e.g., type `REAL`) requires at least [database version 4](/docs/hyper-api/hyper_process#version-4).
+Up until Hyper API release [0.0.18825](/docs/releases#0.0.18825) Hyper used 64-bit floating points for all float types (i.e., also for `REAL`).
 :::
 
 

@@ -43,7 +43,7 @@ TODO: Update release number (#TODO) in database version [database version 4](hyp
 :::warning
 Queries using `REAL`, `FLOAT4`, or `FLOAT(p)` with `p <= 24` are now treated as `32 bit` floating points.
 This can lead to different results due to the different underlying rounding behavior and arithmetics of 32-bit floats.
-To preserve the old behavior, the used data types must be explicitly changed or cast to `DOUBLE PRECISION`.
+To preserve the old behavior, you need to use the types `DOUBLE PRECISION`, `FLOAT8`, or `FLOAT(p)` with `p >= 25`. These continue to be treated as 64-bit floating points.
 :::
 
 ### 0.0.18825 [March 6, 2024]

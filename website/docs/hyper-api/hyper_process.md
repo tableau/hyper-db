@@ -248,6 +248,26 @@ unsupported version 2 (max supported version: 1). To open this database,
 please update your product. (error code 0AS01)"
 :::
 
+##### version 3
+
+Database file format version `3` supports storing and querying 128-bit
+numerics. 128-bit numerics support a precision of up to 38 places.
+Additionally, file format `3` improves compression of all 128-bit data types.
+
+To create a new Hyper database file with this version, set
+`default_database_version=3`.
+
+:::note
+The database file format version `3` is supported by Tableau Desktop
+2022.4.1 and Server 2023.1 and newer product versions. It is supported by
+Tableau Prep 2022.4.1 and newer versions. Opening a database file with an
+unsupported Tableau product version will produce an error message similar to:
+
+"There was an error during loading database '[...]/file.hyper':
+unsupported version 3 (max supported version: 2). To open this database,
+please update your product. (error code 0AS01)"
+:::
+
 <!-- ### Experimental Settings {#experimentalsettings}
 
 :::warning

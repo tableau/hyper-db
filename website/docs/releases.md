@@ -28,7 +28,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ### Upcoming Release
 
-
+* Document the new and improved database file format version 3 that was introduced in version 0.0.16123. The new format supports 128-bit numerics. Refer to [Hyper Database Settings](/docs/hyper-api/hyper_process#default_database_version) for more information.
 
 ### 0.0.18825 [March 6, 2024]
 

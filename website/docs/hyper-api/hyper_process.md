@@ -169,6 +169,16 @@ These settings control Hyper's database files.
 
 #### default_database_version
 
+Specifies the default database file format version that will be used to
+create new database files.
+Every version builds on the improvements of the previous version(s) and
+adds some new functionality, like new data types.
+
+Default value: `0`
+
+Accepted values: `0`, `1` (writing this version is deprecated in favor
+of version 2 and will be removed in a future Hyper API release), `2`, `3`, and `4`.
+
 :::note
 Newer database file format versions than the initial version `0` are
 unsupported in older product versions. This means that you can use newer
@@ -178,19 +188,13 @@ database file format version `2` can be opened in Tableau Desktop
 2020.4.15 but it cannot be opened in Tableau Desktop 2020.3. The
 complete compatibility matrix is documented in the version sections
 below.
-:::
 
-Specifies the default database file format version that will be used to
-create new database files.
+Opening a database file with an unsupported
+Tableau product version will produce an error message similar to:
 
-Default value: `0`
-
-Accepted values: `0`, `1` (writing this version is deprecated in favor
-of version 2 and will be removed in a future Hyper API release), `2`, `3`, and `4`.
-
-:::note
-Every version builds on the improvements of the previous version(s) and
-adds some new functionality, like new data types.
+"There was an error during loading database '[...]/file.hyper':
+unsupported version 3 (max supported version: 2). To open this database,
+please update your product. (error code 0AS01)"
 :::
 
 
@@ -225,12 +229,6 @@ and will be removed in a future Hyper API release.
 The database file format version `1` is supported by Tableau
 Desktop/Server 2019.2.10, 2019.3.6, 2019.4.5, 2020.1.1 and newer product
 versions. It is supported by Tableau Prep 2020.2 and newer versions.
-Opening a database file with an unsupported Tableau product version will
-produce an error message similar to:
-
-"There was an error during loading database '[...]/file.hyper':
-unsupported version 1 (max supported version: 0). To open this database,
-please update your product. (error code 0AS01)"
 :::
 
 ##### version 2
@@ -245,12 +243,7 @@ To create a new Hyper database file with this version, set
 The database file format version `2` is supported by Tableau
 Desktop/Server 2020.4.15, 2021.1.12, 2021.2.9, 2021.3.8, 2021.4.4,
 2022.1.2 and newer product versions. It is supported by Tableau Prep
-2022.3 and newer versions. Opening a database file with an unsupported
-Tableau product version will produce an error message similar to:
-
-"There was an error during loading database '[...]/file.hyper':
-unsupported version 2 (max supported version: 1). To open this database,
-please update your product. (error code 0AS01)"
+2022.3 and newer versions.
 :::
 
 ##### version 3
@@ -259,22 +252,10 @@ Database file format version `3` adds support for bigger numerics with a
 precision up to 38.
 Previously, Hyper only supported numerics up to 18 digits.
 The newly added bigger numerics are internally stored as 128-bit values,
-while the smaller ones still use 64-bit values.
+while smaller ones still use 64-bit values.
 
 To create a new Hyper database file with this version, set
 `default_database_version=3`.
-
-
-:::note
-The database file format version `3` is supported by Tableau
-Desktop/Server 2022.4 and newer versions.
-Opening a database file with an unsupported
-Tableau product version will produce an error message similar to:
-
-"There was an error during loading database '[...]/file.hyper':
-unsupported version 3 (max supported version: 2). To open this database,
-please update your product. (error code 0AS01)"
-:::
 
 #### version 4
 Database file format version `4` adds support for a new 32-bit floating point type.

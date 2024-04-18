@@ -41,7 +41,7 @@ so it is advisable to use a sensible precision for the use case at hand
 instead of always using the maximum precision by default.
 
 :::note
-128-bit numerics can only be stored using [database version 3](../../hyper-api/hyper_process#version-3) or newer.
+128-bit numerics can only be stored using [database version 3](/docs/hyper-api/hyper_process#version-3) or newer.
 :::
 
 Both the maximum precision and the maximum scale of a `numeric` column
@@ -112,9 +112,9 @@ is not supported, yet.
 
 ## Floating-Point Type {#float}
 
-The data type `real` and `double precision` are inexact, variable-precision
+The data types `real` and `double precision` are inexact, variable-precision
 numeric types. On all currently supported platforms, these types are
-implementations of IEEE Standard 754 for Binary Floating-Point
+implementations of the IEEE Standard 754 for Binary Floating-Point
 Arithmetic.
 
 Inexact means that some values cannot be converted exactly to the
@@ -146,8 +146,8 @@ Numbers too close to zero that are not representable as distinct from
 zero will cause an underflow error.
 
 :::note
-32-bit floating points were only introduced with [database version 4](../../hyper-api/hyper_process#version-4).
-Previously, all floating points used the 64-bit `double precision`.
+32-bit floating points can only be stored with
+[database version 4](/docs/hyper-api/hyper_process#version-4) or newer.
 :::
 
 By default, floating point values are output in text form in their

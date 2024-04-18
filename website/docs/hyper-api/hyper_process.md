@@ -246,16 +246,23 @@ Desktop/Server 2020.4.15, 2021.1.12, 2021.2.9, 2021.3.8, 2021.4.4,
 2022.3 and newer versions.
 :::
 
+
+
+
 ##### version 3
 
-Database file format version `3` adds support for bigger numerics with a
-precision up to 38.
-Previously, Hyper only supported numerics up to 18 digits.
-The newly added bigger numerics are internally stored as 128-bit values,
-while smaller ones still use 64-bit values.
+Database file format version `3` supports storing and querying 128-bit
+numerics. 128-bit numerics support a precision of up to 38 places.
+Additionally, file format `3` improves compression of all 128-bit data types.
 
 To create a new Hyper database file with this version, set
 `default_database_version=3`.
+
+:::note
+The database file format version `3` is supported by Tableau Desktop
+2022.4.1 and Server 2023.1 and newer product versions. It is supported by
+Tableau Prep 2022.4.1 and newer versions. 
+:::
 
 #### version 4
 Database file format version `4` was introduced to support
@@ -273,7 +280,6 @@ To create a new Hyper database file with this version, set
 The database file format version `4` will be supported
 in a not-yet-determined future version of Tableau.
 :::
-
 
 <!-- ### Experimental Settings {#experimentalsettings}
 

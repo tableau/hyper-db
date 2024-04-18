@@ -173,7 +173,7 @@ These settings control Hyper's database files.
 Newer database file format versions than the initial version `0` are
 unsupported in older product versions. This means that you can use newer
 database versions with the latest Hyper API and newer product versions
-but you cannot open them in older product versions. For example, the new
+but you cannot open them in older product versions. For example, the
 database file format version `2` can be opened in Tableau Desktop
 2020.4.15 but it cannot be opened in Tableau Desktop 2020.3. The
 complete compatibility matrix is documented in the version sections
@@ -187,6 +187,12 @@ Default value: `0`
 
 Accepted values: `0`, `1` (writing this version is deprecated in favor
 of version 2 and will be removed in a future Hyper API release), `2`, `3`, and `4`.
+
+:::note
+Every version builds on the improvements of the previous version(s) and
+adds some new functionality, like new data types.
+:::
+
 
 ##### version 0
 
@@ -229,8 +235,7 @@ please update your product. (error code 0AS01)"
 
 ##### version 2
 
-Database file format version `2` includes the improvements of file
-format version `1`. Additionally, it supports storing and querying
+Database file format version `2` adds support for storing and querying
 textual data with arbitrary versions of the Unicode collation tables.
 
 To create a new Hyper database file with this version, set
@@ -250,8 +255,7 @@ please update your product. (error code 0AS01)"
 
 ##### version 3
 
-Database file format version `3` includes the improvements of file
-format version `2`. Additionally, it supports bigger numerics with a
+Database file format version `3` adds support for bigger numerics with a
 precision up to 38.
 Previously, Hyper only supported numerics up to 18 digits.
 The newly added bigger numerics are internally stored as 128-bit values,
@@ -273,9 +277,8 @@ please update your product. (error code 0AS01)"
 :::
 
 #### version 4
-Database file format version `4` includes the improvements of file
-format version `3`. Additionally, it supports 32-bit floating points as new SQL type.
-Previously, Hyper mapped all SQL floating points to 64-bit doubles internally.
+Database file format version `4` adds support for a new 32-bit floating point type.
+Previously, Hyper internally mapped all SQL floating points to 64-bit doubles.
 Now, Hyper uses 32-bit floats for the SQL types `real` and `float(p)` with
 `p <= 24`.
 The types `double precision`, `float`, or `float(p)` with `p >= 25`

@@ -179,6 +179,7 @@ with PostgresQL and many other database systems.
 Hyper also supports the SQL-standard notations `float` and `float(p)`
 for specifying inexact numeric types. Here, `p` specifies the minimum
 acceptable precision in *binary* digits.  Here, `p` specifies the minimum
-acceptable precision in binary digits. Hyper accepts `float(1)` to `float(24)`
-as selecting the `real` type, while `float(25)` to `float(53)` select `double precision`.
-`float` with no precision specified is also mapped to `double precision`.
+acceptable precision in binary digits. The types `float(1)` to `float(24)`
+are mapped to the `real` type. The types `float(25)` to `float(53)` map
+to `double precision`. `float` with no precision specified also maps
+to `double precision`.

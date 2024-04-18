@@ -41,7 +41,7 @@ TODO: Update release number (#TODO) in database version [database version 4](hyp
 * Documented the new and improved [database file format version 3](hyper-api/hyper_process#version-3) that was introduced in version 0.0.16123. The new format supports 128-bit numerics. Refer to [Hyper Database Settings](/docs/hyper-api/hyper_process#default_database_version) for more information.
 
 :::warning
-Queries using `REAL`, `FLOAT4`, or `FLOAT(p)` with `p <= 24` are now treated as `32 bit` floating points.
+Queries using `REAL`, `FLOAT4`, or `FLOAT(p)` with `p <= 24` are now treated as 32-bit floating points.
 This can lead to different results due to the reduced precision of 32-bit floating points.
 To preserve the old behavior, you need to use the types `DOUBLE PRECISION`, `FLOAT8`, or `FLOAT(p)` with `p >= 25`. These continue to be treated as 64-bit floating points.
 :::

@@ -246,9 +246,6 @@ Desktop/Server 2020.4.15, 2021.1.12, 2021.2.9, 2021.3.8, 2021.4.4,
 2022.3 and newer versions.
 :::
 
-
-
-
 ##### version 3
 
 Database file format version `3` supports storing and querying 128-bit

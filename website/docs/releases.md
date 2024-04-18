@@ -28,7 +28,23 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ### Upcoming Release
 
-* Document the new and improved database file format version 3 that was introduced in version 0.0.16123. The new format supports 128-bit numerics. Refer to [Hyper Database Settings](/docs/hyper-api/hyper_process#default_database_version) for more information.
+!!!
+
+TODO: Update release number (#TODO) in database version [database version 4](hyper-api/hyper_process#version-4) when doing this release!!!
+
+!!!
+
+* Introduced a new 32-bit floating point data type for `REAL`.
+  * Previously, `REAL` was internally mapped to 64-bit `DOUBLE PRECISION`.
+  * Introduced new [database file format version 4](hyper-api/hyper_process#version-4) to support reading and persisting the new 32-bit floats.
+  * A `CAST(… AS double precision)` is needed to store such columns in older file formats.
+* Documented the new and improved [database file format version 3](hyper-api/hyper_process#version-3) that was introduced in version 0.0.16123. The new format supports 128-bit numerics. Refer to [Hyper Database Settings](/docs/hyper-api/hyper_process#default_database_version) for more information.
+
+:::warning
+Queries using `REAL`, `FLOAT4`, or `FLOAT(p)` with `p <= 24` are now treated as 32-bit floating points.
+This can lead to different results due to the reduced precision of 32-bit floating points.
+To preserve the old behavior, you need to use the types `DOUBLE PRECISION`, `FLOAT8`, or `FLOAT(p)` with `p >= 25`. These continue to be treated as 64-bit floating points.
+:::
 
 ### 0.0.18825 [March 6, 2024]
 

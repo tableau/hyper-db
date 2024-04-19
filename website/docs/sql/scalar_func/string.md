@@ -11,7 +11,7 @@ are shown in the table below:
 
 Function|Return Type|Description|Example
 ---|---|---|---
-<code>string &#124;&#124; string</code>|`text`|String concatenation|<code>'Hy'&#124;&#124;'per'</code> → `'Hyper'`
+<code>string &#124;&#124; string</code>|`text`|String concatenation. NULL arguments are not ignored, in contrast to `concat`.|<code>'Hy'&#124;&#124;'per'</code> → `'Hyper'` <code>'Hy'&#124;&#124;NULL</code> → `NULL`
 <code>string &#124;&#124; non-string</code><br/>or<br/><code>non-string &#124;&#124; string</code>|`text`|String concatenation with one non-string input|<code>'Value: '&#124;&#124;42</code> → `'Value: 42'`
 `bit_length(string)`|`int`|Number of bits in string|`bit_length('jose')` → `32`|
 `char_length(string)`<br/>or<br/>`character_length(string)`|`int`|Number of characters in string|`char_length('jose')` → `4`
@@ -32,7 +32,7 @@ Function|Return Type|Description|Example
 `ascii(string)`|`int`|ASCII code of the first character of the argument. For UTF8 returns the Unicode code point of the character.|`ascii('x')` → `120`
 `btrim(string text , characters text)`|`text`|Remove the longest string consisting only of characters in `characters` (a space by default) from the start and end of `string`.|`btrim('xyxtrimyyx', 'xyz')` → `'trim'`
 `chr(int)`|`text`|Character with the given code. For UTF8 the argument is treated as a Unicode code point. The NULL (0) character is not allowed because text data types cannot store such bytes.|`chr(65)` → `'A'`
-`concat(str "any" [, str "any" [, ...] ])`|`text`|Concatenate the text representations of all the arguments. NULL arguments are ignored.|`concat('abcde', 2, NULL, 22)` → `abcde222`
+`concat(str "any" [, str "any" [, ...] ])`|`text`|Concatenate the text representations of all the arguments. NULL arguments are ignored, in contrast to <code>&#124;&#124;</code>.|`concat('abcde', 2, NULL, 22)` → `abcde222`
 `decode(string text, format text)`|`bytea`|Decode binary data from textual representation in `string`. Options for `format` are same as in `encode`.|`decode('MTIzAAE=', 'base64')` → `\x3132330001`
 `encode(data bytea, format text)`|`text`|Encode binary data into a textual representation. Supported formats are: `base64`, `hex`, `escape`. `escape` converts zero bytes and high-bit-set bytes to octal sequences (`\``<nnn>`) and doubles backslashes.|`encode('123\000\001', 'base64')` → `MTIzAAE=`
 `initcap(string)`|`text`|Convert the first letter of each word to upper case and the rest to lower case. Words are sequences of alphanumeric characters separated by non-alphanumeric characters.|`initcap('hi THOMAS')` → `'Hi Thomas'`

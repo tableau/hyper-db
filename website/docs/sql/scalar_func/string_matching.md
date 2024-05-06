@@ -89,6 +89,21 @@ Some examples:
     'abc' ~ '^a'     → true
     'abc' ~ '(b|d)'  → true
     'abc' ~ '^(b|c)' → false
+    
+## Regular Expression Functions {#regex-functions}
+
+The `regexp_replace` function provides substitution of new text for substrings that match POSIX regular expression patterns. It has the syntax `regexp_replace(source, pattern, replacement[, flags ])`. The `source` string is returned unchanged if there is no match to the pattern. If there is a match, the `source` string is returned with the replacement string substituted for the matching substring. 
+
+The replacement string can contain `\N`, where `N` is `1` through `9`, to indicate that the source substring matching the `N`'th parenthesized subexpression of the pattern should be inserted. Write `\\` if you need to put a literal backslash in the replacement text. 
+
+`pattern` is searched from the beginning of the string. By default, only the first match of the pattern is replaced. If the `g` flag is given, then all matches at or after the start position are replaced. The `i` flag enables case-insensitive matching. Flags can be combined in a single string.
+
+Some examples:
+
+    regexp_replace('foobarbaz', 'b..', 'X') → 'fooXbaz'
+    regexp_replace('foobarbaz', 'b..', 'X', 'g') → 'fooXX'
+    regexp_replace('foobarbaz', 'b(..)', 'X\1Y', 'g') → 'fooXarYXazY'
+    regexp_replace('A PostgreSQL function', 'a|e|i|o|u', 'X', 'gi') → 'X PXstgrXSQL fXnctXXn'
 
 ## Regular Expression Syntax {#regex-syntax}
 

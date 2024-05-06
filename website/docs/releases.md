@@ -39,6 +39,7 @@ TODO: Update release number (#TODO) in database version [database version 4](hyp
   * Introduced new [database file format version 4](hyper-api/hyper_process#version-4) to support reading and persisting the new 32-bit floats.
   * A `CAST(… AS double precision)` is needed to store such columns in older file formats.
 * Documented the new and improved [database file format version 3](hyper-api/hyper_process#version-3) that was introduced in version 0.0.16123. The new format supports 128-bit numerics. Refer to [Hyper Database Settings](/docs/hyper-api/hyper_process#default_database_version) for more information.
+* Documented the [regexp_replace](sql/scalar_func/string_matching#regex-functions) function which provides substitution of new text for substrings based on POSIX regular expressions.
 
 :::warning
 Queries using `REAL`, `FLOAT4`, or `FLOAT(p)` with `p <= 24` are now treated as 32-bit floating points.

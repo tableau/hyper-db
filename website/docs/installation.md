@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 import { Link } from "react-router-dom";
 ```
 
-Hyper API is available for Python, C++, Java and .NET supporting Windows, Mac and Linux each.
+Hyper API is available for Python, C++ and Java supporting Windows, Mac and Linux each.
 Depending on the language, the installation can be complex.
 This page contains the detailed requirements and installation instructions for all languages.
 

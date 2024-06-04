@@ -275,7 +275,7 @@ To create a new Hyper database file with this version, set
 
 :::note
 The database file format version `4` will be supported
-in a not-yet-determined future version of Tableau.
+by Tableau Desktop/Server/Prep 2024.3 and never product versions.
 :::
 
 <!-- ### Experimental Settings {#experimentalsettings}

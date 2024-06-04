@@ -26,13 +26,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-### Upcoming Release
-
-!!!
-
-TODO: Update release number (#TODO) in database version [database version 4](hyper-api/hyper_process#version-4) when doing this release!!!
-
-!!!
+### 0.0.19484 [June 6, 2024]
 
 * Introduced a new 32-bit floating point data type for `REAL`.
   * Previously, `REAL` was internally mapped to 64-bit `DOUBLE PRECISION`.

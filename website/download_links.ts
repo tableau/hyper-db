@@ -1,33 +1,18 @@
-import https from 'https';
-import fs from 'fs';
 import { config } from './src/config';
+import { spawn } from 'child_process';
 
 function downloadFile(targetPath: string, url: string) {
-    console.log(`Downloading ${url}`);
-    return new Promise<void>(( resolve, reject ) => {
-        const file = fs.createWriteStream(targetPath);
-        const request = https.get(url, function(response) {
-            response.pipe(file);
-    
-            // after download completed close filestream
-            file.on("finish", () => {
-                file.close();
-                console.log("Download Completed");
-                resolve();
-            });
-            file.on('error', (e)=> {
-                file.close();
-                reject(e);
-            });
-        });
-    });
+    const cmd = `curl --output ${targetPath} ${url}`
+    console.log(`Downloading ${url} to ${targetPath}`);
+    console.log(cmd)
+    spawn(cmd, [], { shell: true, stdio: 'inherit' })
 }
 
 async function downloadArtifact(artifactName: string) {
     const url = config.download[artifactName];
     if(!url) throw `Unknown artifact ${artifactName}`
     const fileSuffix = url.split(".").slice(-1);
-    await downloadFile(artifactName + "." + fileSuffix, url)
+    downloadFile(artifactName + "." + fileSuffix, url)
 }
 
 async function doDownloads() {

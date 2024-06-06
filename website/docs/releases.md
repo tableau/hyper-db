@@ -24,6 +24,10 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+### Upcoming Release
+
+
+
 ### 0.0.19484 [June 6, 2024]
 
 * Introduced a new 32-bit floating point data type for `REAL`.

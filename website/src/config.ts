@@ -1,4 +1,4 @@
-const version_long = '0.0.18825.rd90b6d69';
+const version_long = '0.0.19484.rdb1797f2';
 const version_short = version_long.substr(0, version_long.lastIndexOf('.'));
 
 const downloadBaseUrl = 'https://downloads.tableau.com/tssoftware/';
@@ -13,7 +13,11 @@ export const config = {
         macos_cxx: `${downloadBaseUrl}/tableauhyperapi-cxx-macos-x86_64-release-main.${version_long}.zip`,
         macos_java: `${downloadBaseUrl}/tableauhyperapi-java-macos-x86_64-release-main.${version_long}.zip`,
 
-        linux_py: `${downloadBaseUrl}/tableauhyperapi-${version_short}-py3-none-manylinux2014_x86_64.whl`,
+        macos_arm_py: `${downloadBaseUrl}/tableauhyperapi-${version_short}-py3-none-macosx_13_0_arm64.whl`,
+        macos_arm_cxx: `${downloadBaseUrl}/tableauhyperapi-cxx-macos-arm64-release-main.${version_long}.zip`,
+        macos_arm_java: `${downloadBaseUrl}/tableauhyperapi-java-macos-arm64-release-main.${version_long}.zip`,
+
+        linux_py: `${downloadBaseUrl}/tableauhyperapi-${version_short}-py3-none-macosx_13_0_arm64.whl`,
         linux_cxx: `${downloadBaseUrl}/tableauhyperapi-cxx-linux-x86_64-release-main.${version_long}.zip`,
         linux_java: `${downloadBaseUrl}/tableauhyperapi-java-linux-x86_64-release-main.${version_long}.zip`,
 

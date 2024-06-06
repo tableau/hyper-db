@@ -52,6 +52,10 @@ jobs:
         working-directory: main/website
         run: yarn install --frozen-lockfile
 
+      - name: Install dependencies (upcoming)
+        working-directory: upcoming/website
+        run: yarn install --frozen-lockfile
+
       - name: Download language docs
         working-directory: main/website
         run: yarn ts-node download_links.ts docs_py docs_cxx docs_java
@@ -62,10 +66,6 @@ jobs:
         env:
           GITHUB_ORIGIN: ${{ steps.setup-pages.outputs.origin }}
           GITHUB_BASE_PATH: ${{ steps.setup-pages.outputs.base_path }}
-
-      - name: Install dependencies (upcoming)
-        working-directory: upcoming/website
-        run: yarn install --frozen-lockfile
 
       - name: Build webpage for `upcoming` branch
         working-directory: upcoming/website

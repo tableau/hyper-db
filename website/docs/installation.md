@@ -17,22 +17,17 @@ This page contains the detailed requirements and installation instructions for a
 
 ## Hardware requirements
 
-The Hyper API only supports 64-bit platforms. 
-It has the following minimum hardware requirements:
+The Hyper API only supports 64-bit platforms. It has the following minimum hardware requirements:
 
-- Intel Nehalem or AMD Bulldozer processor or newer
+- Intel Nehalem, Apple Silicon or AMD Bulldozer processor or newer
 - 2 GB memory
 - 1.5 GB minimum free disk space
 
-```mdx-code-block
-import { AppleSiliconWorkarounds } from "@site/src/components/AppleSiliconWorkarounds.tsx";
-
-<AppleSiliconWorkarounds />
-```
 
 ## Supported platforms
 
-- macOS 10.13 or newer
+- macOS 10.13 or newer (for Intel)
+- macOS 13.0 or newer (for Apple Silicon)
 - Microsoft Windows 8 or newer (64-bit)
 - Microsoft Windows Server 2016, 2012, 2012 R2, 2008 R2, 2019
 - Ubuntu 18.04 LTS, 20.04 LTS and 22.04 LTS

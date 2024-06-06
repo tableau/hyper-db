@@ -12,10 +12,8 @@ import {config} from '@site/src/config';
 
 ```mdx-code-block
 import {DownloadPicker} from '@site/src/components/DownloadPicker'
-import { AppleSiliconWorkarounds } from "@site/src/components/AppleSiliconWorkarounds.tsx";
 
 <DownloadPicker />
-<AppleSiliconWorkarounds />
 ```
 
 ## Release Notes
@@ -34,12 +32,15 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
   * A `CAST(… AS double precision)` is needed to store such columns in older file formats.
 * Documented the new and improved [database file format version 3](hyper-api/hyper_process#version-3) that was introduced in version 0.0.16123. The new format supports 128-bit numerics. Refer to [Hyper Database Settings](/docs/hyper-api/hyper_process#default_database_version) for more information.
 * Documented the [regexp_replace](sql/scalar_func/string_matching#regex-functions) function which provides substitution of new text for substrings based on POSIX regular expressions.
+* Added native support for Apple Silicon processors (aarch64) for macOS 13.0 or newer
 
 :::warning
 Queries using `REAL`, `FLOAT4`, or `FLOAT(p)` with `p <= 24` are now treated as 32-bit floating points.
 This can lead to different results due to the reduced precision of 32-bit floating points.
 To preserve the old behavior, you need to use the types `DOUBLE PRECISION`, `FLOAT8`, or `FLOAT(p)` with `p >= 25`. These continue to be treated as 64-bit floating points.
 :::
+
+
 
 ### 0.0.18825 [March 6, 2024]
 

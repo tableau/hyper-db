@@ -41,13 +41,22 @@ export function DownloadPicker() {
             >
                 <ul>
                     <li>
-                        <a href={config.download.macos_py}>Python .whl (macOS)</a>
+                        <a href={config.download.macos_py}>Python .whl (macOS x64)</a>
                     </li>
                     <li>
-                        <a href={config.download.macos_cxx}>C++ (macOS)</a>
+                        <a href={config.download.macos_arm_py}>Python .whl (macOS ARM)</a>
                     </li>
                     <li>
-                        <a href={config.download.macos_java}>Java (macOS)</a>
+                        <a href={config.download.macos_cxx}>C++ (macOS x64)</a>
+                    </li>
+                    <li>
+                        <a href={config.download.macos_arm_cxx}>C++ (macOS ARM)</a>
+                    </li>
+                    <li>
+                        <a href={config.download.macos_java}>Java (macOS x64)</a>
+                    </li>
+                    <li>
+                        <a href={config.download.macos_arm_java}>Java (macOS ARM)</a>
                     </li>
                 </ul>
             </TabItem>

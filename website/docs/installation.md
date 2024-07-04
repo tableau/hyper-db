@@ -15,6 +15,14 @@ Hyper API is available for Python, C++ and Java supporting Windows, Mac and Linu
 Depending on the language, the installation can be complex.
 This page contains the detailed requirements and installation instructions for all languages.
 
+## License
+
+The Hyper API packages are released under the Apache 2.0 License.
+The exact license text can be found inside the packages, after unzipping.
+The documentation is licensed under the MIT License.
+The [source code of the documentation](https://github.com/tableau/hyper-db) can be found on GitHub.
+
+
 ## Hardware requirements
 
 The Hyper API only supports 64-bit platforms. It has the following minimum hardware requirements:

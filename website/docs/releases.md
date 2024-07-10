@@ -26,6 +26,9 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ### Upcoming Release
 
+* Update Hyper's collation tables from CLDR 71 to CLDR 74. Besides corrections this also adds new collations to Hyper.
+* Update Unicode support from Unicode 14.0 to 15.1
+
 ### 0.0.19691 [July 4, 2024]
 
 * Hyper API is now available under the Apache 2.0 license.

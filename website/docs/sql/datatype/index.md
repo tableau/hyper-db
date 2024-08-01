@@ -1,10 +1,15 @@
 # Data Types
 
-Hyper has a rich set of native data types available to users.
+Hyper provides a rich set of native data types.
 
-The table below shows all the built-in general-purpose
-data types. Most of the alternative names listed in the "Aliases" column
-are the names supported by Hyper for compatibility reasons with Postgres.
+Generally, Hyper's type system can be divided into two buckets: _atomic_ types which describe single values, and _composite_ types which describe collection of values.
+However, this distinction is made for educational puproses only; both kinds are equally supported, and there is no fundamental limitation applying to either category.
+
+## Atomic Types
+
+Atomic Types comprise fundamental, general-purpose data types.
+The following table lits all available atomic types.
+Most of the alternative names listed in the "Aliases" column are supported for compatibility with Postgres.
 
 Name|Aliases|Description
 ---|---|---
@@ -34,11 +39,23 @@ Persisting 32-bit floating point values (e.g., type `REAL`) requires at least [d
 Up until Hyper API release [0.0.18825](/docs/releases#0.0.18825) Hyper used 64-bit floating points for all float types (i.e., also for `REAL`).
 :::
 
+## Composite Types
 
-Links to detailed documentation:
+Composite types are collections of data in a single SQL value.
+They allow for dedicated [schema denormalization][schema-denormalization] which can be useful for specific domains, such as machine learning applications.
+
+### Array
+
+An array is an ordered sequence of values.
+Arrays in Hyper are strongly-typed and can be built from all supported atomic types.
+See [Array Type](./array.md) for more details.
+
+## Further Reading
 
 ```mdx-code-block
 import DocCardList from '@theme/DocCardList';
 
 <DocCardList />
 ```
+
+[schema-denormalization]: https://en.wikipedia.org/wiki/Denormalization

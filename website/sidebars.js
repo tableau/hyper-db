@@ -80,6 +80,7 @@ const sidebars = {
             "sql/datatype/numeric",
             "sql/datatype/datetime",
             "sql/datatype/binary",
+            "sql/datatype/array"
           ],
         },
         {
@@ -87,7 +88,6 @@ const sidebars = {
           label: 'Scalar Functions and Operators',
           link: { type: 'doc', id: 'sql/scalar_func/index' },
           items: [
-            "sql/scalar_func/arrays",
             "sql/scalar_func/conversion",
             "sql/scalar_func/comparison",
             "sql/scalar_func/subquery_comparison",
@@ -97,6 +97,7 @@ const sidebars = {
             "sql/scalar_func/string",
             "sql/scalar_func/string_matching",
             "sql/scalar_func/formatting",
+            "sql/scalar_func/arrays",
             "sql/scalar_func/datetime",
             "sql/scalar_func/geography",
           ],

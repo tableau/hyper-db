@@ -87,6 +87,7 @@ const sidebars = {
           label: 'Scalar Functions and Operators',
           link: { type: 'doc', id: 'sql/scalar_func/index' },
           items: [
+            "sql/scalar_func/arrays",
             "sql/scalar_func/conversion",
             "sql/scalar_func/comparison",
             "sql/scalar_func/subquery_comparison",

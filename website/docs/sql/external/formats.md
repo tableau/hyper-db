@@ -25,6 +25,9 @@ Format |`format` Option Value |Recognized File Extensions |Schema Inference? |De
 [Apache Iceberg](#external-format-iceberg) |`'iceberg'` |Specified path must point to table directory |Yes |The [Apache Iceberg format](https://iceberg.apache.org/); version 1 and 2 are supported; version 3 is not supported
 [Apache Arrow](#external-format-arrow) | `'arrowfile'`, `'arrowstream'` | `arrow`, `arrows` | No | The [Apache Arrow format](https://arrow.apache.org/) version 1.3 [with restrictions](#external-format-arrow)
 
+:::caution
+[Array Types](../datatype/array.md) can only be read from, but not written to, Apache Iceberg and Apache Parquet.
+:::
 ## Format Options
 
 Format options allow customizing the way the external format is read and

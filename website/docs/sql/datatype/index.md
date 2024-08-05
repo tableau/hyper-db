@@ -2,14 +2,14 @@
 
 Hyper provides a rich set of native data types.
 
-Generally, Hyper's type system can be divided into two buckets: _atomic_ types which describe single values, and _composite_ types which describe collection of values.
-However, this distinction is made for educational puproses only; both kinds are equally supported, and there is no fundamental limitation applying to either category.
+Generally, Hyper's type system can be divided into two buckets: _atomic_ types, which describe single values, and _composite_ types, which describe collections of values.
+However, this distinction is made for educational purposes only; both kinds are equally supported, and there is no fundamental limitation applying to either category.
 
 ## Atomic Types
 
 Atomic Types comprise fundamental, general-purpose data types.
-The following table lits all available atomic types.
-Most of the alternative names listed in the "Aliases" column are supported for compatibility with Postgres.
+The following table lists all available atomic types.
+Most of the alternative names listed in the "Aliases" column are supported for compatibility with PostgreSQL.
 
 Name|Aliases|Description
 ---|---|---
@@ -41,8 +41,8 @@ Up until Hyper API release [0.0.18825](/docs/releases#0.0.18825) Hyper used 64-b
 
 ## Composite Types
 
-Composite types are collections of data in a single SQL value.
-They allow for dedicated [schema denormalization][schema-denormalization] which can be useful for specific domains, such as machine learning applications.
+Composite types are collections of multiple data items in a single SQL value.
+They allow for dedicated [schema denormalization][schema-denormalization], which can be useful for specific domains, such as machine learning applications.
 
 ### Array
 

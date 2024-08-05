@@ -8,19 +8,11 @@ The element type is omitted when irrelevant.
 The following functions yield access to array elements or metadata.
 These operations are compatible with all (nullable and non-nullable) element types.
 
-:::note
-Some of the functions listed below may seem nonsensical, as they only return static values (e.g., `array_lower`). These functions exist mainly for compatibility with PostgreSQL, which allows multi-dimensional arrays with non-uniform indices.
-:::
-
 Signature|Description|Example
 ---|---|---
 <code>array(T)**[**int**]**</code> → `T`| Returns the n-th element of the array (1-indexed). | `(array[1,2,3])[1]` → `1`
 <code>array(T)**[**int**:**int**]**</code> → `T` | Returns the subarray within the given boundes (1-indexed, inclusive). |`(array[1,2,3])[2:3]` → `{2,3}` | 
 <code>**array_length(**array**)**</code> → `int` | Returns the length of the array. | `array_length(array[1,2,3])` → `3`
-<code>**array_dims(**array**)**</code> → `text` | Returns a textual description of the start and end index for each dimension of the array (always <code>[1:_length_]</code>).| `array_dims(array[1,2,3])` → `[1:3]`
-<code>**array_ndims(**array**)**</code> → `int`| Returns the number of dimensions in the array (always `1`).| `array_ndims(array[1,2,3])` → `1`
-<code>**array_lower(**array**)**</code> → `int` | Returns the index of the first element in the array (always `1`). |`array_lower(array[1,2,3])` → `1`
-<code>**array_upper(**array**)**</code> → `int` | Returns the index of the last element in the array (always equal to `array_length(array)`). |`array_upper(array[1,2,3])` → `3`
 <code>**array_to_string(**array, text [, text]**)**</code>| Converts the array into a textual representation, with the given element separator and (optional) null indicator. | `array_to_string(array[1,2,3], ';')` → `1;2;3`<br/>`array_to_string(array[3,2,1,null], '⏰', '🎉')` → `3⏰2⏰1⏰🎉` 
 
 ## Transformations
@@ -46,7 +38,7 @@ In the following table, signatures and examples are abbreviated for clarity. `ve
 
 |Signature|Description|Example
 |---|---|---|
-|<code>**dot_product(**vec, vec**)**</code> → `double precision`| Computes the conventional [dot product][dot-product]  between two vectors. | <code>dot_product({1.0, 2.0, 3.0}, {-1.0, 2.0, -3.0})</code> →  `-6.0`
+|<code>**dot_product(**vec, vec**)**</code> → `double precision`| Computes the conventional [dot product][dot-product] between two vectors. | <code>dot_product({1.0, 2.0, 3.0}, {-1.0, 2.0, -3.0})</code> →  `-6.0`
 |<code>**cosine_similarity(**vec, vec**)**</code> → `double precision`| Computes [cosine similarity][cosine-similarity]  between two vectors. | <code>cosine_similarity({1.0, 2.0, 3.0}, {-1.0, 2.0, -3.0})</code> →  `-0.42857...`
 
 [dot-product]: https://en.wikipedia.org/wiki/Dot_product

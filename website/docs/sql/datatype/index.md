@@ -7,7 +7,7 @@ However, this distinction is made for educational purposes only; both kinds are 
 
 ## Atomic Types
 
-Atomic Types comprise fundamental, general-purpose data types.
+Atomic types comprise fundamental, general-purpose data types.
 The following table lists all available atomic types.
 Most of the alternative names listed in the "Aliases" column are supported for compatibility with PostgreSQL.
 

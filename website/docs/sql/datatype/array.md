@@ -75,7 +75,7 @@ For more operations on array, see the section on [Array Functions](../scalar_fun
 
 While arrays are first-class citizens in Hyper, they are subject to some moderate limitations:
 
-- The size of an array is limited to 4,294,967,296 elements. The actual limit may be lower, depending on the sizes of its elements.
+- The size of an array is limited to 4,294,967,296 elements. The actual limit may be lower, depending on the size(s) and nullability of its elements.
 - Arrays cannot be nested.
 - Persisting arrays requires [file format version 4](../../hyper-api/hyper_process.md#version-4) or higher.
 

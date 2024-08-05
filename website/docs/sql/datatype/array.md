@@ -32,7 +32,7 @@ The following four options all represent different types in Hyper:
 Array types can be converted using the conventional [cast syntax](../scalar_func/conversion.md).
 
 :::info
-Non-nullable element types use less memory and enable optimizations for certain array operatios. Users are therefore advised to use the most "restrictive" element type possible, if the use semantics of the case allows it. 
+Non-nullable element types use less memory and enable optimizations for certain array operatios. Users are therefore advised to use the most "restrictive" element type possible, if the semantics of the use case allows it. 
 :::
 
 For nullable types, there exists an alternative shorthand bracket syntax of the form `type[]`. For example, `integer[]` and `array(integer)` reference the same type.

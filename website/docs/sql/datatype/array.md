@@ -73,11 +73,11 @@ For more operations on array, see the section on [Array Functions](../scalar_fun
 
 ## Limitations
 
-While arrays are first-class citizens in Hyper, they are subject to some moderate limitations:
+Arrays are subject to the following limitations:
 
 - The size of an array is limited to 4,294,967,296 elements. The actual limit may be lower, depending on the size(s) and nullability of its elements.
 - Arrays cannot be nested.
-- Arrays cannot be persisted.
+- Arrays cannot be used as column types in non-temporary tables.
 
 :::note
 Also, see the restrictions regarding array support in [external formats](../external/formats.md).

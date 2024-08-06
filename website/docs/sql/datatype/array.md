@@ -9,7 +9,6 @@ Generally, array values are denoted in curly braces with elements separated by c
 {"Lorem", "ipsum", "dolor", "sit", "amed"}
 ```
 
-
 ## Element Types and Nullability
 
 Hyper's arrays are _strongly typed_:
@@ -17,7 +16,7 @@ All elements must be of the same type – the array's _element type_.
 The element type is a defining part of the array's overall type, meaning that `array(integer)` is a different type than `array(boolean)` or `array(text)`.
 Arrays can be built from all [atomic types](./index.md) available in Hyper.
 
-Part of an array's element type is its nullability. 
+Part of an array's element type is the element's nullability. 
 For example, `array(smallint)` is different from `array(smallint not null)`.
 Note that this is independent of the nullability of the array itself.
 The following four options all represent different types in Hyper:

@@ -18,8 +18,8 @@ The element type is a defining part of the array's overall type, meaning that `a
 Arrays can be built from all [atomic types](./index.md) available in Hyper.
 
 Part of an array's element type is its nullability. 
-For example, `array(smallint)` is a different array type than `array(smallint not null)`.
-Note that this is independent of the array's overall nullability.
+For example, `array(smallint)` is different from `array(smallint not null)`.
+Note that this is independent of the nullability of the array itself.
 The following four options all represent different types in Hyper:
 
 |Type|array nullable?|elements nullable?| possible values|
@@ -37,7 +37,7 @@ Non-nullable element types use less memory and enable optimizations for certain 
 
 For nullable types, there exists an alternative shorthand bracket syntax of the form `type[]`. For example, `integer[]` and `array(integer)` reference the same type.
 
-Contrary to some common programming languages, the length (i.e., the number of elements) of an array in Hyper is not part of its type.
+The length (i.e., the number of elements) of an array in Hyper is not part of its type.
 While arrays inside a column must have the same element type, they can be of different length.
 
 ## Working with Arrays
@@ -66,7 +66,7 @@ Array elements can be retrieved using the conventional bracket-indexing notation
 ```
 
 :::info
-Arrays are always one-dimensional. Higher-dimensional objects (e.g., matrices) must be flattened explicitly.
+Arrays are one-dimensional. Higher-dimensional objects (e.g., matrices) must be flattened explicitly.
 :::
 
 For more operations on array, see the section on [Array Functions](../scalar_func/arrays.md).

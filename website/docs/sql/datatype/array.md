@@ -59,7 +59,7 @@ Note that using the constructor syntax, the array type will be inferred automati
 If the constructed array does not contain a `null` value, the element type will be inferred as non-nullable.
 
 
-Array elements can be retrieved using the conventional bracket-indexing notation. Indexes always start at one.
+Array elements can be retrieved using the conventional bracket-indexing notation. Indexes start at one.
 ```sql
 > select ('{1,1,2,3,5}'::integer[])[4]
 3

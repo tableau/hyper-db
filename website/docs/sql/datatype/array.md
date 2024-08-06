@@ -46,7 +46,6 @@ Casts across element types (e.g. from `array(integer not null)` to `array(bigint
 Non-nullable element types use less memory and enable optimizations for certain array operations. Users are therefore advised to use the most "restrictive" element type possible, given the use case at hand. 
 :::
 
-For nullable types, there exists an alternative shorthand bracket syntax of the form `type[]`. For example, `integer[]` and `array(integer)` reference the same type.
 
 The length (i.e., the number of elements) of an array in Hyper is not part of its type.
 While arrays inside a column must have the same element type, they can be of different length.

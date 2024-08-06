@@ -29,7 +29,18 @@ The following four options all represent different types in Hyper:
 |`array(integer) not null`|❌|✅|`{}`,`{1,2,3}`,`{1,2,null}`|
 |`array(integer not null) not null`|❌|❌|`{}`,`{1,2,3}`|
 
-Array types can be converted using the conventional [cast syntax](../scalar_func/conversion.md).
+The inner nullability of an array type can be changed by casting, using the conventional [cast syntax](../scalar_func/conversion.md):
+
+```sql
+# nullable to non-nullable
+> select ('{1,2,3}'::array(integer))::array(integer not null)
+# non-nullable to nullable
+> select ('{1,2,3}'::array(integer not null))::array(integer)
+```
+
+A cast from a non-nullable element type to its nullable counterpart always succeeds.
+The reverse direction (nullable to non-nullable) succeeds if the array does not contain `null` elements; otherwise the cast results in an error.
+Casts across element types (e.g. from `array(integer not null)` to `array(bigint not null)`) are currently not supported.
 
 :::info
 Non-nullable element types use less memory and enable optimizations for certain array operations. Users are therefore advised to use the most "restrictive" element type possible, given the use case at hand. 

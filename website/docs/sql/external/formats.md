@@ -26,7 +26,7 @@ Format |`format` Option Value |Recognized File Extensions |Schema Inference? |De
 [Apache Arrow](#external-format-arrow) | `'arrowfile'`, `'arrowstream'` | `arrow`, `arrows` | No | The [Apache Arrow format](https://arrow.apache.org/) version 1.3 [with restrictions](#external-format-arrow)
 
 :::caution
-[Array Types](../datatype/array.md) can only be read from, but not written to, Apache Iceberg and Apache Parquet.
+[Array types](../datatype/array.md) can only be read from, but not written to, Apache Iceberg and Apache Parquet.
 :::
 ## Format Options
 

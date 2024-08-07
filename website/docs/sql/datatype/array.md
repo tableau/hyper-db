@@ -78,7 +78,7 @@ Array elements can be retrieved using the conventional bracket-indexing notation
 Arrays are one-dimensional. Higher-dimensional objects (e.g., matrices) must be flattened explicitly.
 :::
 
-For more operations on array, see the section on [Array Functions](../scalar_func/arrays.md).
+For more operations on arrays, see the section on [Array Functions](../scalar_func/arrays.md).
 
 ## Limitations
 

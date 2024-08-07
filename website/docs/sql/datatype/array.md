@@ -84,7 +84,7 @@ For more operations on array, see the section on [Array Functions](../scalar_fun
 
 Arrays are subject to the following limitations:
 
-- The size of an array is limited to 4,294,967,296 elements. The actual limit may be lower, depending on the size(s) and nullability of its elements.
+- The size of an array is limited to 4GB. Hyper is not optimized for processing large arrays; performance may degrade before this limit is reached.
 - Arrays cannot be nested.
 - Arrays cannot be used as column types in non-temporary tables.
 

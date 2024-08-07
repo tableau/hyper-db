@@ -1,6 +1,6 @@
 # Array Functions
 
-This section describes functions and operators to inspect and transform `array` values. In the following, `array(T)` denotes an array type with element type `T`. 
+This section describes functions and operators to inspect and transform [`array` values](../datatype/array.md). In the following, `array(T)` denotes an array type with element type `T`. 
 The element type is omitted when irrelevant.
 
 

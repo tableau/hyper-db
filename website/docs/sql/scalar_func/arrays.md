@@ -49,5 +49,39 @@ If possible, prefer arrays with non-nullable element types (i.e., `array(real no
 This allows Hyper to skip element `null` checks, resulting in better performance.
 :::
 
+### Example Use Case: Vector Search
+
+With inner products, vector search can be implemented directly in Hyper.
+
+:::info
+[Vector search][vector-space-model] is a search technique to find semantically similar items (called _documents_) in a given corpus. 
+Each document is represented as an _embedding vector_ in a high-dimensional vector space, e.g. using word-count statistics or machine learning models.
+Two documents are considered similar if their embeddings are "close by" in the space &mdash; as measured by an inner product.
+:::
+
+For illustration, consider the problem of finding products similar to a search string in the product catalog of an e-commerce business.
+To simplify the example, let's assume that the product catalog is already loaded into a temporary table `products` with the following columns:
+
+ - `description_vec` (type: `array(real not null)`) a description of the product, reprsented as a suitable embedding vector
+ - `name` (type: `text`) the name of the product
+
+Further, let's assume that the search string has already been converted into a vector `{1.1, -0.2, 0.7, -0.3}`, using the same embedding model as the `description_vec` column.
+
+Retrieving the top five most-similar products can be expressed in SQL as follows:
+
+```sql
+select
+    name,
+    dot_product('{1.1, -0.2, 0.7, -0.3}'::array(real not null), description_vec) as score
+from products
+limit 5
+order by score descending
+```
+
+:::note
+The embedding vector in this example has been chosen as four-dimensional to keep the query readable; realistic applications likely use much higher dimensionalities.
+:::
+
 [dot-product]: https://en.wikipedia.org/wiki/Dot_product
 [cosine-similarity]: https://en.wikipedia.org/wiki/Cosine_similarity
+[vector-space-model]: https://en.wikipedia.org/wiki/Vector_space_model

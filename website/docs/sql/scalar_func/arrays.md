@@ -21,9 +21,9 @@ These operations are compatible with all (nullable and non-nullable) element typ
 
 Signature|Description|Example
 ---|---|---
-<code>**array_prepend(**T,array(T)**)**</code> → `array(T)`<br/>or<br/><code>T **\|\|** array(T)</code> → `array(T)`| Inserts a value at the front of the array.| `array_prepend(1, array[2,3,4])` → `array[1,2,3,4]` 
-<code>**array_append(**array(T), T**)**</code> → `array(T)`<br/>or<br/><code>array(T) **\|\|** T</code> → `array(T)`| Inserts a value at the end of the array.| `array_append(array[1,2,3], 4)` → `array[1,2,3,4]` 
-<code>**array_cat(**array(T), array(T)**)**</code> → `array(T)`<br/>or<br/><code>array(T) **\|\|** array(T)</code> → `array(T)`| Concatenates two arrays. | `array_cat(array[1,2], array[3,4])` → `array[1,2,3,4]`  
+<code>**array_prepend(**T,array(T)**)**</code> → `array(T)`<br/>or<br/><code>T **\|\|** array(T)</code> → `array(T)`| Inserts a value at the front of the array.<br/>If `null` is prepended to an array with non-nullable element type, the resulting element type is nullable. | `array_prepend(1, array[2,3,4])` → `array[1,2,3,4]`<br/>`array_prepend(null, [2,3,4])` → `array[null,2,3,4]` 
+<code>**array_append(**array(T), T**)**</code> → `array(T)`<br/>or<br/><code>array(T) **\|\|** T</code> → `array(T)`| Inserts a value at the end of the array.<br/>If `null` is appended to an array with non-nullable element type, the resulting element type is nullable. | `array_append(array[1,2,3], 4)` → `array[1,2,3,4]`<br/>`array_append(array[1,2,3], null)` → `array[1,2,3,null]` 
+<code>**array_cat(**array(T), array(T)**)**</code> → `array(T)`<br/>or<br/><code>array(T) **\|\|** array(T)</code> → `array(T)`| Concatenates two arrays.<br/>The resulting element type is non-nullable if and only if both input element types are non-nullable. | `array_cat(array[1,2], array[3,4])` → `array[1,2,3,4]`<br/>`array_cat(array[1,null], array[3,4])` → `array[1,null,3,4]`<br/>`array_cat(array[1,2], array[null,4])` → `array[1,2,null,4]`
 
 
 ## Inner Products

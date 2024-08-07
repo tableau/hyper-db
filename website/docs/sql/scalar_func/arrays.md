@@ -30,16 +30,24 @@ Signature|Description|Example
 Hyper offers high-performance implementations of common inner products in vector spaces. These functions operate on two input vectors (represented as arrays) and produce a scalar value of type `double precision`. 
 
 Contrary to other array operations, vector functions only apply to a certain set of arrays:
- - the element type must be `real not null` or `double precision not null`
- - both arrays must have the same element type
+ - the element type must be `real` or `double precision`
+ - both arrays must have the same element type (but may have different element nullability)
  - both arrays must have the same length
 
-In the following table, signatures and examples are abbreviated for clarity. `vec` denotes a suitable array type (i.e., `array(real not null)` or `array(double precision not null)`). It is implied that both array arguments have the same element type. Similarly, the `{1.0, 2.0, 3.0}` syntax in the example column represents a suitable array value (e.g., `'{1.0, 2.0, 3.0}'::array(real not null)`).
+If any of the input arrays contains a `null` element, or is itself `null`, the result of an inner product will be `null`.
+Passing arrays of different lengths or incompatible types will result in an error.
+
+In the following table, signatures and examples are abbreviated for clarity. `vec` denotes a suitable array type (i.e., `array(real)` or `array(double precision not null)`). It is implied that both array arguments have the same element type. Similarly, the `{1.0, 2.0, 3.0}` syntax in the example column represents a suitable array value (e.g., `'{1.0, 2.0, 3.0}'::array(real not null)`).
 
 |Signature|Description|Example
 |---|---|---|
-|<code>**dot_product(**vec, vec**)**</code> → `double precision`| Computes the conventional [dot product][dot-product] between two vectors. | <code>dot_product({1.0, 2.0, 3.0}, {-1.0, 2.0, -3.0})</code> →  `-6.0`
-|<code>**cosine_similarity(**vec, vec**)**</code> → `double precision`| Computes [cosine similarity][cosine-similarity]  between two vectors. | <code>cosine_similarity({1.0, 2.0, 3.0}, {-1.0, 2.0, -3.0})</code> →  `-0.42857...`
+|<code>**dot_product(**vec, vec**)**</code> → `double precision`| Computes the conventional [dot product][dot-product] between two vectors. | <code>dot_product({1.0, 2.0, 3.0}, {-1.0, 2.0, -3.0})</code> →  `-6.0`<br/><code>dot_product({1.0, null, 3.0}, {-1.0, 2.0, -3.0})</code> → `null`
+|<code>**cosine_similarity(**vec, vec**)**</code> → `double precision`| Computes [cosine similarity][cosine-similarity]  between two vectors. | <code>cosine_similarity({1.0, 2.0, 3.0}, {-1.0, 2.0, -3.0})</code> →  `-0.42857...`<br/><code>cosine_similarity({1.0, 2.0, 3.0}, {null, 2.0, -3.0})</code> →  `null`
+
+:::tip
+If possible, prefer arrays with non-nullable element types (i.e., `array(real not null)` or `array(double precision not null)`) when computing inner products.
+This allows Hyper to skip element `null` checks, resulting in better performance.
+:::
 
 [dot-product]: https://en.wikipedia.org/wiki/Dot_product
 [cosine-similarity]: https://en.wikipedia.org/wiki/Cosine_similarity

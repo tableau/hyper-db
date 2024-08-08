@@ -24,8 +24,6 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-### Upcoming Release
-
 ### 0.0.19691 [July 4, 2024]
 
 * Hyper API is now available under the Apache 2.0 license.

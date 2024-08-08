@@ -6,12 +6,12 @@
 
 ```sql_template
 EXPLAIN (<option>, ...) <query>;
-EXPLAIN [VERBOSE] [ANALYZE] <query>;
 ```
 
 where the available `<option>`s are
 
 ```sql_template
+FORMAT <format>
 VERBOSE
 ANALYZE
 OPTIMIZERSTEPS
@@ -26,23 +26,25 @@ Don't expect query plans (neither their formatting nor their semantics) to be st
 :::
 
 
-This command retrieves the query plan which Hyper uses to execute the given query.
+The `EXPLAIN` command retrieves information about the query plan which Hyper uses to execute the given query.
 The query plan describes which tables are accessed in which order, how they are joined together, which expressions are evaluated and all other details of query execution.
 
-One or more `<option>`s can be provided to change which information is displayed and how it is displayed.
-In general, options are provided within parentheses after the `EXPLAIN` keyword.
-In addition, `VERBOSE` and `ANALYZE` can also be provided without parentheses.
-
-There are three types of plans which can be queried:
+`EXPLAIN` can provide the following types of information:
 
 * The *optimized plan*. By default, if no other behavior is requested through an `<option>`, `EXPLAIN` will display the optimized plan.
 * The *optimizer steps*. If the `OPTIMIZERSTEPS` option is present, Hyper will output the plan at multiple intermediate steps during query optimization, e.g., before and after join reordering.
 * The *analyzed plan*. When invoked with the `ANALYZE` option, Hyper will actually execute the query, including all side effects (inserted/deleted tuples, etc.). Instead of the normal query results, you will however receive the query plan of the query, annotated with runtime statistics such as the number of tuples processed by each operator.
+* The *result schema*. With the `FORMAT SCHEMA`, only the list of result columns and their types are returned. The actual query plan is not printed.
 
-By default, plans are formatted as ASCII art.
-The ASCII art is useful for quickly grasping the overall query structure, but is lacking details, such as the exact join conditions.
-Those details are present in the JSON output format, which can be requested using the `VERBOSE` option. 
-The `VERBOSE` option can be combined with any other choice.
+The `FORMAT` option determines the formatting of the returned data. The availble options are:
+* `TEXT_TREE`: a tree-like representation of the query plan as ASCII art. To be viewed using a monospaced font.
+* `JSON`: output the plan as pretty-printed JSON.
+* `TERSE_JSON`: output the plan as JSON without pretty-printing.
+* `SCHEMA`: only print a list of the returned columns. Don't actually print information about the joins, table scans, etc.
+
+By default, plans are formatted as ASCII art trees.
+The ASCII art representation is useful for quickly grasping the overall query structure, but is lacking details, such as the exact join conditions.
+Those details are present in the JSON output format, which can be requested using the `FORMAT JSON` option.
 To visualize a JSON query plan and interactively explore it, copy-paste the plan into [Hyper's Plan Viewer](https://tableau.github.io/query-graphs/).
 
 ## Examples
@@ -71,10 +73,10 @@ WHERE l_shipdate >= date '1994-01-01'
     AND l_quantity < 24
 ```
 
-If we want to view the plan in a graphical plan viewer, or want to see additional details in the plan, we can use the `VERBOSE` option and then copy-paste the resulting JSON into [Hyper's Plan Viewer](https://tableau.github.io/query-graphs/).
+If we want to view the plan in a graphical plan viewer, or want to see additional details in the plan, we can use the `FORMAT JSON` option and then copy-paste the resulting JSON into [Hyper's Plan Viewer](https://tableau.github.io/query-graphs/).
 
 ```
-EXPLAIN (VERBOSE, OPTIMIZERSTEPS)
+EXPLAIN (FORMAT JSON, OPTIMIZERSTEPS)
 SELECT sum(l_extendedprice * l_discount) as revenue
 FROM lineitem
 WHERE l_shipdate >= date '1994-01-01'

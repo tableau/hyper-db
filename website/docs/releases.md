@@ -26,6 +26,8 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ### Upcoming Release
 
+* Introduced new [`array` SQL datatypes](./sql/datatype/array.md).
+
 ### 0.0.19691 [July 4, 2024]
 
 * Hyper API is now available under the Apache 2.0 license.

@@ -24,14 +24,14 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-### Upcoming Release
+### 0.0.20027 [Aug 19 2024]
 
-* Update Hyper's collation tables from CLDR 71 to CLDR 74. Besides corrections this also adds new collations to Hyper.
-* Update Unicode support from Unicode 14.0 to 15.1
+* Introduced new [`array` SQL datatypes](./sql/datatype/array.md).
 * The options available for [EXPLAIN](sql/command/explain) changed:
   * `EXPLAIN VERBOSE` was removed in favor of `EXPLAIN (FORMAT JSON)`
   * There are two new output formats `EXPLAIN (FORMAT TERSE_JSON)` and `EXPLAIN (FORMAT SCHEMA)`
-* Introduced new [`array` SQL datatypes](./sql/datatype/array.md).
+* Update Unicode support from Unicode 14.0 to 15.1
+* Update Hyper's collation tables from CLDR 71 to CLDR 74. Besides corrections this also adds new collations to Hyper.
 
 ### 0.0.19691 [July 4, 2024]
 

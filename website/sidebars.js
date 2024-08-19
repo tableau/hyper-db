@@ -115,6 +115,7 @@ const sidebars = {
             "sql/external/location",
           ],
         },
+        "sql/error_codes",
       ],
     },
     "faq",

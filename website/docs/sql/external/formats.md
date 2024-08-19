@@ -225,8 +225,8 @@ strictly one line per table row like text-format files.
 :::
 
 Besides the [common format options](#common-format-options) and the
-[text format options](#text-format-options), the CSV format supports the
-following options:
+options for [text format](#external-format-text), the CSV format
+supports the following options:
 
 `HEADER => boolean`
 

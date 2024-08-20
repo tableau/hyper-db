@@ -24,6 +24,8 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+### Upcoming release
+
 ### 0.0.20027 [Aug 19 2024]
 
 * Introduced new [`array` SQL datatypes](./sql/datatype/array.md).

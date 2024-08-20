@@ -14,13 +14,13 @@ CASE
     WHEN <condition> THEN <result>
     [WHEN ...]
     [ELSE <result>]
-END CASE
+END
 
 CASE <expression>
     WHEN <value> THEN <result>
     [WHEN ...]
     [ELSE <result>]
-END CASE
+END
 ```
 
 In the first variant, each `condition` is an expression that returns

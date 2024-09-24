@@ -35,6 +35,7 @@ Function|Return Type|Description|Example
 `concat(str "any" [, str "any" [, ...] ])`|`text`|Concatenate the text representations of all the arguments. NULL arguments are ignored, in contrast to <code>&#124;&#124;</code>.|`concat('abcde', 2, NULL, 22)` → `abcde222`
 `decode(string text, format text)`|`bytea`|Decode binary data from textual representation in `string`. Options for `format` are same as in `encode`.|`decode('MTIzAAE=', 'base64')` → `\x3132330001`
 `encode(data bytea, format text)`|`text`|Encode binary data into a textual representation. Supported formats are: `base64`, `hex`, `escape`. `escape` converts zero bytes and high-bit-set bytes to octal sequences (`\``<nnn>`) and doubles backslashes.|`encode('123\000\001', 'base64')` → `MTIzAAE=`
+`ends_with(string text, suffix text)`|`boolean`|Return true if string ends with suffix.|`ends_with('alphabet', 'bet')` → `t`
 `initcap(string)`|`text`|Convert the first letter of each word to upper case and the rest to lower case. Words are sequences of alphanumeric characters separated by non-alphanumeric characters.|`initcap('hi THOMAS')` → `'Hi Thomas'`
 `left(str text, n int)`|`text`|Return first `<n>` characters in the string. When `<n>` is negative, return all but last <code>&#124;&#60;n&#62;&#124;</code> characters.|`left('abcde', 2)` → `'ab'`
 `length(string)`|`int`|Number of characters in `string`|`length('jose')` → `4`
@@ -49,7 +50,8 @@ Function|Return Type|Description|Example
 `right(str text, n int)`|`text`|Return last `<n>` characters in the string. When `<n>` is negative, return all but first <code>&#124;&#60;n&#62;&#124;</code> characters.|`right('abcde', 2)` → `'de'`
 `rpad(string text, length int , fill text)`|`text`|Fill up the `string` to length `length` by appending the characters `fill` (a space by default). If the `string` is already longer than `length` then it is truncated.|`rpad('hi', 5, 'xy')` → `'hixyx'`
 `rtrim(string text , characters text)`|`text`|Remove the longest string containing only characters from `characters` (a space by default) from the end of `string`.|`rtrim('testxxzx', 'xyz')` → `'test'`
-`split_part(string text, delimiter text, field int)`|`text`|Split `string` on `delimiter` and return the given field (counting from one).|`split_part('abc~@~def~@~ghi', '~@~', 2)` → `'def'`
+`split_part(string text, delimiter text, field int)`|`text`|Split `string` on `delimiter` and return the given field (counting from one, can be a negative value but not zero).|`split_part('abc~@~def~@~ghi', '~@~', 2)` → `'def'`
+`starts_with(string text, prefix text)`|`boolean`|Return true if string starts with prefix.|`starts_with('alphabet', 'alph')` → `t`
 `strpos(string, substring)`|`int`|Location of specified substring (same as `position(substring in string)`, but note the reversed argument order).|`strpos('high', 'ig')` → `2`
 `substr(string, from , count)`|`text`|Extract substring (same as `substring(string from from for count)`).|`substr('alphabet', 3, 2)` → `'ph'`
 `to_hex(number int or bigint)`|`text`|Convert `number` to its equivalent hexadecimal representation.|`to_hex(2147483647)` → `'7fffffff'`

@@ -35,7 +35,7 @@ Function|Return Type|Description|Example
 `concat(str "any" [, str "any" [, ...] ])`|`text`|Concatenate the text representations of all the arguments. NULL arguments are ignored, in contrast to <code>&#124;&#124;</code>.|`concat('abcde', 2, NULL, 22)` → `abcde222`
 `decode(string text, format text)`|`bytea`|Decode binary data from textual representation in `string`. Options for `format` are same as in `encode`.|`decode('MTIzAAE=', 'base64')` → `\x3132330001`
 `encode(data bytea, format text)`|`text`|Encode binary data into a textual representation. Supported formats are: `base64`, `hex`, `escape`. `escape` converts zero bytes and high-bit-set bytes to octal sequences (`\``<nnn>`) and doubles backslashes.|`encode('123\000\001', 'base64')` → `MTIzAAE=`
-`ends_with(string text, suffix text)`|`boolean`|Return true if string ends with suffix.|`ends_with('alphabet', 'bet')` → `t`
+`ends_with(string text, suffix text)`|`boolean`|Return true if `string` ends with `suffix`.|`ends_with('alphabet', 'bet')` → `t`
 `initcap(string)`|`text`|Convert the first letter of each word to upper case and the rest to lower case. Words are sequences of alphanumeric characters separated by non-alphanumeric characters.|`initcap('hi THOMAS')` → `'Hi Thomas'`
 `left(str text, n int)`|`text`|Return first `<n>` characters in the string. When `<n>` is negative, return all but last <code>&#124;&#60;n&#62;&#124;</code> characters.|`left('abcde', 2)` → `'ab'`
 `length(string)`|`int`|Number of characters in `string`|`length('jose')` → `4`

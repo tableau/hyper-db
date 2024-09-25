@@ -51,7 +51,7 @@ Function|Return Type|Description|Example
 `rpad(string text, length int , fill text)`|`text`|Fill up the `string` to length `length` by appending the characters `fill` (a space by default). If the `string` is already longer than `length` then it is truncated.|`rpad('hi', 5, 'xy')` → `'hixyx'`
 `rtrim(string text , characters text)`|`text`|Remove the longest string containing only characters from `characters` (a space by default) from the end of `string`.|`rtrim('testxxzx', 'xyz')` → `'test'`
 `split_part(string text, delimiter text, field int)`|`text`|Split `string` on `delimiter` and return the given field (counting from one). When `n` is negative, returns the `|n|`-th-from-last field. |`split_part('abc~@~def~@~ghi', '~@~', 2)` → `'def'`
-`starts_with(string text, prefix text)`|`boolean`|Return true if string starts with prefix.|`starts_with('alphabet', 'alph')` → `t`
+`starts_with(string text, prefix text)`|`boolean`|Return true if `string` starts with `prefix`.|`starts_with('alphabet', 'alph')` → `t`
 `strpos(string, substring)`|`int`|Location of specified substring (same as `position(substring in string)`, but note the reversed argument order).|`strpos('high', 'ig')` → `2`
 `substr(string, from , count)`|`text`|Extract substring (same as `substring(string from from for count)`).|`substr('alphabet', 3, 2)` → `'ph'`
 `to_hex(number int or bigint)`|`text`|Convert `number` to its equivalent hexadecimal representation.|`to_hex(2147483647)` → `'7fffffff'`

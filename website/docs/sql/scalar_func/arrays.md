@@ -13,7 +13,10 @@ Signature|Description|Example
 <code>array(T)**[**int**]**</code> → `T`| Returns the n-th element of the array (1-indexed). | `(array[1,2,3])[1]` → `1`
 <code>array(T)**[**int**:**int**]**</code> → `T` | Returns the subarray within the given boundes (1-indexed, inclusive). |`(array[1,2,3])[2:3]` → `{2,3}` | 
 <code>**array_length(**array**)**</code> → `int` | Returns the length of the array. | `array_length(array[1,2,3])` → `3`
-<code>**array_to_string(**array, text [, text]**)**</code>| Converts the array into a textual representation, with the given element separator and (optional) null indicator. | `array_to_string(array[1,2,3], ';')` → `1;2;3`<br/>`array_to_string(array[3,2,1,null], '⏰', '🎉')` → `3⏰2⏰1⏰🎉` 
+<code>**array_to_string(**array, text [, text]**)**</code>| Converts the array into a textual representation, with the given element separator and (optional) null indicator. | `array_to_string(array[1,2,3], ';')` → `1;2;3`<br/>`array_to_string(array[3,2,1,null], '⏰', '🎉')` → `3⏰2⏰1⏰🎉`
+<code>**array_contains(**array, value**)**</code>| Checks if a given value is contained within the array. | `array_contains(array[1,3,4], 3)` → `true`<br/>`array_contains(array[1,3,4], 2)` → `false`
+<code>**array_position(**array, value**)**</code>| Returns the index of the first occurrence of `value` inside `array`. Comparisons are done using `IS NOT DISTINCT FROM` semantics, so it is possible to search for `NULL`. Returns `NULL` if the element is not found. | `array_position(array[1,3,4,3], 3)` → `2`<br/>`array_contains(array[1,3,4,3], 2)` → `NULL`
+<code>**array_positions(**array, value**)**</code>| Returns the an array containing the indices of all occurrences of `value` inside `array`. Comparisons are done using `IS NOT DISTINCT FROM` semantics, so it is possible to search for `NULL`. `NULL` is returned only if the array is `NULL`; if the value is not found in the array, an empty array is returned. | `array_positions(array[1,3,4,3], 3)` → `[2,4]`<br/>`array_contains(array[1,3,4,3], 2)` → `[]`
 
 ## Transformations
 The following functions produce new array values from existing ones.

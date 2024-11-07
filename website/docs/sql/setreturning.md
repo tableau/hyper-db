@@ -4,6 +4,89 @@ This section describes functions that possibly return more than one row.
 Set returning functions are usually used in SQL queries in the
 [FROM clause](command/select#from).
 
+## `generate_series`
+
+Generate a series of values, from `start` to `stop` with a given `step` size
+
+```sql_template
+`generate_series(<start>, <stop> [, <step>])`
+```
+
+If `step` is not specified, the default step size of `1` will be used.
+When `step` is positive, zero rows are returned if `start` is greater
+than `stop`. Conversely, when `step` is negative, zero rows are returned
+if `start` is less than `stop`. Zero rows are also returned for `NULL`
+inputs. It is an error for `step` to be zero. Some examples follow:
+
+    SELECT * FROM generate_series(2,4);
+    generate_series
+    -----------------
+    2
+    3
+    4
+    (3 rows)
+
+    SELECT * FROM generate_series(5,1,-2);
+    generate_series
+    -----------------
+    5
+    3
+    1
+    (3 rows)
+
+    SELECT * FROM generate_series(4,3);
+    generate_series
+    -----------------
+    (0 rows)
+
+    SELECT generate_series(1.1, 4, 1.3);
+    generate_series
+    -----------------
+    1.1
+    2.4
+    3.7
+    (3 rows)
+
+    -- this example relies on the date-plus-integer operator
+    SELECT current_date + s.a AS dates FROM generate_series(0,14,7) AS s(a);
+    dates
+    ------------
+    2004-02-05
+    2004-02-12
+    2004-02-19
+    (3 rows)
+
+## `unnest` {#unnest}
+
+The `unnest` function expands the elements from an array:
+
+    SELECT * FROM unnest(ARRAY['Mon','Tue','Wed','Thu','Fri'])
+    unnest
+    -----------------
+    Mon
+    Tue
+    Wed
+    Thu
+    Fri
+    (5 rows)
+
+`unnest` can also be called with multiple array paramters (potentially of different data types). In this case, the arrays are expanded pairwise. If the arrays are not all the same length then the shorter ones are padded with NULLs.
+
+    SELECT * FROM unnest(
+        ARRAY['Mon','Tue','Wed','Thu','Fri'],
+        ARRAY[1,2,3,4,5,6,7]
+    ) AS days(name, nr);
+    name | nr
+    ------+----
+    Mon  |  1
+    Tue  |  2
+    Wed  |  3
+    Thu  |  4
+    Fri  |  5
+    NULL |  6
+    NULL |  7
+    (7 rows)
+
 ## `external` {#external}
 
 The `external` function reads data stored in an external file format
@@ -89,56 +172,3 @@ Same but with explicit Amazon S3 credentials and bucket region:
             region => 'us-east-1'
         )
     ) WHERE price > 100;
-
-## `generate_series`
-
-Generate a series of values, from `start` to `stop` with a given `step` size
-
-```sql_template
-`generate_series(<start>, <stop> [, <step>])`
-```
-
-If `step` is not specified, the default step size of `1` will be used.
-When `step` is positive, zero rows are returned if `start` is greater
-than `stop`. Conversely, when `step` is negative, zero rows are returned
-if `start` is less than `stop`. Zero rows are also returned for `NULL`
-inputs. It is an error for `step` to be zero. Some examples follow:
-
-    SELECT * FROM generate_series(2,4);
-    generate_series
-    -----------------
-    2
-    3
-    4
-    (3 rows)
-
-    SELECT * FROM generate_series(5,1,-2);
-    generate_series
-    -----------------
-    5
-    3
-    1
-    (3 rows)
-
-    SELECT * FROM generate_series(4,3);
-    generate_series
-    -----------------
-    (0 rows)
-
-    SELECT generate_series(1.1, 4, 1.3);
-    generate_series
-    -----------------
-    1.1
-    2.4
-    3.7
-    (3 rows)
-
-    -- this example relies on the date-plus-integer operator
-    SELECT current_date + s.a AS dates FROM generate_series(0,14,7) AS s(a);
-    dates
-    ------------
-    2004-02-05
-    2004-02-12
-    2004-02-19
-    (3 rows)
-       

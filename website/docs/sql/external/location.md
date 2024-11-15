@@ -74,6 +74,9 @@ recognizes all of the following Azure URL formats:
 * `https://account.dfs.core.windows.net/container/...`
 * `https://account.blob.core.windows.net/container/...`
 
+Hyper also allows you to enter the non-SSL version of the URLs (`http://` and `abfs://`),
+however it will always establish SSL encrypted connections.
+
 Hyper's Azure support is highly optimized by using techniques such as concurrent
 requests, request hedging and prefetching. For maximum performance, ensure that you
 have a high network bandwidth to Azure Blob Storage, e.g. by running HyperAPI directly

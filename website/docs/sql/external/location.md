@@ -76,7 +76,7 @@ recognizes all of the following Azure URL formats:
 
 Hyper's Azure support is highly optimized by using techniques such as concurrent
 requests, request hedging and prefetching. For maximum performance, ensure that you
-have a high network bandwidth to Azure Blobl Storage, e.g. by running HyperAPI directly
+have a high network bandwidth to Azure Blob Storage, e.g. by running HyperAPI directly
 on Microsoft Azure compute.
 
 ## Multiple files

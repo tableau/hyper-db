@@ -26,6 +26,8 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ###  Upcoming Release
 
+* Support for Microsoft Azure Blob Storage using `azure_location`
+
 ###  0.0.20746 [Nov 7 2024]
 
 * Support for `array_contains`, `array_position` and `array_positions` was added

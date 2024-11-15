@@ -9,6 +9,9 @@ s3_location('amazon_s3_uri'
     [, access_key_id => 'text', secret_access_key => 'text' [, session_token => 'text'] ]
     [, region => 'text']
 )
+azure_location('azure_blob_storage_uri'
+    [, sas_token => 'sas_token']
+)
 ARRAY[ <source_location> [, ...] ]
 ```
 
@@ -53,6 +56,28 @@ Hyper's read capabilities from Amazon S3 are highly optimized (using
 techniques such as concurrent requests, request hedging and
 prefetching). For maximum performance, ensure a high network bandwidth
 to Amazon S3, e.g., by running HyperAPI directly on an AWS EC2 instance.
+
+## Microsoft Azure Blob Storage
+
+```
+SELECT * FROM external(
+    azure_location(
+        'abfss://container@account.dfs.core.windows.net/products.parquet', sas_token => 'secret-sas-token'
+    )
+)
+```
+
+To access data stored on Microsoft Azure Blob Storage, you can use the
+`azure_location` syntax. Hyper supports the `DFS` and `BLOB` endpoints and
+recognizes all of the following Azure URL formats:
+* `abfss://container@account.dfs.core.windows.net/...`
+* `https://account.dfs.core.windows.net/container/...`
+* `https://account.blob.core.windows.net/container/...`
+
+Hyper's Azure support is highly optimized by using techniques such as concurrent
+requests, request hedging and prefetching. For maximum performance, ensure that you
+have a high network bandwidth to Azure Blobl Storage, e.g. by running HyperAPI directly
+on Microsoft Azure compute.
 
 ## Multiple files
 

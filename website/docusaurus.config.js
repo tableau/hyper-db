@@ -133,14 +133,28 @@ const getConfig = async () => {
               items: [
                 {
                 label: 'Legal',
-                href: 'https://www.tableau.com/en-us/legal',
+                href: 'https://www.salesforce.com/company/legal/',
                 },
+                {
+                  label: 'Terms of Service',
+                  href:  'https://www.salesforce.com/company/legal/sfdc-website-terms-of-service/',
+                  },
                 {
                   label: 'Privacy',
                   href: 'https://www.salesforce.com/company/privacy/'
-                }
-              ]
-          
+                },
+                {
+                  label: 'Responsible Disclosure',
+                  href:  'https://www.salesforce.com/company/legal/disclosure/',
+                },
+                {
+                  label: 'Trust',
+                  href:  'https://trust.salesforce.com/',
+                  }, 
+                  {
+                   html:  `<a href="#" data-ignore-geolocation="true" class="optanon-toggle-display" style="color:#FFFFFF">Cookie Preferences</a>`,
+                  }
+              ]       
             },
           ],
           copyright: `Copyright © ${new Date().getFullYear()} Salesforce, Inc. Built with Docusaurus.`,
@@ -167,10 +181,14 @@ const getConfig = async () => {
         [
           '@docusaurus/plugin-google-gtag',
           {
-            trackingID: 'UA-625217-51',
+            trackingID: '469571326',
             anonymizeIP: true,
           },
         ],
+      ],
+
+      clientModules: [
+        require.resolve('./_analytics.js'),
       ],
   };
 }

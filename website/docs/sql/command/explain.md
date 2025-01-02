@@ -12,7 +12,6 @@ where the available `<option>`s are
 
 ```sql_template
 FORMAT <format>
-VERBOSE
 ANALYZE
 OPTIMIZERSTEPS
 ```

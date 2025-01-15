@@ -24,7 +24,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-###  0.0.21178 [Jan 16 2024]
+###  0.0.21178 [Jan 16 2025]
 
 * Support for Microsoft Azure Blob Storage using [`azure_location`](./sql/external/location.md#microsoft-azure-blob-storage) was added.
 * Documented [`starts_with`](./sql/scalar_func/string.md) and [`ends_with`](./sql/scalar_func/string.md), as well as negative field positions for [`split_part`](./sql/scalar_func/string.md).

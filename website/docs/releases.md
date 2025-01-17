@@ -24,6 +24,11 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+
+### Upcoming Release
+
+* 
+
 ###  0.0.21200 [Jan 17 2025]
 
 * Support for Microsoft Azure Blob Storage using [`azure_location`](./sql/external/location.md#microsoft-azure-blob-storage) was added.

@@ -28,7 +28,8 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 * Support for Microsoft Azure Blob Storage using [`azure_location`](./sql/external/location.md#microsoft-azure-blob-storage) was added.
 * Documented [`starts_with`](./sql/scalar_func/string.md) and [`ends_with`](./sql/scalar_func/string.md), as well as negative field positions for [`split_part`](./sql/scalar_func/string.md).
-
+* Fixed double free bug in Java Hyper API (reported in GitHub Issue [#133](https://github.com/tableau/hyper-db/issues/133)).
+* Improved performance of distinct aggregates (e.g., `SELECT COUNT(DISTINCT a) from t`).
 
 ###  0.0.20746 [Nov 7 2024]
 

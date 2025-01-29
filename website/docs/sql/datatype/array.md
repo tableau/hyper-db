@@ -26,10 +26,10 @@ Arrays can be created in two ways:
  - Using the type constructor syntax
  ```sql
    > select array[1,2,3];
-   {1,2,3}
+   [1,2,3]
 
    > select array['one','two','three'];
-   {one,two,three}
+   ["one","two","three"]
  ```
 
  The constructor syntax consists of the keyword `array` followed by a comma-separated list of element SQL values surrounded by square brackets `[...]`.
@@ -39,22 +39,24 @@ Arrays can be created in two ways:
 
  - Using a [cast](../scalar_func/conversion.md) from string data
  ```sql
- > select '{1,2,3}'::array(integer);
-   {1,2,3}
+ > select '[1,2,3]'::array(integer);
+   [1,2,3]
 
- > select '{one,two,three}'::array(text);
- {one,two,three} 
+ > select '[one,two,three]'::array(text);
+ ["one","two","three"] 
  ```
 
- An array string literal consists of a comma-separated list of element literals surrounded by curly braces `{...}`.
+ An array string literal consists of a comma-separated list of element literals surrounded by square brackets `[...]`.
  The element literal syntax is identical to that of the respective atomic type.
 
  Note that for string array types (such as, e.g., `array(text)`), any upper- or lower-case variant of the element literal `null` will be parsed as a `null` value.
  To specify the string `null`, the element literal must be escaped using double quotes, like so:
  ```sql 
- > select '{null, "null"}'::array(text)
- {NULL,null} # A null element, followed by the string 'null'
+ > select '[null, "null"]'::array(text)
+ [NULL,"null"] # A null element, followed by the string 'null'
  ```
+
+When outputting an array of text types, every non-null element is quoted.
  
 ## Element Types and Nullability
 
@@ -70,18 +72,18 @@ The following four options all represent different types in Hyper:
 
 |Type|array nullable?|elements nullable?| possible values|
 |---|---|---|---|
-|`array(integer)`|✅|✅|`{}`,`{1,2,3}`,`{1,2,null}`, `null`|
-|`array(integer not null)`|✅|❌|`{}`,`{1,2,3}`,`null`|
-|`array(integer) not null`|❌|✅|`{}`,`{1,2,3}`,`{1,2,null}`|
-|`array(integer not null) not null`|❌|❌|`{}`,`{1,2,3}`|
+|`array(integer)`|✅|✅|`[]`,`[1,2,3]`,`[1,2,null]`, `null`|
+|`array(integer not null)`|✅|❌|`[]`,`[1,2,3]`,`null`|
+|`array(integer) not null`|❌|✅|`[]`,`[1,2,3]`,`[1,2,null]`|
+|`array(integer not null) not null`|❌|❌|`[]`,`[1,2,3]`|
 
 The inner nullability of an array type can be changed by casting, using the conventional [cast syntax](../scalar_func/conversion.md):
 
 ```sql
 # nullable to non-nullable
-> select ('{1,2,3}'::array(integer))::array(integer not null)
+> select ('[1,2,3]'::array(integer))::array(integer not null)
 # non-nullable to nullable
-> select ('{1,2,3}'::array(integer not null))::array(integer)
+> select ('[1,2,3]'::array(integer not null))::array(integer)
 ```
 
 A cast from a non-nullable element type to its nullable counterpart always succeeds.
@@ -90,6 +92,11 @@ Casts across element types (e.g. from `array(integer not null)` to `array(bigint
 
 :::info
 Non-nullable element types use less memory and enable optimizations for certain array operations. Users are therefore advised to use the most "restrictive" element type possible, given the use case at hand. 
+:::
+
+:::note
+Hyper used curly braces `{...}` to represent arrays as string literals up to (and including) version 0.0.21200. In those versions, it also tried to avoid quoting every element of a text array when it did not contain special characters.
+The new syntax uses square brackets `[...]` and always quotes text elements, which more closely resembles the JSON array syntax.
 :::
 
 ## Limitations

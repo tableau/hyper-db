@@ -27,7 +27,9 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ### Upcoming Release
 
-* 
+* IANA released version 2024a of the Time Zone Database. Hyper’s time zone information is updated accordingly. Noteworthy changes:
+  * Paraguay adopts permanent -03 starting spring 2024.
+  * Improve historical data for Mexico, Mongolia, Philippines, and Portugal
 
 ###  0.0.21200 [Jan 17 2025]
 

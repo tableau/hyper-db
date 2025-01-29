@@ -24,10 +24,9 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-
 ### Upcoming Release
 
-* 
+* Update syntax for [`ARRAY` literals](./sql/datatype/array.md) and fixed bugs with quoting and escaping of text arrays.
 
 ###  0.0.21200 [Jan 17 2025]
 

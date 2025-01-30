@@ -26,8 +26,14 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ### Upcoming Release
 
+* The `geography` type has been renamed to `tableau.tabgeography` and the geospatial functions have been moved to the `tableau` namespace
+  * Existing Hyper files will continue to work, however, SQL queries and HAPI programs will need to be adjusted
+  * For example, use `tableau.geo_make_point` in SQL queries instead of just `geo_make_point`
+  * Use `SqlType.tabgeography()` in Python and Java, and `SqlType::tabgeography()` in C++
+  * The plain `geography` type and all geospatial functions outside the `tableau` namespace are deprecated and will be removed in the near future
+  * See [Geographic Functions](/docs/sql/scalar_func/geography) and [Add Geospatial Data to a Hyper File](/docs/guides/hyper_file/geodata) for more information
 * IANA released version 2024a of the Time Zone Database. Hyper’s time zone information is updated accordingly. Noteworthy changes:
-  * Paraguay adopts permanent -03 starting spring 2024.
+  * Paraguay adopts permanent -03 starting spring 2024
   * Improve historical data for Mexico, Mongolia, Philippines, and Portugal
 * Update syntax for [`ARRAY` literals](./sql/datatype/array.md) and fixed bugs with quoting and escaping of text arrays.
 
@@ -366,8 +372,8 @@ Noteworthy changes in the Time Zone Database:
 * Hyper now adjusts the resulting interval from a timestamp subtraction so that 24-hour time periods are represented as days.
 * Hyper now supports +/-13 and +/-14 as timezone offsets.
 * Python: The most commonly used Hyper API types now have `__repr__()` methods and will return a string representation of the object when printed, making interactive exploring of the Hyper API more fun.
-* Improved handling of spatial types:
-    * Parsing GEOGRAPHY values from well-known text (WKT) format automatically adjusts the order of vertices in polygons.
+* Improved handling of geospatial types:
+    * Parsing GEOGRAPHY values from Well-known text (WKT) format automatically adjusts the order of vertices in polygons.
     * During WKT parsing, additional vertices may be added to more closely resemble the original shape specified in the WKT.
 
 ### 0.0.12514 [April 7, 2021]
@@ -432,10 +438,10 @@ Noteworthy changes in the Time Zone Database:
 
 ### 0.0.11074 [June 24, 2020]
 
-* Adds several SQL functions for managing spatial data:
+* Adds several SQL functions for managing geospatial data:
     * For creating geography objects (`geo_make_point` and `geo_make_line`).
     * For performing calculations on geography objects (`geo_distance` and `geo_buffer`).
-    * For manipulating the vertex order of polygons in geography objects (`geo_auto_vertex_order` and `geo_invert_vertex_order`). These functions can be used to address problems (for example, with spatial joins or to automatically zoom) where data comes from a source that uses a different winding order for polygons than the one used by Tableau. In Tableau, the interior of the polygon is considered to be on the left of the path drawn by points of the polygon ring.
+    * For manipulating the vertex order of polygons in geography objects (`geo_auto_vertex_order` and `geo_invert_vertex_order`). These functions can be used to address problems (for example, with geospatial joins or to automatically zoom) where data comes from a source that uses a different winding order for polygons than the one used by Tableau. In Tableau, the interior of the polygon is considered to be on the left of the path drawn by points of the polygon ring.
     * See [Geographic Functions](/docs/sql/scalar_func/geography) for more information.
 * Prepared queries gained support for parallelized execution. See [PREPARE](/docs/sql/command/prepare) and [EXECUTE](/docs/sql/command/execute) for more information on prepared queries in Hyper.
 * Java: Fixed crashes that could occur when inserting more than 16 MB of data into a table.
@@ -467,7 +473,7 @@ Noteworthy changes in the Time Zone Database:
 
 * The Hyper API `Inserter` class now allows SQL expressions to compute or transform data on the fly during insertion.
 
-* The Hyper API `Inserter` class now allows inserting Well-Known-Text (WKT) into `Geography` columns. You can use the `CAST` expression to transform WKT data to the `Geography` type and provide WKT data as a string to the `Inserter` class. For more information, see [Add Spatial Data to a Hyper File](/docs/guides/hyper_file/geodata).
+* The Hyper API `Inserter` class now allows inserting Well-known text (WKT) into `Geography` columns. You can use the `CAST` expression to transform WKT data to the `Geography` type and provide WKT data as a string to the `Inserter` class. For more information, see [Add Geospatial Data to a Hyper File](/docs/guides/hyper_file/geodata).
 
 * Documented the available settings that can be passed to the `HyperProcess` and `Connection` constructors. See  [Settings](/docs/hyper-api/hyper_process#passingprocesssettings).
 

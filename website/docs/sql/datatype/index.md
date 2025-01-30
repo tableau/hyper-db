@@ -29,7 +29,7 @@ Name|Aliases|Description
 `TIME [ WITHOUT TIME ZONE ]`||time of day (no time zone)
 `TIMESTAMP [ WITHOUT TIME ZONE ]`||date and time (no time zone)
 `TIMESTAMP WITH TIME ZONE`|`TIMESTAMPTZ`|date and time, including time zone
-`GEOGRAPHY`||a geography object
+`TABLEAU.TABGEOGRAPHY`||a Tableau geography value
 
 :::note
 Persisting `NUMERIC`s with a precision greater than 18 requires at least [database version 3](/docs/hyper-api/hyper_process#version-3).

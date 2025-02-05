@@ -28,19 +28,19 @@ jobs:
         id: setup-pages
 
       - name: Checkout main
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: main
           path: main
 
       - name: Checkout upcoming
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: upcoming
           path: upcoming
 
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20.8'
           cache: yarn

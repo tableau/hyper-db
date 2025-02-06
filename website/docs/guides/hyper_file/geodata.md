@@ -75,7 +75,7 @@ from tableauhyperapi import Connection, HyperProcess, SqlType, TableDefinition, 
 
 with HyperProcess(Telemetry.SEND_USAGE_DATA_TO_TABLEAU, 'myapp' ) as hyper:
     with Connection(hyper.endpoint, 'GeospatialExample.hyper', CreateMode.CREATE_AND_REPLACE) as connection:
-        # Create table with `tableau.tabgeography` column
+        # Create a table with a `tableau.tabgeography` column
         connection.catalog.create_schema('Extract')
         geo_table = TableDefinition(TableName('Extract','Extract'), [
             TableDefinition.Column('Name', SqlType.text(), nullability=NOT_NULLABLE),
@@ -133,7 +133,7 @@ path_to_csv =  "locations.csv"
 
 with HyperProcess(Telemetry.SEND_USAGE_DATA_TO_TABLEAU, 'myapp' ) as hyper:
     with Connection(hyper.endpoint, 'GeospatialFromCSVExample.hyper', CreateMode.CREATE_AND_REPLACE) as connection:
-        # Create table with `tableau.tabgeography` column
+        # Create a table with a `tableau.tabgeography` column
         connection.catalog.create_schema('Extract')
         geo_table = TableDefinition(TableName('Extract','Extract'), [
             TableDefinition.Column('Name', SqlType.text(), nullability=NOT_NULLABLE),

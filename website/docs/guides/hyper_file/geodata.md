@@ -9,7 +9,7 @@ Hyper API's inserter pushes the `CAST("column_as_text" AS TABLEAU.TABGEOGRAPHY)`
 
 ## Overview of inserting geospatial data into a hyper file
 
-The basic process for adding geospatial data involves defining your inputs to Hyper APIs inserter and specifying how to convert the text strings to the `tableau.tabgeography` type using Hyper SQL expressions. Hyper APIs inserter pushes the expression down to Hyper to convert text string to geospatial data on the fly during insertion.
+The basic process for adding geospatial data involves defining your inputs to Hyper APIs inserter and specifying how to convert the text strings to the `tableau.tabgeography` type using Hyper SQL expressions. Hyper APIs inserter pushes the expression down to Hyper to convert a text string to geospatial data on the fly during insertion.
 
 When you add the text strings into the Hyper file, the text must be in the Well-known text (WKT) format for geospatial data. The WKT format is defined by the Open GIS Consortium, Inc, in the [*OpenGIS Simple Features Specification For SQL*](https://www.opengeospatial.org/standards/sfa). The types include **Point**, **MultiPoint**, **LineString**, **MultiLineString**, **Polygon**, and **MultiPolygon**.
 

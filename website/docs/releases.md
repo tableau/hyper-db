@@ -24,17 +24,17 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-### Upcoming Release
+###  0.0.21408 [Feb 13 2025]
 
-* The `geography` type has been renamed to `tableau.tabgeography` and the geospatial functions have been moved to the `tableau` namespace
-  * Existing Hyper files will continue to work, however, SQL queries and HAPI programs will need to be adjusted
-  * For example, use `tableau.geo_make_point` in SQL queries instead of just `geo_make_point`
-  * Use `SqlType.tabgeography()` in Python and Java, and `SqlType::tabgeography()` in C++
-  * The plain `geography` type and all geospatial functions outside the `tableau` namespace are deprecated and will be removed in the near future
-  * See [Geographic Functions](/docs/sql/scalar_func/geography) and [Add Geospatial Data to a Hyper File](/docs/guides/hyper_file/geodata) for more information
+* The `geography` type has been renamed to `tableau.tabgeography` and the geospatial functions have been moved to the `tableau` namespace.
+  * Existing Hyper files will continue to work; however, SQL queries and HAPI programs will need to be adjusted.
+  * For example, use `tableau.geo_make_point` in SQL queries instead of just `geo_make_point`.
+  * Use `SqlType.tabgeography()` in Python and Java, and `SqlType::tabgeography()` in C++.
+  * The plain `geography` type and all geospatial functions outside the `tableau` namespace are deprecated and will be removed in the near future.
+  * See [Geographic Functions](/docs/sql/scalar_func/geography) and [Add Geospatial Data to a Hyper File](/docs/guides/hyper_file/geodata) for more information.
 * IANA released version 2024a of the Time Zone Database. Hyper’s time zone information is updated accordingly. Noteworthy changes:
-  * Paraguay adopts permanent -03 starting spring 2024
-  * Improve historical data for Mexico, Mongolia, Philippines, and Portugal
+  * Paraguay adopts permanent -03 starting spring 2024.
+  * Improve historical data for Mexico, Mongolia, Philippines, and Portugal.
 * Update syntax for [`ARRAY` literals](./sql/datatype/array.md) and fixed bugs with quoting and escaping of text arrays.
 
 ###  0.0.21200 [Jan 17 2025]

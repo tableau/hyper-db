@@ -1,6 +1,6 @@
 # Insert Data Directly from CSV Files
 
-Comma-separated values (CSV) are a popular file format  to import and export tabular data from programs. Hyper is able to directly load data into a Hyper table. Using the PostgreSQL-like [COPY FROM](/docs/sql/command/copy_from) command, you can copy the data much faster than you could by iteratively adding the data one row at a time.
+Comma-separated values (CSV) are a popular file format  to import and export tabular data from programs. Hyper is able to directly load data into a Hyper table. Using the [COPY FROM](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/copy-from.html) command, you can copy the data much faster than you could by iteratively adding the data one row at a time.
 
 ```python
 from pathlib import Path
@@ -55,8 +55,8 @@ with HyperProcess(telemetry=Telemetry.SEND_USAGE_DATA_TO_TABLEAU) as hyper:
 
 3. Issue the `COPY FROM` command.
 
-    The [COPY FROM](../../sql/command/copy_from) command instructs Hyper to
-    directly insert data from an external file into a table.
+    The [COPY FROM](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/copy-from.html)
+    command instructs Hyper to directly insert data from an external file into a table.
     The `COPY` command's `WITH` clause specifies additional details about the file format: In this case, the CSV file uses a comma as the delimiter and has a header row.
 
     To construct the SQL command and correctly escape the file path, we use `escape_string_literal`.

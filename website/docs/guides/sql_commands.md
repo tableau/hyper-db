@@ -47,9 +47,11 @@ There is one method for SQL commands, and three methods for queries which differ
 `execute_scalar_query` | The value from one row, one column. |
 
 `execute_command` is meant to be used for SQL commands like
-[CREATE TABLE](../sql/command/create_table), [COPY FROM](../sql/command/copy_from),
-[INSERT](../sql/command/insert), [UPDATE](../sql/command/update),
-[DELETE](../sql/command/delete) etc., all of which don't produce any
+[CREATE TABLE](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/create-table.html),
+[COPY FROM](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/copy-from.html),
+[INSERT](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/insert.html),
+[UPDATE](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/update.html),
+[DELETE](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/delete.html) etc., all of which don't produce any
 result tuples but instead are executed because we are interested in their
 side effects. `execute_command` returns the number of rows affected by the
 command.
@@ -76,7 +78,7 @@ that single result value.
 
 Using Hyper SQL you can, e.g., insert, update, and delete data from tables, import data from
 Parquet files or pose arbitrarily complex analytical queries.
-For a reference documentation of the supported commands, see [Hyper SQL commands](/docs/sql/command/).
+For a reference documentation of the supported commands, see our [SQL reference](/docs/sql).
 
 Because the SQL statements are passed to the Hyper API as strings, you need to ensure that
 identifiers and string values are properly encoded.
@@ -123,7 +125,7 @@ INSERT INTO "Guest Names" VALUES('Francisco Eduardo')
 
 The table name must be in double quotes and the string constant in single quotes.
 
-Escaping for identifiers and strings is documented in [General Syntax](../sql/syntax.md).
+Escaping for identifiers and strings is documented in [General Syntax](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/syntax.html).
 Instead of reimplementing those escaping rules by yourself, you can use the `escape_name`
 and `escape_string_literal` functions to correctly format identifiers and strings in
 your SQL statements.

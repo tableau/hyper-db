@@ -1,7 +1,7 @@
 # Read Data from Hyper Files
 
 To read data from a `.hyper` file, open a `Connection` to the file and
-then use the [SELECT](../../sql/command/select.md) command to retrieve data from the file.
+then use the [SELECT](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/select.html) command to retrieve data from the file.
 
 ```python
 from tableauhyperapi import HyperProcess, Connection, Telemetry, CreateMode, Inserter
@@ -26,5 +26,5 @@ with HyperProcess(Telemetry.SEND_USAGE_DATA_TO_TABLEAU) as hyper:
 ```
 
 In general, you can send arbitrarily complex queries against the data in a Hyper file.
-More information on the available SQL commands can be found in the [SQL reference](../../sql/).
+More information on the available SQL commands can be found in the [SQL reference](../../sql).
 For more information on how to issue SQL queries from Python (or your preferred language) and how to make programatically craft SQL queries, see the [Executing SQL Commands](../sql_commands) guide.

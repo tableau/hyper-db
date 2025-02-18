@@ -36,21 +36,22 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ###  0.0.21408 [Feb 13 2025]
 
+* Hyper’s SQL for Hyper API is now documented as part of the [Salesforce Data Cloud SQL Reference](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/data-cloud-sql-context.html)
+  * Please be aware that Data Cloud specific functions are not available in Hyper API. Those functions are marked accordingly in the “Applies To” headers of the individual documentation pages.
 * The `geography` type has been renamed to `tableau.tabgeography` and the geospatial functions have been moved to the `tableau` namespace.
   * Existing Hyper files will continue to work; however, SQL queries and HAPI programs will need to be adjusted.
   * For example, use `tableau.geo_make_point` in SQL queries instead of just `geo_make_point`.
   * Use `SqlType.tabgeography()` in Python and Java, and `SqlType::tabgeography()` in C++.
   * The plain `geography` type and all geospatial functions outside the `tableau` namespace are deprecated and will be removed in the near future.
-  * See [Geographic Functions](/docs/sql/scalar_func/geography) and [Add Geospatial Data to a Hyper File](/docs/guides/hyper_file/geodata) for more information.
 * IANA released version 2024a of the Time Zone Database. Hyper’s time zone information is updated accordingly. Noteworthy changes:
   * Paraguay adopts permanent -03 starting spring 2024.
   * Improve historical data for Mexico, Mongolia, Philippines, and Portugal.
-* Update syntax for [`ARRAY` literals](./sql/datatype/array.md) and fixed bugs with quoting and escaping of text arrays.
+* Update syntax for [`ARRAY` literals](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/array.html) and fixed bugs with quoting and escaping of text arrays.
 
 ###  0.0.21200 [Jan 17 2025]
 
-* Support for Microsoft Azure Blob Storage using [`azure_location`](./sql/external/location.md#microsoft-azure-blob-storage) was added.
-* Documented [`starts_with`](./sql/scalar_func/string.md) and [`ends_with`](./sql/scalar_func/string.md), as well as negative field positions for [`split_part`](./sql/scalar_func/string.md).
+* Support for Microsoft Azure Blob Storage using [`azure_location`](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/external-location.html#microsoft-azure-blob-storage) was added.
+* Documented `starts_with` and `ends_with`, as well as negative field positions for `split_part`. See [String Functions](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/string-func.html) for details
 * Fixed double free bug in Java Hyper API (reported in GitHub Issue [#133](https://github.com/tableau/hyper-db/issues/133)).
 * Improved performance of distinct aggregates (e.g., `SELECT COUNT(DISTINCT a) from t`).
 
@@ -62,8 +63,8 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ### 0.0.20027 [Aug 19 2024]
 
-* Introduced new [`array` SQL datatypes](./sql/datatype/array.md).
-* The options available for [EXPLAIN](sql/command/explain) changed:
+* Introduced new [`array` SQL datatypes](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/array.html).
+* The options available for [EXPLAIN](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/explain.html) changed:
   * `EXPLAIN VERBOSE` was removed in favor of `EXPLAIN (FORMAT JSON)`
   * There are two new output formats `EXPLAIN (FORMAT TERSE_JSON)` and `EXPLAIN (FORMAT SCHEMA)`
 * Update Unicode support from Unicode 14.0 to 15.1
@@ -80,7 +81,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
   * Introduced new [database file format version 4](hyper-api/hyper_process#version-4) to support reading and persisting the new 32-bit floats.
   * A `CAST(… AS double precision)` is needed to store such columns in older file formats.
 * Documented the new and improved [database file format version 3](hyper-api/hyper_process#version-3) that was introduced in version 0.0.16123. The new format supports 128-bit numerics. Refer to [Hyper Database Settings](/docs/hyper-api/hyper_process#default_database_version) for more information.
-* Documented the [regexp_replace](sql/scalar_func/string_matching#regex-functions) function which provides substitution of new text for substrings based on POSIX regular expressions.
+* Documented the [regexp_replace](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/string-matching.html#regular-expression-functions) function which provides substitution of new text for substrings based on POSIX regular expressions.
 * Added native support for Apple Silicon processors (aarch64) for macOS 13.0 or newer
 
 :::warning
@@ -101,7 +102,7 @@ To preserve the old behavior, you need to use the types `DOUBLE PRECISION`, `FLO
 
 ### 0.0.18618 [February 7, 2024]
 
-* Overhauled the [SQL type propagation rules for the `NUMERIC` data type](/docs/sql/datatype/numeric). This can lead to differences in the precision and number of decimal digits of `NUMERIC` calculations in existing queries and their results. The changes are:
+* Overhauled the [SQL type propagation rules for the `NUMERIC` data type](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/numeric.html). This can lead to differences in the precision and number of decimal digits of `NUMERIC` calculations in existing queries and their results. The changes are:
     * Multiplication and division of `NUMERIC` with integer and numeric types now follows different rules to determine the result's precision and scale.
     * The `AVG` aggregate function now adds 6 instead of 4 decimal digits.
     * The statistical aggregate functions (like `STDDEV_SAMP`) now always return `NUMERIC(38,6)` for integer and numeric inputs. If a scale of 6 is too low for your purposes consider casting the input to `double precision`.
@@ -119,8 +120,8 @@ To preserve the old behavior, you need to use the types `DOUBLE PRECISION`, `FLO
 ### 0.0.18369 [December 8, 2023]
 
 * Added support for `localized_week`
-  * The functions `EXTRACT`, `date_part` and `date_trunc` have a new field `localized_week`.
-  * Localized week options for the new field are added. See [Localized Week Options](/docs/sql/scalar_func/datetime#localized-week-options).
+  * The functions `EXTRACT`, `date_part` and `date_trunc` support a new field `localized_week`.
+  * Localized week options for the new field are added. See [Localized Week Options](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/datetime-func.html#localized-week-options).
 
 ### 0.0.18161 [November 8, 2023]
 
@@ -134,10 +135,10 @@ To preserve the old behavior, you need to use the types `DOUBLE PRECISION`, `FLO
 ### 0.0.17971 [October 9, 2023]
 
 * .Net Deprecation: As announced last release, we are deprecating the .NET version of Hyper API. We decided to [open-source its source code](https://github.com/tableau/hyper-api-dotnet), so whoever might be interested in maintaining it can pick up where we left.
-* Some of the [Fiscal Calendar Options](/docs/sql/scalar_func/datetime#fiscal-calendar-options) are renamed:
+* Some of the [Fiscal Calendar Options](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/datetime-func.html#fiscal-calendar-options) are renamed:
   * `start_month` is renamed to `fiscal_year_start_month`.
   * `first_day_of_week` is renamed to `first_day_of_fiscal_week`.
-* The [EXTRACT](/docs/sql/scalar_func/datetime#datetime-extract) function was accepting (and ignoring) named arguments that were not required. Now it only accepts [Fiscal Calendar Options](/docs/sql/scalar_func/datetime#fiscal-calendar-options) when fiscal function fields are used. A named argument that is not required by the [EXTRACT](/docs/sql/scalar_func/datetime#datetime-extract) function will be rejected.
+* The [EXTRACT](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/datetime-func.html#extract) function was accepting (and ignoring) named arguments that were not required. Now it only accepts [Fiscal Calendar Options](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/datetime-func.html#fiscal-calendar-options) when fiscal function fields are used. A named argument that is not required by the `EXTRACT` function will be rejected.
 
 ### 0.0.17782 [September 6, 2023]
 
@@ -150,20 +151,20 @@ To preserve the old behavior, you need to use the types `DOUBLE PRECISION`, `FLO
 
 * Support for fiscal calendar was added
   * The functions `EXTRACT`, `date_part` and `date_trunc` have the following fiscal calendar fields: `fiscal_week`, `fiscal_month`, `fiscal_quarter`, and `fiscal_year`.
-  * Fiscal calendar options for the newly-added fields were added. See [Fiscal Calendar Options](/docs/sql/scalar_func/datetime#fiscal-calendar-options).
+  * Fiscal calendar options for the newly-added fields were added. See [Fiscal Calendar Options](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/datetime-func.html#fiscal-calendar-options).
 * Updated OpenSSL version from 1.1.1t to 1.1.1u.
-* Support for reading and writing [Arrow](/docs/sql/external/formats#external-format-arrow) is now stable and ready for use in production
+* Support for reading and writing [Arrow](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/external-formats.html#apache-arrow-format) is now stable and ready for use in production
 
 ### 0.0.17360 [July 5, 2023]
 
-* Support for `AT TIME ZONE` was added. See [documentation of Date/Time Functions](/docs/sql/scalar_func/datetime.md#functions)
-* Experimental support for reading and writing [Arrow](/docs/sql/external/formats#external-format-arrow) files (`.arrow`) and streams (`.arrows`)
-* Support for the `COPY TO` statement was added. See [documentation of COPY TO](/docs/sql/command/copy_to)
+* Support for `AT TIME ZONE` was added. See [documentation of Date/Time Functions](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/datetime-func.html)
+* Experimental support for reading and writing [Arrow](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/external-formats.html#apache-arrow-format) files (`.arrow`) and streams (`.arrows`)
+* Support for the `COPY TO` statement was added. See [documentation of COPY TO](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/copy-to.html)
 
 ### 0.0.17231 [June 7, 2023]
 
 * Support for multiple concurrent connections to the same Hyper file was added
-* Support for `FETCH [...] WITH TIES` was added. See [documentation of FETCH](/docs/sql/command/select#limit)
+* Support for `FETCH [...] WITH TIES` was added. See [documentation of FETCH](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/select-limit-offset.html#fetch-and-offset)
 * Improved query planning for external formats (e.g., Parquet, CSV, ...)
    * Samples are used for selectivity estimation on external formats
    * Distinct counts, statistics, and samples are no longer computed eagerly when issuing a `CREATE TEMP EXTERNAL TABLE`. Instead, the first query that uses the external table updates them.
@@ -204,7 +205,7 @@ To preserve the old behavior, you need to use the types `DOUBLE PRECISION`, `FLO
 
 ### 0.0.16491 [February 8, 2023]
 
-* Added support for the [`GROUPING SETS` SQL feature](/docs/sql/command/select#grouping-sets), including `ROLLUP` and `CUBE`.
+* Added support for the [`GROUPING SETS` SQL feature](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/select-group-by.html), including `ROLLUP` and `CUBE`.
 
 
 ### 0.0.16377 [January 18, 2023]
@@ -215,7 +216,7 @@ To preserve the old behavior, you need to use the types `DOUBLE PRECISION`, `FLO
 
 * Added support for 128-bit numerics. This allows a precision of up to 38 for the `NUMERIC` SQL type.
 * Added support to read 128-bit `DECIMAL` values from parquet files.
-* Overhauled the [SQL type propagation rules for the `NUMERIC` data type](/docs/sql/datatype/numeric).
+* Overhauled the [SQL type propagation rules for the `NUMERIC` data type](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/numeric.html).
 * Improved partition pruning support when querying Apache Iceberg. This should speed up queries with
   equality predicates on Iceberg columns partitioned with bucket partitioning.
 * New `ANY_VALUE` aggregate function: The `ANY_VALUE` aggregate function returns an arbitrary, implementation-defined value from the set of input values within a group.
@@ -227,17 +228,17 @@ To preserve the old behavior, you need to use the types `DOUBLE PRECISION`, `FLO
 
 ### 0.0.15735 [October 5, 2022]
 
-* New support for Apache Iceberg as an [external format](docs/sql/external/).
+* New support for Apache Iceberg as an [external format](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/external-files.html).
 * Support for reading external files from S3 is now enabled by default. (The experimental_external_s3 setting has been removed. Specifying it now causes an unknown setting error.)
 * "New convenience functions to extract date and time units:
-  * New [YEAR](/docs/sql/scalar_func/datetime#functions) function: extracts the year of a timestamp or interval.
-  * New [QUARTER](/docs/sql/scalar_func/datetime#functions) function: extracts the quarter of a timestamp.
-  * New [MONTH](/docs/sql/scalar_func/datetime#functions) function: extracts the month of a timestamp or interval.
-  * New [WEEK](/docs/sql/scalar_func/datetime#functions) function: extracts the week of a timestamp.
-  * New [DAY](/docs/sql/scalar_func/datetime#functions) function: extracts the day of a timestamp or interval.
-  * New [HOUR](/docs/sql/scalar_func/datetime#functions) function: extracts the hour of a timestamp or interval.
-  * New [MINUTE](/docs/sql/scalar_func/datetime#functions) function: extracts the minute of a timestamp or interval.
-  * New [SECOND](/docs/sql/scalar_func/datetime#functions) function: extracts the second of a timestamp or interval.
+  * New [YEAR](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/datetime-func.html#functions) function: extracts the year of a timestamp or interval.
+  * New [QUARTER](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/datetime-func.html#functions) function: extracts the quarter of a timestamp.
+  * New [MONTH](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/datetime-func.html#functions) function: extracts the month of a timestamp or interval.
+  * New [WEEK](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/datetime-func.html#functions) function: extracts the week of a timestamp.
+  * New [DAY](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/datetime-func.html#functions) function: extracts the day of a timestamp or interval.
+  * New [HOUR](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/datetime-func.html#functions) function: extracts the hour of a timestamp or interval.
+  * New [MINUTE](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/datetime-func.html#functions) function: extracts the minute of a timestamp or interval.
+  * New [SECOND](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/datetime-func.html#functions) function: extracts the second of a timestamp or interval.
 * IANA released version `2022c` of the Time Zone Database. Hyper's time zone information is updated accordingly. Noteworthy changes:
     * Chile's DST is delayed by a week in September 2022.
     * Iran no longer observes DST after 2022.
@@ -266,7 +267,7 @@ To preserve the old behavior, you need to use the types `DOUBLE PRECISION`, `FLO
 ### 0.0.14946 [June 1, 2022]
 
 * Updated OpenSSL version from 1.1.1l to 1.1.1n.
-* New [TRY_CAST](/docs/sql/scalar_func/conversion) function: converts a value to a target type, returns NULL on failure.
+* New [TRY_CAST](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/type-conversion.html) function: converts a value to a target type, returns NULL on failure.
 
 ### 0.0.14751 [May 4, 2022]
 
@@ -286,7 +287,7 @@ To preserve the old behavior, you need to use the types `DOUBLE PRECISION`, `FLO
 
 * Introduced the new and improved database file format version 2 that can be used via [Hyper Process Settings](/docs/hyper-api/hyper_process). The new format stores data independent of collation versions. File format 1 is deprecated in favor of the new file format 2. Refer to [Hyper Database Settings](/docs/hyper-api/hyper_process#default_database_version) for more information.
 * Added support for S3 keys containing special characters (such as "=")
-* Implemented support for [external(source_location(...))](/docs/sql/setreturning#srf-external) syntax.
+* Implemented support for [external(source_location(...))](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/setreturning.html#external) syntax.
 
 ### 0.0.14265 [February 2, 2022]
 
@@ -299,27 +300,27 @@ query engine directly on top of open formats and data lakes.
     (using techniques such as concurrent requests, request hedging and prefetching). For maximum performance,
     ensure a high network bandwidth to Amazon S3, e.g., by running HyperAPI directly on an AWS EC2 instance.
   * Temporary external tables: The new
-    [CREATE TEMPORARY EXTERNAL TABLE](/docs/sql/command/create_external_table)
+    [CREATE TEMPORARY EXTERNAL TABLE](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/create-external-table.html)
     command exposes external data to SQL as if it was a Hyper table, but the data is read directly
     from the external file whenever the external table is referenced in a query.
-  * The new function [external](/docs/sql/setreturning#srf-external),
+  * The new function [external](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/setreturning.html#external),
     enables reading external data directly in a SQL query without creating an external table.
-  * Aligned the syntax of the [COPY](/docs/sql/command/copy_from)
+  * Aligned the syntax of the [COPY](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/copy-from.html)
     statement with the syntax for external tables and the `external` function.
     The old syntax is still supported for PostgreSQL compatibility but its use is discouraged.
   * The new `ARRAY[...]` syntax enables reading from multiple files when using the `external` function, external tables,
     or the `COPY` command.
   * Graceful handling of invalid UTF-8 sequences:
-    The new [SANITIZE](/docs/sql/external/formats#format-options)
+    The new [SANITIZE](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/external-formats.html#format-options)
     option instructs Hyper to replace invalid UTF-8 sequence with the replacement character (�) instead of failing the query with an error.
   * Improved support for reading CSV files:
     * GZip-compressed CSV files: CSV files ending in `.gz` will automatically be assumed to be GZip-compressed.
     * UTF-16 encoded CSV files: UTF-16 reading can be enabled using the new
-      [ENCODING](/docs/sql/external/formats#format-options)
+      [ENCODING](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/external-formats.html#format-options)
       option.
     * Graceful cast failure handling: When a value in the file cannot be cast
       to the target type, the new
-      [ON_CAST_FAILURE](/docs/sql/external/formats#format-options)
+      [ON_CAST_FAILURE](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/external-formats.html#format-options)
       option instructs Hyper to read the value as NULL instead of raising an error.
 
 ### 0.0.14109 [January 5, 2022]
@@ -378,7 +379,7 @@ Noteworthy changes in the Time Zone Database:
 
 ### 0.0.12805 [May 19, 2021]
 
-* Hyper now has experimental support for reading Apache Parquet files. See [Hyper API SQL documentation](/docs/sql/command/copy_from#sql-copy-examples) for details.
+* Hyper now has experimental support for reading Apache Parquet files. See [Hyper API SQL documentation](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/copy-from.html#sql-copy-examples) for details.
 * Hyper now adjusts the resulting interval from a timestamp subtraction so that 24-hour time periods are represented as days.
 * Hyper now supports +/-13 and +/-14 as timezone offsets.
 * Python: The most commonly used Hyper API types now have `__repr__()` methods and will return a string representation of the object when printed, making interactive exploring of the Hyper API more fun.
@@ -452,8 +453,7 @@ Noteworthy changes in the Time Zone Database:
     * For creating geography objects (`geo_make_point` and `geo_make_line`).
     * For performing calculations on geography objects (`geo_distance` and `geo_buffer`).
     * For manipulating the vertex order of polygons in geography objects (`geo_auto_vertex_order` and `geo_invert_vertex_order`). These functions can be used to address problems (for example, with geospatial joins or to automatically zoom) where data comes from a source that uses a different winding order for polygons than the one used by Tableau. In Tableau, the interior of the polygon is considered to be on the left of the path drawn by points of the polygon ring.
-    * See [Geographic Functions](/docs/sql/scalar_func/geography) for more information.
-* Prepared queries gained support for parallelized execution. See [PREPARE](/docs/sql/command/prepare) and [EXECUTE](/docs/sql/command/execute) for more information on prepared queries in Hyper.
+* Prepared queries gained support for parallelized execution. See [PREPARE](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/prepare.html) and [EXECUTE](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/execute.html) for more information on prepared queries in Hyper.
 * Java: Fixed crashes that could occur when inserting more than 16 MB of data into a table.
 * Python: Fixed crashes of Python interpreter on shutdown by fixing reference counting.
 * .NET: Fixed broken Nuget packages.
@@ -462,7 +462,7 @@ Noteworthy changes in the Time Zone Database:
 
 ### 0.0.10899 [May 27, 2020]
 
-* Hyper now fully supports the options `FORCE_NULL` and `FORCE_NOT_NULL` for CSV parsing. By default, only unquoted values are compared to the null string to determine whether they represent a `NULL` value. `FORCE_NULL` toggles the same for quoted values. `FORCE_NOT_NULL` disables comparison of non-quoted values with the null string. See [COPY command](/docs/sql/command/copy_from).
+* Hyper now fully supports the options `FORCE_NULL` and `FORCE_NOT_NULL` for CSV parsing. By default, only unquoted values are compared to the null string to determine whether they represent a `NULL` value. `FORCE_NULL` toggles the same for quoted values. `FORCE_NOT_NULL` disables comparison of non-quoted values with the null string. See [COPY command](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/copy-from.html).
 
 * Updated the target framework of the Hyper API for .NET example from .NET Core 2.2 to .NET Core 3.1. .NET Core 2.2 has already reached its end of life at 2019-12-23 and increasingly surfaced stability problems. We continue to target the .NET Standard 2.0 in the Hyper API for .NET.
 
@@ -508,7 +508,7 @@ Noteworthy changes in the Time Zone Database:
 
 * Improved loading time for Python: `import tableauhyperapi` now takes 100 milliseconds instead of 250 milliseconds.
 
-* Added the `to_date` function. See [Data Type Formatting Functions](/docs/sql/scalar_func/formatting).
+* Added the `to_date` function. See [Data Type Formatting Functions](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/formatting.html).
 
 ---
 
@@ -537,11 +537,11 @@ Noteworthy changes in the Time Zone Database:
 * Improved time zone support. In particular, the `TIMESTAMP WITH TIME ZONE` (or `TIMESTAMPTZ`) type is now properly supported.
 
 * This release includes documentation for several SQL features, including:
-  * Manipulation and formatting of date/time values and intervals, also with full time zone support. See [Data Type Formatting Functions](/docs/sql/scalar_func/formatting) and [Date/Time Functions and Operators](/docs/sql/scalar_func/datetime).
-  * Sub-query expressions (for example, `EXISTS`, `IN`, `ALL`). See [Subquery Expressions](/docs/sql/scalar_func/subquery_comparison).
-  * Window aggregate functions (for example, `RANK()`). See [Window Functions and Queries](/docs/sql/window).
-  * `generate_series` - See [Set Returning Functions](/docs/sql/setreturning).
-  * Data Types: boolean, binary, numeric types, character, date/time. See [Data Types](/docs/sql/datatype).
+  * Manipulation and formatting of date/time values and intervals, also with full time zone support. See [Data Type Formatting Functions](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/formatting.html) and [Date/Time Functions and Operators](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/datetime-func.html).
+  * Sub-query expressions (for example, `EXISTS`, `IN`, `ALL`). See [Subquery Expressions](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/subquery-comparison.html).
+  * Window aggregate functions (for example, `RANK()`). See [Window Functions and Queries](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/window.html).
+  * `generate_series` - See [Set Returning Functions](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/setreturning.html).
+  * Data Types: boolean, binary, numeric types, character, date/time. See [Data Types](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/datatypes.html).
 
 * The Tableau Hyper API no longer requires write access in the working directory.
 
@@ -567,7 +567,7 @@ Noteworthy changes in the Time Zone Database:
 
 * Hyper is now reusing space freed by DELETE (Issue 1056751). In a rolling-window scenario (where old data is deleted in bulk before appending new data), previous versions of the Tableau Hyper API would not re-use the deleted space, causing the `.hyper` file to grow. This problem is fixed with this release. In addition to the simple rolling window scenario, the fix also applies to other bulk deletion patterns.
 
-* UPDATE now supports multi-column subqueries in SET clauses. See [UPDATE](/docs/sql/command/update).
+* UPDATE now supports multi-column subqueries in SET clauses. See [UPDATE](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/update.html).
 
 * Standard-compliant natural join.
 

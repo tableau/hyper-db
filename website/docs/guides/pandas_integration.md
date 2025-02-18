@@ -42,7 +42,7 @@ pantab.frame_to_hyper(animals_df, "animals.hyper", table="animals")
 To kickstart your creativity on potential use cases, let's use Hyper to run an analytical query on a Parquet file - and read the result back to a pandas frame using `pantab`.
 
 You can send SQL queries to Hyper and get the result as a pandas dataframe using `pantab.frame_from_hyper_query`.
-Combined with Hyper's capabilities to [query external file formats](../sql/external/), you can use this, e.g., to directly run queries on your Parquet files, Iceberg tables or Parquet files.
+Combined with Hyper's capabilities to [query external file formats](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/external-files.html), you can use this, e.g., to directly run queries on your Parquet files, Iceberg tables or Parquet files.
 The following example demonstrates this on the Parquet file `orders_10rows.parquet` which you can [download here](https://github.com/tableau/hyper-api-samples/raw/main/Community-Supported/parquet-to-hyper/orders_10rows.parquet).
 
 ```python

@@ -42,8 +42,8 @@ The script consist of 3 high-level steps:
 
 1. Start a Hyper process. The [`HyperProcess`](../../hyper-api/hyper_process)
 2. Create a connection to the `.hyper` file. Since we create the [`Connection`](../../hyper-api/connection) class with the `CreateMode.CREATE_AND_REPLACE`, the `.hyper` file will be automatically created if it does not exist yet, and will be overwritten if a file with that name already exists.
-3. Defining the table. In this case, we are using the Python utilities `TableDefinition` and `catalog.create_table`. We could have also used a [CREATE TABLE](../../sql/command/create_table) SQL command.
-4. Insert the data. In the example, we use the `Inserter` utility to provide the data from Python. You can also use [INSERT](../../sql/command/insert) or [COPY](../../sql/command/copy_from) statements or any other means to load data into the table. E.g., you can thereby directly load your table from a CSV file.
+3. Defining the table. In this case, we are using the Python utilities `TableDefinition` and `catalog.create_table`. We could have also used a [CREATE TABLE](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/create-table.html) SQL command.
+4. Insert the data. In the example, we use the `Inserter` utility to provide the data from Python. You can also use [INSERT](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/insert.html) or [COPY](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/copy-from.html) statements or any other means to load data into the table. E.g., you can thereby directly load your table from a CSV file.
 
 #### File Format Versions
 
@@ -64,7 +64,7 @@ The main difference when connecting is that you use `CreateMode.NONE` instead of
 By using `CreateMode.NONE`, Hyper will connect to a pre-existing file instead of recreating a new, empty file.
 Since the default for `CreateMode` is `NONE`, you can also just leave this parameter out completely.
 
-You can then use SQL commands ([INSERT](../../sql/command/insert), [UPDATE](../../sql/command/update), [DELETE](../../sql/command/delete), [COPY](../../sql/command/copy_from), ...) or the `Inserter` utility class to change the data in the table.
+You can then use SQL commands ([INSERT](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/insert.html), [UPDATE](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/update.html), [DELETE](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/delete.html), [COPY](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/copy-from.html) or the `Inserter` utility class to change the data in the table.
 You could also create new tables or drop existing tables.
 
 The following example removes rows with a `value < 50` and appends two new row to an existing table within an extract file:

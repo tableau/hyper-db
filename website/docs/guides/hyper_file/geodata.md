@@ -62,7 +62,7 @@ with Inserter(connection, geo_table, column_mappings, inserter_definition = inse
     inserter.execute()
 ```
 
-Note if you have WKT data in a comma-separated value (CSV) file, you can use the [COPY](/docs/sql/command/copy_from) command to insert the data from a CSV file. The command automatically converts the WKT strings to the `tableau.tabgeography` data type. For more information, see the [Example code using copy from CSV](#example-code-using-copy-from-csv) and the Help topic [Insert Data Directly from CSV Files](./insert_csv) and the CSV sample on GitHub, [hyper-api-samples](https://github.com/tableau/hyper-api-samples).
+Note if you have WKT data in a comma-separated value (CSV) file, you can use the [COPY](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/copy-from.html) command to insert the data from a CSV file. The command automatically converts the WKT strings to the `tableau.tabgeography` data type. For more information, see the [Example code using copy from CSV](#example-code-using-copy-from-csv) and the Help topic [Insert Data Directly from CSV Files](./insert_csv) and the CSV sample on GitHub, [hyper-api-samples](https://github.com/tableau/hyper-api-samples).
 
 ## Example code using the Inserter
 

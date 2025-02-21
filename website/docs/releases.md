@@ -26,13 +26,13 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 ### Upcoming
 
-* The following deprecated geospatial functions have been removed:
-  * `geo_make_point` superseded by (`tableau.geo_make_point`)
-  * `geo_make_line` superseded by (`tableau.geo_make_line`)
-  * `geo_distance` superseded by (`tableau.geo_distance`)
-  * `geo_buffer` superseded by (`tableau.geo_buffer`)
-  * `geo_auto_vertex_order` superseded by (`tableau.geo_auto_vertex_order`)
-  * `geo_invert_vertex_order` superseded by (`tableau.geo_invert_vertex_order`)
+* The following deprecated geospatial functions have been removed from Hyper SQL:
+  * `geo_make_point` (superseded by `tableau.geo_make_point`)
+  * `geo_make_line` (superseded by `tableau.geo_make_line`)
+  * `geo_distance` (superseded by `tableau.geo_distance`)
+  * `geo_buffer` (superseded by `tableau.geo_buffer`)
+  * `geo_auto_vertex_order` (superseded by `tableau.geo_auto_vertex_order`)
+  * `geo_invert_vertex_order` (superseded by `tableau.geo_invert_vertex_order`)
 
 ###  0.0.21408 [Feb 13 2025]
 

@@ -24,7 +24,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-### Upcoming
+###  0.0.22106 [May 1 2025]
 
 * The following deprecated geospatial functions have been removed from Hyper SQL:
   * `geo_make_point` (superseded by `tableau.geo_make_point`)

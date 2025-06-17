@@ -28,6 +28,9 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 * IANA released version 2025b of the Time Zone Database. Hyper’s time zone information is updated accordingly. Noteworthy changes:
   * New zone America/Coyhaique
   * Iran switched from +04 to +0330 on 1978-11-10 at 24:00, not at year end.
+* Support for the FILTER clause has been added to aggregation functions in Hyper SQL.
+  * For example, you can now write queries such as `SELECT count(*), count(*) FILTER (WHERE color = 'blue') FROM phone_cases;`.
+  * The FILTER clause is not yet supported for user-defined aggregates, WINDOW functions, and holistic aggregates.
 
 ###  0.0.22106 [May 1 2025]
 

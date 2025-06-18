@@ -30,7 +30,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
   * Iran switched from +04 to +0330 on 1978-11-10 at 24:00, not at year end.
 * Support for the FILTER clause has been added to aggregation functions in Hyper SQL.
   * For example, you can now write queries such as `SELECT count(*), count(*) FILTER (WHERE color = 'blue') FROM phone_cases;`.
-  * The FILTER clause is not supported for ordered-set aggregates and only for WINDOW functions which are aggregates.
+  * The FILTER clause is not supported for ordered-set aggregates. The FILTER clause is only supported for WINDOW functions, which are aggregates.
 
 ###  0.0.22106 [May 1 2025]
 

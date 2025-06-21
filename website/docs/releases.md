@@ -24,6 +24,8 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+###  Upcoming Release
+
 ###  0.0.22502 [June 19 2025]
 * IANA released version 2025b of the Time Zone Database. Hyper’s time zone information is updated accordingly. Noteworthy changes:
   * New zone America/Coyhaique

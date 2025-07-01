@@ -15,7 +15,7 @@ with HyperProcess(telemetry=Telemetry.SEND_USAGE_DATA_TO_TABLEAU) as hyper:
 This starts up a local Hyper database server, and then prints the connection string (`endpoint`).
 This connection string describes the used protocol (TCP, domain sockets, ...) and the corresponding information like port numbers.
 The `Connection` class can then be used to connect against this endpoint.
-While the `HyperProcess` is running,, you can create and connect to as many `.hyper` files as you want.
+While the `HyperProcess` is running, you can create and connect to as many `.hyper` files as you want.
 
 After you no longer need a Hyper database server, you should shutdown the `HyperProcess`.
 If you call the `HyperProcess` in a `with` statement (Python), `using` statement (C#), scope (C++), or `try-with-resources` statement (Java), the `hyperd` process will safely shutdown automatically at the end of the `with` statement.
@@ -23,11 +23,11 @@ If you call the `HyperProcess` in a `with` statement (Python), `using` statement
 ## Performance best practices {#performance}
 
 Compared to other database systems, Hyper starts up very fast (in the order of 100 milliseconds).
-Still, starting up and shutting down the server takes time
+Still, starting up and shutting down the server takes time.
 Hence, you should keep the process running and only close or shutdown the `HyperProcess` when your application is finished.
 E.g., when updating multiple tables inside a `.hyper` file, do not restart the `HyperProcess` for every table, but instead use the same process for updating all of your tables.
 
-Futhermore, you should only have one instance of Hyper running at any given time.
+Furthermore, you should only have one instance of Hyper running at any given time.
 Hyper internally monitors its memory assumption, and makes sure that it only uses up to 80% of your system's RAM memory, such that your overall system stays responsive.
 If multiple Hyper processes are running at the same time, they might overload the system, and Hyper's internal resource management mechanisms will not be able to counteract this.
 
@@ -39,7 +39,7 @@ To opt out, set `telemetry` to `Telemetry.DO_NOT_SEND_USAGE_DATA_TO_TABLEAU`.
 
 To help us improve Hyper and justify further investments into Hyper API, you can share usage data with us.
 Tableau collects data that helps us learn how our products are being used so we can improve existing features and develop new ones.
-All usage data is collected and handled according to the [Tableau Privacy Policy](https://tableau.com/privacy)
+All usage data is collected and handled according to the [Tableau Privacy Policy](https://tableau.com/privacy).
 
 ## Locating the `hyperd` binary
 
@@ -60,7 +60,7 @@ HyperProcess(telemetry=Telemetry.DO_NOT_SEND_USAGE_DATA_TO_TABLEAU,
 
 Using the `hyper_path`, you can also instruct Hyper API to interact with a different version of `hyperd`.
 Thereby, you can use Hyper API to quickly script a benchmark or more extensive test cases for your
-new feature or performance improvement
+new feature or performance improvement.
 
 :::
 
@@ -258,7 +258,7 @@ To create a new Hyper database file with this version, set
 :::note
 The database file format version `3` is supported by Tableau Desktop
 2022.4.1 and Server 2023.1 and newer product versions. It is supported by
-Tableau Prep 2022.4.1 and newer versions. 
+Tableau Prep 2022.4.1 and newer versions.
 :::
 
 #### version 4
@@ -275,7 +275,7 @@ To create a new Hyper database file with this version, set
 
 :::note
 The database file format version `4` will be supported
-by Tableau Desktop/Server/Prep 2024.3 and never product versions.
+by Tableau Desktop/Server/Prep 2024.3 and newer product versions.
 :::
 
 <!-- ### Experimental Settings {#experimentalsettings}

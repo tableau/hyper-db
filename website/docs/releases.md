@@ -24,7 +24,11 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-###  Upcoming Release
+###  0.0.23135 [August 28 2025]
+* This release adds three new regular expression functions:
+  * `regexp_substr` to extract substrings
+  * `regexp_count` to count matches
+  * `regexp_instr` to find the position of a match
 
 ###  0.0.22502 [June 19 2025]
 * IANA released version 2025b of the Time Zone Database. Hyper’s time zone information is updated accordingly. Noteworthy changes:

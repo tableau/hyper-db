@@ -174,7 +174,7 @@ create new database files.
 Every version builds on the improvements of the previous version(s) and
 adds some new functionality, like new data types.
 
-Default value: `0`
+Default value: `2`
 
 Accepted values: `0`, `1` (writing this version is deprecated in favor
 of version 2 and will be removed in a future Hyper API release), `2`, `3`, and `4`.

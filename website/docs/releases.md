@@ -28,6 +28,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 * The default_database_version is upgraded to version 2
   * This version better supports UPDATE and DELETE on extracts
   * All supported Tableau versions can read these files
+* Updated OpenSSL version from 3.4.1 to 3.4.3
 
 ###  0.0.23135 [August 28 2025]
 * This release adds three new regular expression functions:

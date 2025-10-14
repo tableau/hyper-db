@@ -17,13 +17,43 @@ To use a specific database file format version, you'll need to use the `default_
 Using the latest available database file format version should lessen the need to manually defragment or otherwise optimize your file for size or performance.
 However, for extremely fragmented files you might still benefit from manually optimizing your file.
 
-## Rewrite your Hyper file in an optimized format {#rewrite-your-hyper-file-in-an-optimized-format}
+## Rewrite your Hyper file in an optimized format
 
-If you have a Hyper file that has become fragmented or is still using an older file version, one simple solution is to create a new file and copy all the data into it.
-There is a [script that does just that](https://github.com/tableau/hyper-api-samples/tree/main/Community-Supported/convert-hyper-file) available on Github.
+If you have a Hyper file that has become fragmented or is still using an older file version where you want to take advantage of new version features, you can
+update your existing Hyper databases by checking the version and updating the version prior to performing other operations on them. For instance the Python script
+below does this while maintaining a backup of the old Hyper file.
 
-The Python script uses the Hyper API to copy all the schemas and tables in an existing `.hyper` file and writes them into a new file in a continuous sequence, eliminating any fragmentation that might have occurred.
-By creating the new `.hyper` file with the intended new file format version, you can upgrade / downgrade between the various Hyper file versions.
+```python
+import os
+from tableauhyperapi import HyperProcess, Connection, Telemetry, CreateMode
+
+TARGET_DATABASE_VERSION = "2"
+
+with HyperProcess(Telemetry.SEND_USAGE_DATA_TO_TABLEAU,
+            parameters = {"default_database_version": TARGET_DATABASE_VERSION}) as hyper:
+    should_update_version = False
+    with Connection(hyper.endpoint, 'existing.hyper', CreateMode.CREATE_IF_NOT_EXISTS) as connection:
+        # check the current version of the extract
+    
+        version = connection.execute_scalar_query("SELECT database_version from pg_catalog.hyper_database")
+        if version < TARGET_DATABASE_VERSION:
+            print(f'found version {version}, upgrading to version {TARGET_DATABASE_VERSION}')
+            should_update_version = True
+
+    if should_update_version:
+        with Connection(hyper.endpoint) as connection:
+            connection.execute_command(f"""
+                CREATE DATABASE "updatedversion.hyper" WITH VERSION {TARGET_DATABASE_VERSION} FROM "existing.hyper"
+            """)
+        # make a backup of the existing hyper file - will overwrite any existing file
+        os.replace("existing.hyper", "existing.bak.hyper")
+
+        # rename the new file to match old database name
+        os.replace("updatedversion.hyper", "existing.hyper")
+    with Connection(hyper.endpoint, 'existing.hyper', CreateMode.CREATE_IF_NOT_EXISTS) as connection:
+        # perform normal operations on connection
+        ...
+```
 
 ## Guidelines for avoid fragmentation
 

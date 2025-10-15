@@ -55,7 +55,7 @@ with HyperProcess(Telemetry.SEND_USAGE_DATA_TO_TABLEAU,
         ...
 ```
 
-## Guidelines for avoid fragmentation
+## Guidelines for avoiding fragmentation
 
 The level of file compression in a `.hyper` file depends both on the characteristics of the contained data but also on the insertion/deletion patterns that you use. If you expect to repeatedly delete, insert, or update rows of data, there are patterns that are more likely to achieve optimal file compression, and others that are more likely to result in file fragmentation.
 

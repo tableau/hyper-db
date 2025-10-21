@@ -83,6 +83,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
   * There are two new output formats `EXPLAIN (FORMAT TERSE_JSON)` and `EXPLAIN (FORMAT SCHEMA)`
 * Update Unicode support from Unicode 14.0 to 15.1
 * Update Hyper's collation tables from CLDR 71 to CLDR 74. Besides corrections this also adds new collations to Hyper.
+* Dropped Centos7/RHEL7 support (in line with Tableau Server 2025.1 dropping Centos7/RHEL7 support).
 
 ### 0.0.19691 [July 4, 2024]
 

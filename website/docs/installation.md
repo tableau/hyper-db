@@ -38,8 +38,8 @@ The Hyper API only supports 64-bit platforms. It has the following minimum hardw
 - macOS 13.0 or newer (for Apple Silicon)
 - Microsoft Windows 8 or newer (64-bit)
 - Microsoft Windows Server 2016, 2012, 2012 R2, 2008 R2, 2019, 2022
-- Ubuntu 18.04 LTS, 20.04 LTS and 22.04 LTS
-- Amazon Linux 2, Red Hat Enterprise Linux (RHEL) 7.3+ and 8.3+, CentOS 7.9+, Oracle Linux 7.3+
+- Ubuntu 18.04 LTS and newer
+- Amazon Linux 2023, Red Hat Enterprise Linux (RHEL) 8.3+ and 9.x+, Oracle Linux 8.3+ and 9.x+, CentOS Stream 8.3+ and 9.x
 
 ## Language-specific Requirements
 

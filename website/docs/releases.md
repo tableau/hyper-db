@@ -24,6 +24,8 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+###  Upcoming Release
+
 ###  0.0.23576 [October 16 2025]
 * The default_database_version is upgraded to version 2
   * This version better supports UPDATE and DELETE on extracts

@@ -74,6 +74,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 * Documented `starts_with` and `ends_with`, as well as negative field positions for `split_part`. See [String Functions](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/string-func.html) for details
 * Fixed double free bug in Java Hyper API (reported in GitHub Issue [#133](https://github.com/tableau/hyper-db/issues/133)).
 * Improved performance of distinct aggregates (e.g., `SELECT COUNT(DISTINCT a) from t`).
+* Dropped Centos7/RHEL7 support (in line with Tableau Server 2025.1 dropping Centos7/RHEL7 support). Starting with v0.0.21200 Hyper API doesn't support Centos7/RHEL7 anymore.
 
 ###  0.0.20746 [Nov 7 2024]
 
@@ -89,7 +90,6 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
   * There are two new output formats `EXPLAIN (FORMAT TERSE_JSON)` and `EXPLAIN (FORMAT SCHEMA)`
 * Update Unicode support from Unicode 14.0 to 15.1
 * Update Hyper's collation tables from CLDR 71 to CLDR 74. Besides corrections this also adds new collations to Hyper.
-* Dropped Centos7/RHEL7 support (in line with Tableau Server 2025.1 dropping Centos7/RHEL7 support).
 
 ### 0.0.19691 [July 4, 2024]
 

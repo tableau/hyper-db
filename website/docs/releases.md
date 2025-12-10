@@ -28,8 +28,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 * Added support for two new SQL functions:
   * `split` splits a string into an array based on a delimiter.
-  * `regexp_split_to_array` returns all captured substrings as an array after splitting the input text
-string using a regular expression pattern as a delimiter.
+  * `regexp_split_to_array` splits a string into an array by using a POSIX regular expression as the delimiter and returns the text from the end of the last match (or the beginning of the string) to the beginning of the match. When there are no more matches, it returns the text from the end of the last match to the end of the string.
 
 ###  0.0.23576 [October 16 2025]
 * The default_database_version is upgraded to version 2

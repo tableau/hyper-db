@@ -27,7 +27,7 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 ###  Upcoming Release
 
 * Added support for two new SQL functions:
-  * `split` splits a string into an array based on a delimiter.
+  * `split` splits a string into an array based on a delimiter. If the delimiter is null, it returns null. If the delimiter is empty, it splits the string into individual characters.
   * `regexp_split_to_array` splits a string into an array by using a POSIX regular expression as the delimiter and returns the text from the end of the last match (or the beginning of the string) to the beginning of the match. When there are no more matches, it returns the text from the end of the last match to the end of the string.
 
 ###  0.0.23576 [October 16 2025]

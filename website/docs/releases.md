@@ -24,6 +24,8 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+###  Upcoming Release
+
 ###  0.0.24081 [December 11 2025]
 * Added support for two new SQL functions:
   * `split` splits a string into an array based on a delimiter. If the delimiter is null, it returns null. If the delimiter is empty, it splits the string into individual characters.

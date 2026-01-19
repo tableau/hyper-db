@@ -48,7 +48,7 @@ The Hyper API only supports 64-bit platforms. It has the following minimum hardw
   <TabItem value="python" label="Python" default>
 ```
 
-* **[Python 3.8](https://www.python.org/downloads/)** (or newer) is required.
+* **[Python 3.11](https://www.python.org/downloads/)** (or newer) is required.
   - Install the 64-bit version (for example, for Windows, the download is listed as `Windows x86-64`).
   - On Windows, we recommend to select the option **Add Python 3.x to PATH** during installation.
 

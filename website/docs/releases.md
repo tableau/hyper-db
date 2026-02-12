@@ -24,8 +24,8 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-###  0.0.24457 [February 12 2025]
-* Support for cffi 2.x in Python Hyper API (prevents dependency resolution problems with newer Python versions)
+###  0.0.24457 [February 12 2026]
+* Support for C Foreign Function Interface (CFFI) 2.x in Python Hyper API (prevents dependency resolution problems with newer Python versions)
 
 ###  0.0.24081 [December 11 2025]
 * Added support for two new SQL functions:

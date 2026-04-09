@@ -24,6 +24,8 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+###  Upcoming Release
+
 ###  0.0.24457 [February 12 2026]
 * Support for C Foreign Function Interface (CFFI) 2.x in Python Hyper API (prevents dependency resolution problems with newer Python versions)
 

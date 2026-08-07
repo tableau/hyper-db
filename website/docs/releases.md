@@ -25,9 +25,9 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 :::
 
 ###  Upcoming Release
-* ARRAY_AGG now supports ORDER BY and {NULL | ABSENT} ON NULL.
-* Added LISTAGG, STRING_AGG, JSON_ARRAYAGG, SKEWNESS_POP, SKEWNESS_SAMP, and KURTOSIS [aggregate functions](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/aggregate.html).
-* Added ARRAY_TRANSFORM, ARRAY_FILTER functions
+* `ARRAY_AGG` now supports `ORDER BY` and `{NULL | ABSENT} ON NULL`.
+* Added `LISTAGG`, `STRING_AGG`, `JSON_ARRAYAGG`, `SKEWNESS_POP`, `SKEWNESS_SAMP` and `KURTOSIS` [aggregate functions](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/aggregate.html).
+* Added `ARRAY_TRANSFORM` and `ARRAY_FILTER` functions
 
 ###  0.0.25080 [April 17 2026]
 * Performance improvements and defect fixes

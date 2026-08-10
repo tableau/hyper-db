@@ -24,6 +24,8 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
+###  Upcoming Release
+
 ###  0.0.26225 [August 7 2026]
 * `ARRAY_AGG` now supports `ORDER BY` and `{NULL | ABSENT} ON NULL`.
 * Added `LISTAGG`, `STRING_AGG`, `JSON_ARRAYAGG`, `SKEWNESS_POP`, `SKEWNESS_SAMP` and `KURTOSIS` [aggregate functions](https://developer.salesforce.com/docs/data/data-cloud-query-guide/references/dc-sql-reference/aggregate.html).

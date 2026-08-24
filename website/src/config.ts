@@ -1,4 +1,4 @@
-const version_long = '0.0.26225.rbf04a855';
+const version_long = '0.0.26359.r07abb490';
 const version_short = version_long.substr(0, version_long.lastIndexOf('.'));
 
 const downloadBaseUrl = 'https://downloads.tableau.com/tssoftware/';

@@ -24,7 +24,9 @@ In case you are wondering why all our releases start with `0.0`, read [this FAQ 
 
 :::
 
-###  Upcoming Release
+###  0.0.26359 [August 24 2026]
+* Fixed an issue in Hyper on Apple Silicon Macs running macOS versions prior to version 26
+* Additional performance improvements and defect fixes
 
 ###  0.0.26225 [August 7 2026]
 * `ARRAY_AGG` now supports `ORDER BY` and `{NULL | ABSENT} ON NULL`.

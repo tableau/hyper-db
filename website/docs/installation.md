@@ -5,11 +5,9 @@ description: Advanced installation instructions
 # Installation
 
 
-```mdx-code-block
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { Link } from "react-router-dom";
-```
 
 Hyper API is available for Python, C++ and Java supporting Windows, Mac and Linux each.
 Depending on the language, the installation can be complex.
@@ -43,19 +41,15 @@ The Hyper API only supports 64-bit platforms. It has the following minimum hardw
 
 ## Language-specific Requirements
 
-```mdx-code-block
 <Tabs queryString="client-language">
-  <TabItem value="python" label="Python" default>
-```
+<TabItem value="python" label="Python" default>
 
 * **[Python 3.11](https://www.python.org/downloads/)** (or newer) is required.
   - Install the 64-bit version (for example, for Windows, the download is listed as `Windows x86-64`).
   - On Windows, we recommend to select the option **Add Python 3.x to PATH** during installation.
 
-```mdx-code-block
-  </TabItem>
-  <TabItem value="cxx" label="C++">
-```
+</TabItem>
+<TabItem value="cxx" label="C++">
 
 * The C++ headers use C++11, so a **standard-compliant compiler with thorough C++11 support** is required. Our internal testing is done with the newest Clang.
 
@@ -66,24 +60,18 @@ Using at least C++17 is recommended, as the API uses C++17 classes, such as `std
 * For the examples, a CMake project file is provided. To build it, **[CMake](https://cmake.org/download/)** must be installed on your computer and available in your PATH.
   * On Windows, you also need Visual Studio 2015 (or newer).
 
-```mdx-code-block
-  </TabItem>
-  <TabItem value="java" label="Java">
-```
+</TabItem>
+<TabItem value="java" label="Java">
 
 * **[JDK 8](https://www.oracle.com/java/technologies/downloads/)** (or newer) is required.
 
-```mdx-code-block
-  </TabItem>
+</TabItem>
 </Tabs>
-```
 
 ## Instructions
 
-```mdx-code-block
 <Tabs queryString="client-language">
-  <TabItem value="python" label="Python" default>
-```
+<TabItem value="python" label="Python" default>
 
 :::note
 The following instructions assume that you have set up a virtual environment for Python. For more information on creating virtual environments, see [venv - Creation of virtual environments](https://docs.python.org/3/library/venv.html) in the Python Standard Library.
@@ -119,10 +107,8 @@ The following instructions assume that you have set up a virtual environment for
         - On Linux/macOS:
         `[venv_directory]/bin/python hyper-api-samples/Tableau-Supported/Python/insert_data_into_single_table.py`
 
-```mdx-code-block
-  </TabItem>
-  <TabItem value="cxx" label="C++">
-```
+</TabItem>
+<TabItem value="cxx" label="C++">
 
 1. [Download](/docs/releases#download) the C++ Hyper API package file (`.zip` file) for your operating system.
 
@@ -150,10 +136,8 @@ The following instructions assume that you have set up a virtual environment for
     - On Linux: Append the extracted lib directory to your system `LD_LIBRARY_PATH` variable.
     - On macOS: You need to include the lib directory as `RPATH` for every binary.
 
-```mdx-code-block
-  </TabItem>
-  <TabItem value="java" label="Java">
-```
+</TabItem>
+<TabItem value="java" label="Java">
 
 1. [Download](/docs/releases#download) the Java Hyper API package file (`.zip` file) for your operating system.
 
@@ -198,7 +182,5 @@ If your security requirements require you to run Java applications with the syst
     * For macOS, the library (`libtableauhyperapi.dylib`) is in the `lib` folder of the `.zip` file.
 1. Set system property `jna.library.path` with value set to the absolute path of the folder or directory that contains the native library file for your platform (from step 2).
 
-```mdx-code-block
-  </TabItem>
+</TabItem>
 </Tabs>
-```

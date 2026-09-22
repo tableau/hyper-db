@@ -1,7 +1,16 @@
 {
   // This file is not used in compilation. It is here just for a nice editor experience.
-  "extends": "@tsconfig/docusaurus/tsconfig.json",
+  "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
     "baseUrl": "."
+  },
+  // @docusaurus/tsconfig sets module: esnext, which makes ts-node resolve as
+  // ESM and reject the extensionless imports in download_links.ts. ts-node
+  // reads this block (the Docusaurus build ignores it) to run as CommonJS.
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS",
+      "moduleResolution": "node"
+    }
   }
 }

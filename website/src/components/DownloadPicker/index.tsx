@@ -8,16 +8,20 @@ import LinuxIcon from '@site/static/img/devicon-linux.svg';
 import WindowsIcon from '@site/static/img/devicon-windows.svg';
 import MacosIcon from '@site/static/img/devicon-macos.svg';
 
+// Docusaurus v3 narrowed TabItem's `label` prop to `string`, but it still
+// renders any ReactNode at runtime — this keeps the OS icon labels working.
+const richLabel = (label: React.ReactNode) => label as unknown as string;
+
 export function DownloadPicker() {
     return (
         <Tabs defaultValue={detectOS()}>
             <TabItem
                 value="windows"
-                label={
+                label={richLabel(
                     <>
                         <WindowsIcon className={styles.svgicon} /> Windows
-                    </>
-                }
+                    </>,
+                )}
             >
                 <ul>
                     <li>
@@ -33,11 +37,11 @@ export function DownloadPicker() {
             </TabItem>
             <TabItem
                 value="macos"
-                label={
+                label={richLabel(
                     <>
                         <MacosIcon className={styles.svgicon} /> macOS
-                    </>
-                }
+                    </>,
+                )}
             >
                 <ul>
                     <li>
@@ -62,11 +66,11 @@ export function DownloadPicker() {
             </TabItem>
             <TabItem
                 value="linux"
-                label={
+                label={richLabel(
                     <>
                         <LinuxIcon className={styles.svgicon} /> Linux
-                    </>
-                }
+                    </>,
+                )}
             >
                 <ul>
                     <li>

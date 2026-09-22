@@ -36,7 +36,19 @@
     "typescript": "^5.2.2"
   },
   "resolutions": {
-    "webpack": "5.94.0"
+    "webpack": "5.94.0",
+    "@babel/core": "7.29.7",
+    "axios": "0.34.0",
+    "body-parser": "1.20.8",
+    "cookie": "0.7.2",
+    "got": "11.8.6",
+    "minimatch": "3.1.5",
+    "on-headers": "1.1.0",
+    "qs": "6.16.0",
+    "serialize-javascript": "7.1.1",
+    "trim": "0.0.3",
+    "uuid": "11.1.1",
+    "ws": "8.21.3"
   },
   "browserslist": {
     "production": [

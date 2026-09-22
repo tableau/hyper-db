@@ -530,7 +530,7 @@ Noteworthy changes in the Time Zone Database:
 
 * The Hyper API `Inserter` class now allows inserting Well-known text (WKT) into `Geography` columns. You can use the `CAST` expression to transform WKT data to the `Geography` type and provide WKT data as a string to the `Inserter` class. For more information, see [Add Geospatial Data to a Hyper File](/docs/guides/hyper_file/geodata).
 
-* Documented the available settings that can be passed to the `HyperProcess` and `Connection` constructors. See  [Settings](/docs/hyper-api/hyper_process#passingprocesssettings).
+* Documented the available settings that can be passed to the `HyperProcess` and `Connection` constructors. See  [Settings](/docs/hyper-api/hyper_process#process-settings).
 
 * Exposed settings for the `HyperProcess` class that give control over the way Hyper communicates with its clients. See [Connectivity Settings](/docs/hyper-api/hyper_process#connectivitysettings).
 

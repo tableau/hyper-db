@@ -1,7 +1,7 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
+const lightCodeTheme = require('prism-react-renderer').themes.github;
 
 const getConfig = async () => {
   const remarkDefList = (await import("remark-deflist")).default;
@@ -29,7 +29,12 @@ const getConfig = async () => {
 
     // We want all issues to be reported as build errors
     onBrokenLinks: 'throw',
-    onBrokenMarkdownLinks: 'throw',
+    onBrokenAnchors: 'throw',
+    markdown: {
+      hooks: {
+        onBrokenMarkdownLinks: 'throw',
+      },
+    },
 
     // Even if you don't use internalization, you can use this field to set useful
     // metadata like html lang. For example, if your site is Chinese, you may want

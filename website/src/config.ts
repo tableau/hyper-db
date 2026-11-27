@@ -21,6 +21,10 @@ export const config = {
         linux_cxx: `${downloadBaseUrl}/tableauhyperapi-cxx-linux-x86_64-release-main.${version_long}.zip`,
         linux_java: `${downloadBaseUrl}/tableauhyperapi-java-linux-x86_64-release-main.${version_long}.zip`,
 
+        linux_arm_py: `${downloadBaseUrl}/tableauhyperapi-${version_short}-py3-none-manylinux2014_aarch64.whl`,
+        linux_arm_cxx: `${downloadBaseUrl}/tableauhyperapi-cxx-linux-arm64-release-main.${version_long}.zip`,
+        linux_arm_java: `${downloadBaseUrl}/tableauhyperapi-java-linux-arm64-release-main.${version_long}.zip`,
+
         docs_py: `${downloadBaseUrl}/tableauhyperapi-py-docs-main.${version_long}.zip`,
         docs_java: `${downloadBaseUrl}/tableauhyperapi-java-docs-main.${version_long}.zip`,
         docs_cxx: `${downloadBaseUrl}/tableauhyperapi-cxx-docs-main.${version_long}.zip`,

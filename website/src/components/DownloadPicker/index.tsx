@@ -74,13 +74,22 @@ export function DownloadPicker() {
             >
                 <ul>
                     <li>
-                        <a href={config.download.linux_py}>Python .whl (Linux)</a>
+                        <a href={config.download.linux_py}>Python .whl (Linux x64)</a>
                     </li>
                     <li>
-                        <a href={config.download.linux_cxx}>C++ (Linux)</a>
+                        <a href={config.download.linux_arm_py}>Python .whl (Linux ARM)</a>
                     </li>
                     <li>
-                        <a href={config.download.linux_java}>Java (Linux)</a>
+                        <a href={config.download.linux_cxx}>C++ (Linux x64)</a>
+                    </li>
+                    <li>
+                        <a href={config.download.linux_arm_cxx}>C++ (Linux ARM)</a>
+                    </li>
+                    <li>
+                        <a href={config.download.linux_java}>Java (Linux x64)</a>
+                    </li>
+                    <li>
+                        <a href={config.download.linux_arm_java}>Java (Linux ARM)</a>
                     </li>
                 </ul>
             </TabItem>
